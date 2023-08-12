@@ -3,10 +3,10 @@ import { CanActivateFn, Router } from '@angular/router';
 import { TokenService } from '../service/token.service';
 
 export const inverseAuthGuard: CanActivateFn = (route, state) => {
-  const tokenService = inject(TokenService)
-  if (tokenService.getToken) {
-    alert("Error: para acceder a la pagina de login no debe tener una sesion iniciada");
-    const router = inject(Router)
+  const tokenService = inject(TokenService);
+  const router = inject(Router);
+  if (tokenService.existsToken()) {
+    alert("Error: para acceder a la pagina de login no debe tener una sesion iniciada");    
     router.navigateByUrl("/productos")    
     return false;
   }  

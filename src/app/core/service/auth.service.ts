@@ -3,8 +3,8 @@ import { Observable, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment.development';
 import { TokenService } from './token.service';
-import { AuthJwtDto } from '../dto/cliente/AuthJwtDto';
 import { AuthLoginDto } from '../dto/cliente/authLoginDto';
+import { AuthJwtDto } from '../dto/cliente/authJwtDto';
 
 
 const { apiUrl } = environment;

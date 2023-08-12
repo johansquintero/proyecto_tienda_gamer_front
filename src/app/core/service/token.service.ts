@@ -13,7 +13,7 @@ export class TokenService {
   }
 
   existsToken():boolean{
-    return getCookie("token")!=null
+    return getCookie("token")!=null;
   }
 
   public saveToken(jwtToken:string):void{

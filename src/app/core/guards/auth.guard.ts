@@ -4,10 +4,10 @@ import { TokenService } from '../service/token.service';
 
 export const authGuard: CanActivateFn = (route, state) => {
   const tokenService = inject(TokenService)
-  if (!tokenService.getToken) {
-    alert("Error: para acceder a la siguiente pagina debe estar autentificado");
-    const router = inject(Router)
-    router.navigateByUrl("")    
+  const router = inject(Router);
+  if (!tokenService.existsToken()) {
+    alert("Error: para acceder a la siguiente pagina debe estar autentificado");    
+    router.navigateByUrl("/autenticacion/inicio-sesion");    
     return false;
   }
   return true;

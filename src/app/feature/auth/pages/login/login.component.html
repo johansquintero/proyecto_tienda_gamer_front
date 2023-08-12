@@ -29,21 +29,21 @@
                             <!-- Email input -->
                             <div class="form-outline mb-4">
                                 <label class="form-label" for="username">Nombre de usuario</label>
-                                <input [ngClass]="{'border border-danger':isTouchedField(logForm,'username')}"
+                                <input [ngClass]="{'border border-danger':isDirtyField(logForm,'username')}"
                                     formControlName="username" type="text" id="username" class="form-control" />
-                                <span class="text-danger font-italic">{{getErrorField('username')}}</span>
+                                <span class="text-danger font-italic">{{getErrorField(logForm,'username')}}</span>
                             </div>
 
                             <!-- Password input -->
                             <div class="form-outline mb-4">
                                 <label class="form-label" for="password">Contraseña</label>
-                                <input [ngClass]="{'border border-danger':isTouchedField(logForm,'password')}"
+                                <input [ngClass]="{'border border-danger':isDirtyField(logForm,'password')}"
                                     formControlName="password" type="password" id="password" class="form-control" />
-                                <span class="text-danger font-italic">{{getErrorField('password')}}</span>
+                                <span class="text-danger font-italic">{{getErrorField(logForm,'password')}}</span>
                             </div>
 
                             <!-- Submit button -->
-                            <div class="d-flex justify-content-center">
+                            <div class=" d-grid gap-2">
                                 <button [disabled]="logForm.invalid" (click)="logIn()" type="submit"
                                     class="btn btn-primary btn-lg btn-block">Iniciar
                                     sesion</button>

@@ -61,16 +61,5 @@ export class LoginComponent extends AppBaseComponent {
 
     //console.log('Errores:', JSON.stringify(this.getFormErrors(this.logForm), null, 2));
   }
-
-  public getErrorField(field: string): string {
-    let message;
-    if (this.isTouchedField(this.logForm, field)) {
-      if (this.logForm.get(field).hasError('required')) {
-        message = 'El campo es requerido';
-      } else if (this.logForm.get(field).hasError('minlength')) {
-        message = 'El campo debe tener mas caracteres';
-      }
-    }
-    return message;
-  }
+  
 }
