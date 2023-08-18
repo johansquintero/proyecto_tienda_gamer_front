@@ -1,1 +1,20 @@
-<p>producto works!</p>
+<ul *ngFor="let producto of productos" class="list-group">
+    <li class="list-group-item m-1">
+        <div class="row">
+            <div class="col-9">
+                <span class="fs-1 text-center fw-bolder">{{producto.name|uppercase}}</span>
+            </div>
+            <div class="col-4">
+                <img class="img-fluid"
+                    src="https://d34vmoxq6ylzee.cloudfront.net/magefan_blog/Guia_de_compra_para_GPU_Como_escoger_la_tarjeta_grafica_indicada_1.jpg"
+                    alt="">
+            </div>
+            <div class="col-8">
+                <p class="fs-3">{{producto.description}}</p>
+                <p class="fs-4">{{producto.price|currency:'USD':'symbol':'1.2-2'}}$</p>
+                <p class="fs-5">Cantidad disponible:{{producto.quantity}}</p>
+            </div>
+        </div>
+
+    </li>
+</ul>

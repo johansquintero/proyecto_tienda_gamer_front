@@ -10,7 +10,7 @@ const routes: Routes = [
     canActivate:[inverseAuthGuard]
   },
   {
-    path: "productos",
+    path: "home",
     loadChildren: () => import("./home/home.module").then(f => f.HomeModule),
     canActivate:[authGuard]
   },

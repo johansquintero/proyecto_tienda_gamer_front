@@ -7,7 +7,7 @@ export const inverseAuthGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   if (tokenService.existsToken()) {
     alert("Error: para acceder a la pagina de login no debe tener una sesion iniciada");    
-    router.navigateByUrl("/productos")    
+    router.navigateByUrl("/home")    
     return false;
   }  
   return true;

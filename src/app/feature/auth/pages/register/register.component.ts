@@ -6,7 +6,7 @@ import { AuthRegisterRequestDto } from 'src/app/core/dto/cliente/authRegisterReq
 import { RegisterService } from 'src/app/core/service/register.service';
 import { AppBaseComponent } from 'src/app/core/utils/AppBaseComponent';
 import { CustomValidators } from 'src/app/core/utils/customValidators';
-
+import Swal from 'sweetalert2'
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -51,8 +51,21 @@ export class RegisterComponent extends AppBaseComponent {
 
       await lastValueFrom(this.registerService.register(registerDto)).then(reponse => {
         this.passwordGenerated = reponse.password;
+        Swal.fire({
+          icon: 'success',
+          title: 'Cliente registrado correctamente',
+          showConfirmButton: false,
+          timer: 1500
+        })
       });
       this.registered = true;
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Hay herrores en el formulario'
+      });
+      this.formGroup.markAllAsTouched();
     }
     //console.log('Errores:', JSON.stringify(this.getFormErrors(this.formGroup)));
   }

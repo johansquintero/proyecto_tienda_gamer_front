@@ -1,0 +1,18 @@
+/* styles.css o styles.scss */
+/* Estilos para el elemento select múltiple */
+.select-multiple {
+    width: 100%;
+    height: auto;
+    padding: 8px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background-color: white;
+    overflow: hidden;
+  }
+  
+  
+  /* Estilo cuando se enfoca el select */
+  .select-multiple:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }

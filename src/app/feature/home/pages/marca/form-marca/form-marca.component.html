@@ -1,0 +1,26 @@
+<div class="container container-fluid">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="d-flex justify-content-center align-items-center">
+                <span class="fs-1 text-center fw-bolder">REGISTRA UNA NUEVA MARCA</span>
+                <img class="img-fluid rounded "
+                    src="https://imagenes.expreso.ec/files/image_700_402/uploads/2020/07/12/5f0b96b1b03c4.jpeg" alt="">
+            </div>
+            <form [formGroup]="formGroup">
+                <div class="mb-3">
+                    <label for="nombre" class="form-label">Nombre de la marca</label>
+                    <input [ngClass]="{'border border-danger':isDirtyField(formGroup,'name')}" formControlName="name"
+                        type="text" class="form-control" id="name">
+                    <span class="text-center text-danger">{{this.getErrorField(formGroup,'name')}}</span>
+                </div>
+                
+                <button *ngIf="sharedMarca==null" (click)="register()" [disabled]="formGroup.invalid" type="submit"
+                    class="btn btn-primary m-1">Registrar</button>
+                <button *ngIf="sharedMarca!=null" (click)="update()" [disabled]="formGroup.invalid" type="submit"
+                    class="btn btn-primary m-1">Actualizar</button>
+
+                <a [routerLink]="['/home/marca']" class="btn btn-danger m-1">Regresar</a>
+            </form>
+        </div>
+    </div>
+</div>

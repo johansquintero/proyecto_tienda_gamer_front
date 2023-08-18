@@ -35,7 +35,7 @@ export class CustomValidators extends Validators {
     }
 
     static LetterAndNumericValidator(control: AbstractControl): ValidationErrors | null {
-        const letterAndNumericPattern = /^[A-Za-z0-9]{5,25}/;
+        const letterAndNumericPattern = /^[a-zA-Z]+[0-9]*$/;
 
         if (!control.value || letterAndNumericPattern.test(control.value)) {
             return null; // Válido

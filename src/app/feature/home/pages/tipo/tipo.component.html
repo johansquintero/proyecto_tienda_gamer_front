@@ -1,0 +1,38 @@
+<div class="container mt-4">
+    <div class="card">
+        <div class="btn-group">
+            <a [routerLink]="['/home']" class="btn btn-danger">Ir a la pagina principal</a>
+            <a [routerLink]="['/home/tipo-form']" class="btn btn-primary">REGISTRAR UN NUEVO TIPO</a>                
+        </div>
+        <div class="card-header">            
+            <h5 class="card-title text-center">TIPOS</h5>            
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Marcas</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="fs-5" *ngFor="let tipo of tipos">
+                        <td>{{tipo.name|uppercase}}</td>
+                        <td>
+                            <div *ngFor="let marca of tipo.marcas">
+                                <span>{{marca.name|uppercase}} </span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class=" d-grid gap-2 m-1">
+                                <button (click)="goUpdate(tipo)" class="btn btn-warning ml-3">Actualizar</button>
+                                <button (click)="deleteTipo(tipo)" class="btn btn-danger ml-3">Eliminar</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>        
+    </div>    
+</div>

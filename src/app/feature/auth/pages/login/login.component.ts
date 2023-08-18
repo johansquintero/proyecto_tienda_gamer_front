@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/core/service/auth.service';
 import { lastValueFrom } from 'rxjs';
 import { TokenService } from 'src/app/core/service/token.service';
 import { AuthLoginDto } from 'src/app/core/dto/cliente/authLoginDto';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -54,9 +55,13 @@ export class LoginComponent extends AppBaseComponent {
 
       await lastValueFrom(this.authService.login(loginDto));
       console.log(`token:${this.tokenService.getToken()}`);
-      await this.router.navigateByUrl("/productos");
+      await this.router.navigateByUrl("/home");
     } else {
-      alert("error en los campos")
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Hay errores en el formulario'
+      });
     }
 
     //console.log('Errores:', JSON.stringify(this.getFormErrors(this.logForm), null, 2));

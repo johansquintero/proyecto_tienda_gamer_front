@@ -1,0 +1,44 @@
+<div class="container container-fluid">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="d-flex justify-content-center align-items-center">
+                <span class="fs-1 text-center fw-bolder">REGISTRA UN NUEVO TIPO DE PRODUCTO</span>
+                <img class="img-fluid "
+                    src="https://img.freepik.com/vector-gratis/ilustracion-moderna-concepto-computadora-escritorio_114360-16235.jpg"
+                    alt="">
+            </div>
+            <form [formGroup]="formGroup">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Nombre de la marca</label>
+                    <input [ngClass]="{'border border-danger':isDirtyField(formGroup,'name')}" formControlName="name"
+                        type="text" class="form-control" id="name">
+                    <span class="text-center text-danger">{{this.getErrorField(formGroup,'name')}}</span>
+                </div>
+                <div class="row mb-4">
+                    <div class="col">
+                        <select class="select-multiple " multiple size="{{marcas?.length}}">
+                            <option *ngFor="let marca of marcasRigth" (click)="moveLeft(marca)">{{marca.name}}</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <select class="select-multiple " multiple size="{{marcas?.length}}">
+                            <option *ngFor="let marca of marcasLeft" (click)="moveRigth(marca)" [value]="marca.id">
+                                {{marca.name}}</option>
+                        </select>
+                    </div>
+                    <button (click)="resetSides()" type="submit" class="btn btn-primary m-1">Restablecer</button>
+
+                </div>
+
+                <div class="row">
+                    <button *ngIf="sharedTipo==null" (click)="register()" [disabled]="formGroup.invalid" type="submit"
+                        class="btn btn-primary m-1">Registrar</button>
+                    <button *ngIf="sharedTipo!=null" (click)="update()" [disabled]="formGroup.invalid" type="submit" class="btn btn-primary m-1">Actualizar</button>
+
+                    <a [routerLink]="['/home/tipo']" class="btn btn-danger m-1">Regresar</a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

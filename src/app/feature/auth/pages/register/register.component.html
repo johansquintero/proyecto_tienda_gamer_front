@@ -63,13 +63,15 @@
                   class="btn btn-primary">
                   Registrarse
                 </button>
-                <a class="btn btn-dark" [routerLink]="['/autenticacion/inicio-sesion']">Volver a login</a>
               </div> 
             </form>
             <div *ngIf="registered" class="alert alert-success" role="alert">
               <p class="fs-3 text-center">Registro exitoso su contraseña es:</p>
-              <span class="fs-1 text-center fw-bolder">asddasd{{passwordGenerated}}</span>
+              <span class="fs-1 text-center fw-bolder">{{passwordGenerated}}</span>
               <p class="fs-3 text-center">Guardala en un lugar seguro, ya que no se puede recuperar</p>
+            </div>
+            <div class="d-grid gap-2 mt-2">
+              <a class="btn btn-dark" [routerLink]="['/autenticacion/inicio-sesion']">Volver a login</a>
             </div>            
           </div>
         </div>

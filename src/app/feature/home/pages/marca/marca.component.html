@@ -1,0 +1,32 @@
+<div class="container mt-4">
+    <div class="card">
+        <div class="btn-group">
+            <a [routerLink]="['/home']" class="btn btn-danger">Ir a la pagina principal</a>
+            <a [routerLink]="['/home/marca-form']" class="btn btn-primary">REGISTRAR UNA NUEVA MARCA</a>
+        </div>
+        <div class="card-header">
+            <h5 class="card-title text-center">MARCAS</h5>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="fs-5" *ngFor="let marca of marcas">
+                        <td>{{marca.name|uppercase}}</td>
+                        <td>
+                            <div class=" d-grid gap-2 m-1">
+                                <button (click)="goUpdate(marca)" class="btn btn-warning ml-3">Actualizar</button>
+                                <button (click)="deleteMarca(marca)" class="btn btn-danger ml-3">Eliminar</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
