@@ -3,7 +3,8 @@ export interface ProductoResponseDto{
     name:string;
     description:string;
     price:number;
-    typeId:number;
+    tipo:string;
+    marca:string;
     quantity:number;
     imagePath:string;
 } 

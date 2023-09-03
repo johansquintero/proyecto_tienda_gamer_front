@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom, tap } from 'rxjs';
 import { TipoDto } from 'src/app/core/dto/tipo/tipoDto';
 import { TipoService } from 'src/app/core/service/tipo.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-tipo',
@@ -26,13 +27,29 @@ export class TipoComponent {
   }
 
   public async deleteTipo(tipoDto:TipoDto):Promise<void>{
-    await lastValueFrom(this.tipoService.delete(tipoDto.id)).then(response=>{
+    await lastValueFrom(this.tipoService.delete(tipoDto.id).pipe(tap({
+      next: response => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Marca eliminada',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      },
+      error: err => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: err.error.detail
+        });
+      }
+    }))).then(response=>{
       this.tipos = this.tipos.filter(tipoFiltered=>tipoFiltered.id!=tipoDto.id);
     });
   }
 
   public goUpdate(tipo:TipoDto):void{
     this.tipoService.setSharedTipo(tipo);
-    this.router.navigateByUrl(`/home/tipo-form`);
+    this.router.navigateByUrl(`/admin/tipo-form`);
   }
 }

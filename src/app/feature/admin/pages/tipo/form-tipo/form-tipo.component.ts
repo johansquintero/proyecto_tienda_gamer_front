@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom, tap } from 'rxjs';
 import { MarcaDto } from 'src/app/core/dto/marca/marcaDto';
 import { TipoDto } from 'src/app/core/dto/tipo/tipoDto';
 import { MarcaService } from 'src/app/core/service/marca.service';
@@ -44,12 +44,12 @@ export class FormTipoComponent extends AppBaseComponent {
   public initFormFields() {
     this.formGroup = this.fb.group(
       {
-        name: [this.sharedTipo != null ? `${this.sharedTipo.name}`:'', [Validators.required, Validators.min(1), CustomValidators.LetterAndNumericValidator]],
+        name: [this.sharedTipo != null ? `${this.sharedTipo.name}` : '', [Validators.required, Validators.min(1), CustomValidators.LetterAndNumericValidator]],
       }
     )
   }
 
-  ngOnInit() {    
+  ngOnInit() {
     this.marcaService.getAll().subscribe(reponse => {
       this.marcas = reponse;
       this.marcasRigth = reponse;
@@ -69,7 +69,24 @@ export class FormTipoComponent extends AppBaseComponent {
     let newTipo: TipoDto = this.formGroup.value;
     newTipo.marcas = this.marcasLeft;
     if (this.formGroup.valid) {
-      await lastValueFrom(this.tipoService.save(newTipo)).then(response => {
+      await lastValueFrom(this.tipoService.save(newTipo).pipe(tap({
+        next: response => {
+          Swal.fire({
+            icon: 'success',
+            title: `Tipo ${response.name} creado`,
+            showConfirmButton: false,
+            timer: 1500
+          })
+        },
+        error: err => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: err.error.detail
+          });
+        }
+      }))
+      ).then(response => {
         this.resetSides();
       })
     } else {
@@ -86,7 +103,25 @@ export class FormTipoComponent extends AppBaseComponent {
     this.sharedTipo.marcas = this.marcasLeft;
     console.log(this.sharedTipo);
     if (this.formGroup.valid) {
-      await lastValueFrom(this.tipoService.update(this.sharedTipo)).then(response => {
+      await lastValueFrom(this.tipoService.update(this.sharedTipo).pipe(tap({
+        next: response => {
+          this.tipoService.setSharedTipo(null);
+          Swal.fire({
+            icon: 'success',
+            title: `Tipo ${response.name} actualizado`,
+            showConfirmButton: false,
+            timer: 1500
+          })
+        },
+        error: err => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: err.error.detail
+          });
+        }
+      }))
+      ).then(response => {
         this.router.navigateByUrl('/home/tipo');
       })
     } else {

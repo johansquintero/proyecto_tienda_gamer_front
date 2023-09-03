@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-md-10">
             <div class="d-flex justify-content-center align-items-center">
-                <span class="fs-1 text-center fw-bolder">REGISTRA UNA NUEVA MARCA</span>
+                <span class="fs-1 text-center fw-bolder">FORMULARIO DE MARCA</span>
                 <img class="img-fluid rounded "
                     src="https://imagenes.expreso.ec/files/image_700_402/uploads/2020/07/12/5f0b96b1b03c4.jpeg" alt="">
             </div>
@@ -13,7 +13,7 @@
                         type="text" class="form-control" id="name">
                     <span class="text-center text-danger">{{this.getErrorField(formGroup,'name')}}</span>
                 </div>
-                
+
                 <button *ngIf="sharedMarca==null" (click)="register()" [disabled]="formGroup.invalid" type="submit"
                     class="btn btn-primary m-1">Registrar</button>
                 <button *ngIf="sharedMarca!=null" (click)="update()" [disabled]="formGroup.invalid" type="submit"

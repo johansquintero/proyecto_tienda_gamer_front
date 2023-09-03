@@ -1,0 +1,53 @@
+<div class="flex-shrink-0 p-3 bg-white" style="width: 280px;">
+    <a routerLink="/home" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
+        <svg class="bi me-2" width="30" height="24">
+            <use xlink:href="#bootstrap" />
+        </svg>
+        <span class="fs-2 fw-semibold">Home</span>
+    </a>
+
+    <ul class="list-unstyled ps-0">
+        <li class="mb-1">
+            <button class="btn btn-toggle align-items-center rounded" data-bs-toggle="collapse"
+                data-bs-target="#producto-collapse" aria-expanded="false">
+                <span class="fs-5 fw-semibold">Producto</span>
+            </button>
+            <div class="collapse" id="producto-collapse">
+                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                    <li><a routerLink="/admin/tipo" class="link-dark rounded">Ver productos</a></li>
+                    <li><a routerLink="/admin/tipo-form" class="link-dark rounded">Registrar producto</a></li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+
+    <ul class="list-unstyled ps-0">
+        <li class="mb-1">
+            <button class="btn btn-toggle align-items-center rounded" data-bs-toggle="collapse"
+                data-bs-target="#marca-collapse" aria-expanded="false">
+                <span class="fs-5 fw-semibold">Marca</span>
+            </button>
+            <div class="collapse" id="marca-collapse">
+                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                    <li><a routerLink="/admin/marca" class="link-dark rounded">Ver marcas</a></li>
+                    <li><a routerLink="/admin/marca-form" class="link-dark rounded">Registrar marca</a></li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+
+    <ul class="list-unstyled ps-0">
+        <li class="mb-1">
+            <button class="btn btn-toggle align-items-center rounded" data-bs-toggle="collapse"
+                data-bs-target="#tipo-collapse" aria-expanded="false">
+                <span class="fs-5 fw-semibold">Tipo de producto</span>
+            </button>
+            <div class="collapse" id="tipo-collapse">
+                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                    <li><a routerLink="/admin/tipo" class="link-dark rounded">Ver tipos</a></li>
+                    <li><a routerLink="/admin/tipo-form" class="link-dark rounded">Registrar tipo</a></li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+</div>

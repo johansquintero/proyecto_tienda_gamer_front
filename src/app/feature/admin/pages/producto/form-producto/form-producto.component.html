@@ -1,0 +1,66 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="d-flex justify-content-center align-items-center">
+                <span class="fs-1 text-center fw-bolder">REGISTRA UN NUEVO PRODUCTO</span>
+                <img class="img-fluid rounded figure-img "
+                    src="https://www.accesoriosparacomputadores.co/blog/wp-content/uploads/2020/02/armar-un-pc-para-gamer.jpg"
+                    alt="">
+            </div>
+            <form [formGroup]="formGroup">
+                <div class="mb-3">
+                    <label for="nombre" class="form-label">Nombre del producto:</label>
+                    <input [ngClass]="{'border border-danger':isDirtyField(formGroup,'name')}" formControlName="name"
+                        type="text" class="form-control" id="name">
+                    <span class="text-center text-danger">{{getErrorField(formGroup,'name')}}</span>
+                </div>
+
+                <div class="mb-3">
+                    <label for="description" class="form-label">Descripcion del producto:</label>
+                    <textarea [ngClass]="{'border border-danger':isDirtyField(formGroup,'description')}"
+                        formControlName="description" type="text-area" class="form-control" id="description"></textarea>
+                    <span class="text-center text-danger">{{this.getErrorField(formGroup,'description')}}</span>
+                </div>
+
+                <div class="mb-3">
+                    <label for="price" class="form-label">Precio del producto:</label>
+                    <input [ngClass]="{'border border-danger':isDirtyField(formGroup,'price')}" formControlName="price"
+                        type="text" class="form-control" id="price">
+                    <span class="text-center text-danger">{{this.getErrorField(formGroup,'price')}}</span>
+                </div>
+
+                <div class="mb-3">
+                    <label for="quantity" class="form-label">Cantidad unidades:</label>
+                    <input [ngClass]="{'border border-danger':isDirtyField(formGroup,'quantity')}"
+                        formControlName="quantity" type="text" class="form-control" id="quantity">
+                    <span class="text-center text-danger">{{this.getErrorField(formGroup,'quantity')}}</span>
+                </div>
+
+                <div class="mb-3 form-select">
+                    <select name="" id="" class="form-control" formControlName="tipoId">
+                        <option [ngValue]="''">-----Seleccione un tipo de producto-----</option>
+                        <option *ngFor="let tipo of tipos" value="{{tipo.id}}">
+                            {{tipo.name}}
+                        </option>
+                    </select>
+                    <span class="text-center text-danger">{{this.getErrorField(formGroup,'tipoId')}}</span>
+                </div>
+
+                <div class="mb-3 form-select" *ngIf="tipoSelected!=null">
+                    <select name="" id="" class="form-control" formControlName="marcaId">
+                        <option [ngValue]="''">-----Seleccione una marca-----</option>
+                        <option *ngFor="let marca of tipoSelected.marcas" value="{{marca.id}}">{{marca.name}}
+                        </option>
+                    </select>
+                    <span class="text-center text-danger">{{this.getErrorField(formGroup,'marcaId')}}</span>
+                </div>
+
+                <button (click)="registerProducto()" [disabled]="formGroup.invalid" type="submit"
+                    class="btn btn-primary m-1">Registrar</button>
+                <button [disabled]="formGroup.invalid" type="submit" class="btn btn-primary m-1">Actualizar</button>
+
+                <a [routerLink]="['/home/marca']" class="btn btn-danger m-1">Regresar</a>
+            </form>
+        </div>
+    </div>
+</div>

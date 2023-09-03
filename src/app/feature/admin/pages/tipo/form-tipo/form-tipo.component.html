@@ -2,14 +2,14 @@
     <div class="row">
         <div class="col-md-10">
             <div class="d-flex justify-content-center align-items-center">
-                <span class="fs-1 text-center fw-bolder">REGISTRA UN NUEVO TIPO DE PRODUCTO</span>
+                <span class="fs-1 text-center fw-bolder">FORMULARIO TIPO DE PRODUCTO</span>
                 <img class="img-fluid "
                     src="https://img.freepik.com/vector-gratis/ilustracion-moderna-concepto-computadora-escritorio_114360-16235.jpg"
                     alt="">
             </div>
             <form [formGroup]="formGroup">
                 <div class="mb-3">
-                    <label for="name" class="form-label">Nombre de la marca</label>
+                    <label for="name" class="form-label">Nombre del tipo:</label>
                     <input [ngClass]="{'border border-danger':isDirtyField(formGroup,'name')}" formControlName="name"
                         type="text" class="form-control" id="name">
                     <span class="text-center text-danger">{{this.getErrorField(formGroup,'name')}}</span>
@@ -38,7 +38,6 @@
                     <a [routerLink]="['/home/tipo']" class="btn btn-danger m-1">Regresar</a>
                 </div>
             </form>
-
         </div>
     </div>
 </div>

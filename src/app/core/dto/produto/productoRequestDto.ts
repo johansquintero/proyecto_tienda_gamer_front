@@ -1,7 +1,10 @@
-export interface ProductoRequestDto{
-    name:string;
-    description:string;
-    price:number;
-    typeId:number;
-    quantity:number;
+export interface ProductoRequestDto {
+    id:number;
+    name: string;
+    description: string;
+    price: number;
+    tipoId: number;
+    marcaId: number;
+    quantity: number;
+    imagePath:string
 } 
