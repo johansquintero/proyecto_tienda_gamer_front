@@ -17,13 +17,13 @@
                 <div class="row mb-4">
                     <div class="col">
                         <select class="select-multiple " multiple size="{{marcas?.length}}">
-                            <option *ngFor="let marca of marcasRigth" (click)="moveLeft(marca)">{{marca.name}}</option>
+                            <option *ngFor="let marca of marcasLeft" (click)="moveRigth(marca)" [value]="marca.id">
+                                {{marca.name}}</option>
                         </select>
                     </div>
                     <div class="col">
                         <select class="select-multiple " multiple size="{{marcas?.length}}">
-                            <option *ngFor="let marca of marcasLeft" (click)="moveRigth(marca)" [value]="marca.id">
-                                {{marca.name}}</option>
+                            <option *ngFor="let marca of marcasRigth" (click)="moveLeft(marca)">{{marca.name}}</option>
                         </select>
                     </div>
                     <button (click)="resetSides()" type="submit" class="btn btn-primary m-1">Restablecer</button>
@@ -33,9 +33,10 @@
                 <div class="row">
                     <button *ngIf="sharedTipo==null" (click)="register()" [disabled]="formGroup.invalid" type="submit"
                         class="btn btn-primary m-1">Registrar</button>
-                    <button *ngIf="sharedTipo!=null" (click)="update()" [disabled]="formGroup.invalid" type="submit" class="btn btn-primary m-1">Actualizar</button>
+                    <button *ngIf="sharedTipo!=null" (click)="update()" [disabled]="formGroup.invalid" type="submit"
+                        class="btn btn-primary m-1">Actualizar</button>
 
-                    <a [routerLink]="['/home/tipo']" class="btn btn-danger m-1">Regresar</a>
+                    <a routerLink="/admin/tipo" class="btn btn-danger m-1">Regresar</a>
                 </div>
             </form>
         </div>

@@ -6,5 +6,5 @@ export interface ProductoRequestDto {
     tipoId: number;
     marcaId: number;
     quantity: number;
-    imagePath:string
+    imagePath:string;
 } 

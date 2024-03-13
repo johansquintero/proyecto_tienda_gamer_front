@@ -19,6 +19,7 @@ export class DetailProductoComponent {
   ngOnInit() {
     this.getProducto();
   }
+
   public async getProducto(): Promise<void> {
     let id = 0;
     this.activateRoute.queryParams.subscribe((params: Params) => {
@@ -36,5 +37,10 @@ export class DetailProductoComponent {
     }))).then(response => {
       this.producto = response
     })
+  }
+  
+  public goUpdate(){
+    this.productoService.setSharedProducto(this.producto);
+    this.router.navigateByUrl("admin/producto-form");
   }
 }

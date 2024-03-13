@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { authGuard } from '../core/guards/auth.guard';
 import { inverseAuthGuard } from '../core/guards/inverse.auth.guard';
-import { AdminModule } from './admin/admin.module';
+import { permissionGuard } from '../core/guards/permission.guard';
 
 const routes: Routes = [
   {
@@ -17,10 +17,12 @@ const routes: Routes = [
   },
   {
     path: "admin",
-    loadChildren: () => import("./admin/admin.module").then(f => f.AdminModule)
+    loadChildren: () => import("./admin/admin.module").then(f => f.AdminModule),
+    canActivate:[permissionGuard]
   },
-  { path: "", redirectTo: "autenticacion/inicio-sesion", pathMatch: 'full' }
-
+  {
+    path:"",redirectTo:"/home",pathMatch:"full"
+  }
 ];
 
 @NgModule({

@@ -1,0 +1,30 @@
+<div class="container mt-4">
+    <div class="card">
+        
+        <div class="card-header">
+            <h5 class="card-title text-center">MIS COMPRAS</h5>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <th>Id de la factura</th>
+                    <th>Fecha</th>
+                    <th>Metodo de pago</th>
+                    <th>Total pagar</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let compra of compras">
+                        <td class="clickeable" (click)="verFactura(compra.id)" >{{compra.id}}</td>
+                        <td>{{compra.date}}</td>
+                        <td>{{compra.paymentMethod}}</td>
+                        <td>{{compra.total}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="btn-group">
+            <button (click)="volverPaginaAnterior()" class="btn btn-danger">Volver</button>
+        </div>
+    </div>
+    
+</div>

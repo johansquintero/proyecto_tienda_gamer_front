@@ -10,11 +10,6 @@ export interface AuthClientetDto{
     username:string;
 
     /**
-     * Contraseña del cliente
-     */
-    password:string;
-
-    /**
      * Direccion de correo electronico del cliente
      */
     email:string;

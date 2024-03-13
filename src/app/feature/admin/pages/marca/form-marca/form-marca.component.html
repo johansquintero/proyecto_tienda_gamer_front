@@ -19,7 +19,7 @@
                 <button *ngIf="sharedMarca!=null" (click)="update()" [disabled]="formGroup.invalid" type="submit"
                     class="btn btn-primary m-1">Actualizar</button>
 
-                <a [routerLink]="['/home/marca']" class="btn btn-danger m-1">Regresar</a>
+                <a routerLink="/admin/marca" class="btn btn-danger m-1">Regresar</a>
             </form>
         </div>
     </div>

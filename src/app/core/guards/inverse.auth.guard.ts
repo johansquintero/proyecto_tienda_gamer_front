@@ -1,13 +1,18 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { TokenService } from '../service/token.service';
+import Swal from 'sweetalert2';
 
 export const inverseAuthGuard: CanActivateFn = (route, state) => {
   const tokenService = inject(TokenService);
-  const router = inject(Router);
   if (tokenService.existsToken()) {
-    alert("Error: para acceder a la pagina de login no debe tener una sesion iniciada");    
-    router.navigateByUrl("/home")    
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Ya existe una sesion iniciada'
+    }).then((result)=>{
+      window.history.back();
+    });
     return false;
   }  
   return true;

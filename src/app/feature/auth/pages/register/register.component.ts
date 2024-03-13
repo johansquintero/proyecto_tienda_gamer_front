@@ -57,6 +57,12 @@ export class RegisterComponent extends AppBaseComponent {
           showConfirmButton: false,
           timer: 1500
         })
+      }).catch(err => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: err.error.detail
+        });
       });
       this.registered = true;
     } else {

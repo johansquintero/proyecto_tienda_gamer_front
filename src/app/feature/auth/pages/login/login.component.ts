@@ -53,7 +53,13 @@ export class LoginComponent extends AppBaseComponent {
       let password = this.logForm.get('password').value;
       loginDto = { username, password };
 
-      await lastValueFrom(this.authService.login(loginDto));
+      await lastValueFrom(this.authService.login(loginDto)).catch(err => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: err.error.detail
+        });
+      });
       console.log(`token:${this.tokenService.getToken()}`);
       await this.router.navigateByUrl("/home");
     } else {
@@ -66,5 +72,5 @@ export class LoginComponent extends AppBaseComponent {
 
     //console.log('Errores:', JSON.stringify(this.getFormErrors(this.logForm), null, 2));
   }
-  
+
 }

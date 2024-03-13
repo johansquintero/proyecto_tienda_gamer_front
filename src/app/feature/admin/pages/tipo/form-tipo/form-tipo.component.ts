@@ -52,9 +52,9 @@ export class FormTipoComponent extends AppBaseComponent {
   ngOnInit() {
     this.marcaService.getAll().subscribe(reponse => {
       this.marcas = reponse;
-      this.marcasRigth = reponse;
+      this.marcasLeft = reponse;
       if (this.sharedTipo == null || this.sharedTipo.marcas.length == 0) {
-        this.marcasLeft = []
+        this.marcasRigth = []
       } else {
         this.forUpdate()
       }
@@ -67,28 +67,25 @@ export class FormTipoComponent extends AppBaseComponent {
 
   public async register(): Promise<void> {
     let newTipo: TipoDto = this.formGroup.value;
-    newTipo.marcas = this.marcasLeft;
+    newTipo.marcas = this.marcasRigth;
     if (this.formGroup.valid) {
-      await lastValueFrom(this.tipoService.save(newTipo).pipe(tap({
-        next: response => {
+      await lastValueFrom(this.tipoService.save(newTipo))
+        .then(response => {
+          this.resetSides();
+          this.formGroup.reset();
           Swal.fire({
             icon: 'success',
             title: `Tipo ${response.name} creado`,
             showConfirmButton: false,
             timer: 1500
-          })
-        },
-        error: err => {
+          });
+        }).catch(err => {
           Swal.fire({
             icon: 'error',
             title: 'Error',
             text: err.error.detail
           });
-        }
-      }))
-      ).then(response => {
-        this.resetSides();
-      })
+        })
     } else {
       Swal.fire({
         icon: 'error',
@@ -100,11 +97,10 @@ export class FormTipoComponent extends AppBaseComponent {
 
   public async update(): Promise<void> {
     this.sharedTipo.name = this.formGroup.get('name').value;
-    this.sharedTipo.marcas = this.marcasLeft;
-    console.log(this.sharedTipo);
+    this.sharedTipo.marcas = this.marcasRigth;
     if (this.formGroup.valid) {
-      await lastValueFrom(this.tipoService.update(this.sharedTipo).pipe(tap({
-        next: response => {
+      await lastValueFrom(this.tipoService.update(this.sharedTipo))
+        .then(response => {
           this.tipoService.setSharedTipo(null);
           Swal.fire({
             icon: 'success',
@@ -112,18 +108,14 @@ export class FormTipoComponent extends AppBaseComponent {
             showConfirmButton: false,
             timer: 1500
           })
-        },
-        error: err => {
+          this.router.navigateByUrl('/admin/tipo');
+        }).catch(err => {
           Swal.fire({
             icon: 'error',
             title: 'Error',
             text: err.error.detail
           });
-        }
-      }))
-      ).then(response => {
-        this.router.navigateByUrl('/home/tipo');
-      })
+        });
     } else {
       Swal.fire({
         icon: 'error',
@@ -132,15 +124,16 @@ export class FormTipoComponent extends AppBaseComponent {
       });
     }
   }
+
   /**
    * Para el caso de que sea update se asgignan a la izquieda los elementos del
    * tipo compartido por el servicio
    */
   public forUpdate() {
-    this.sharedTipo.marcas.forEach(m => {
-      this.marcasRigth = this.marcasRigth.filter(marcaRigth => marcaRigth.id != m.id);
+    this.sharedTipo.marcas.forEach(m => {//se recorren las marcars que le corresponden al tipo compartido
+      this.marcasLeft = this.marcasLeft.filter(marcaLeft => marcaLeft.id != m.id);
     });
-    this.marcasLeft = this.sharedTipo.marcas;
+    this.marcasRigth = this.sharedTipo.marcas;
   }
 
   public moveLeft(marca: MarcaDto): void {
@@ -152,7 +145,7 @@ export class FormTipoComponent extends AppBaseComponent {
     this.marcasRigth.push(marca);
   }
   public resetSides(): void {
-    this.marcasLeft = []
-    this.marcasRigth = this.marcas
+    this.marcasRigth = []
+    this.marcasLeft = this.marcas
   }
 }

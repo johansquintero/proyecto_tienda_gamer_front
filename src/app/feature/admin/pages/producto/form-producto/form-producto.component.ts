@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { lastValueFrom, tap } from 'rxjs';
 import { ProductoRequestDto } from 'src/app/core/dto/produto/productoRequestDto';
+import { ProductoResponseDto } from 'src/app/core/dto/produto/productoResponseDto';
 import { TipoDto } from 'src/app/core/dto/tipo/tipoDto';
 import { ProductoService } from 'src/app/core/service/producto.service';
 import { TipoService } from 'src/app/core/service/tipo.service';
@@ -15,32 +17,23 @@ import Swal from 'sweetalert2';
   styleUrls: ['./form-producto.component.css']
 })
 export class FormProductoComponent extends AppBaseComponent {
-  public tipos: TipoDto[];
+  public tipos: TipoDto[];//tipos de la lista 
   public formGroup: FormGroup;
-  public tipoSelected: TipoDto;
+  public tipoSelected: TipoDto;//tipo seleccionado 
+  public sharedProducto: ProductoResponseDto;// productos compartido a editar
 
   constructor(private tipoService: TipoService,
     private fb: FormBuilder,
-    private productoService: ProductoService) {
-    super()
+    private productoService: ProductoService,
+    private router:Router
+    ) {
+    super();
+    this.getTipos();
+    this.sharedProducto = this.productoService.getSharedProducto();
     this.initFields();
   }
 
   ngOnInit() {
-    this.getTipos();
-  }
-
-  public initFields() {
-    this.formGroup = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(5), CustomValidators.LetterValidator]],
-      description: ['', [Validators.required, Validators.minLength(5)]],
-      price: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(10), CustomValidators.NumericValidator]],
-      tipoId: ['', [Validators.required, CustomValidators.NumericValidator]],
-      marcaId: ['', [Validators.required, CustomValidators.NumericValidator]],
-      quantity: ['', [Validators.required, CustomValidators.NumericValidator]],
-      imagePath: ['']
-    });
-
     //si el valor del select de tipo cambio se asigna a la variable tipoSelected el correspondiente tipo
     this.formGroup.get('tipoId').valueChanges.subscribe(x => {
       this.tipos.forEach(tipo => {
@@ -50,35 +43,46 @@ export class FormProductoComponent extends AppBaseComponent {
       });
     });
   }
+
+  public initFields() {
+    //grupo de formulario
+    this.formGroup = this.fb.group({
+      name: [this.sharedProducto == null ? '' : this.sharedProducto.name, [Validators.required, Validators.minLength(5), CustomValidators.LetterValidator]],
+      description: [this.sharedProducto == null ? '' : this.sharedProducto.description, [Validators.required, Validators.minLength(5)]],
+      price: [this.sharedProducto == null ? '' : this.sharedProducto.price, [Validators.required, Validators.minLength(1), Validators.maxLength(10), CustomValidators.NumericValidator]],
+      tipoId: ['', [Validators.required, CustomValidators.NumericValidator]],
+      marcaId: ['', [Validators.required, CustomValidators.NumericValidator]],
+      quantity: [this.sharedProducto == null ? '' : this.sharedProducto.quantity, [Validators.required, CustomValidators.NumericValidator]],
+      imagePath: ['']
+    });
+  }
   public async getTipos(): Promise<void> {
     await lastValueFrom(this.tipoService.getAll()).then(
       response => {
         this.tipos = response;
       }
-    )
+    );
   }
 
   public async registerProducto(): Promise<void> {
     let producto: ProductoRequestDto;
     if (this.formGroup.valid) {
       producto = this.formGroup.value;
-      await lastValueFrom(this.productoService.save(producto).pipe(tap({
-        next: response => {
+      await lastValueFrom(this.productoService.save(producto))
+        .then(response => {
           Swal.fire({
             icon: 'success',
             title: `Producto ${response.name} creado`,
             showConfirmButton: false,
             timer: 1500
           })
-        },
-        error: err => {
+        }).catch(err => {
           Swal.fire({
             icon: 'error',
             title: 'Error',
             text: err.error.detail
           });
-        }
-      })));
+        });
     } else {
       Swal.fire({
         icon: 'error',
@@ -88,7 +92,33 @@ export class FormProductoComponent extends AppBaseComponent {
     }
   }
 
-  public goDetail(id: number): void {
-
+  public async updateProducto(): Promise<void> {
+    let producto: ProductoRequestDto;
+    if (this.formGroup.valid) {
+      producto = this.formGroup.value;
+      producto.id = this.sharedProducto.id;
+      await lastValueFrom(this.productoService.update(producto))
+        .then(response => {
+          Swal.fire({
+            icon: 'success',
+            title: `Producto ${response.name} actualizado`,
+            showConfirmButton: false,
+            timer: 1500
+          });
+          this.router.navigate(['/admin/producto-detail'], { queryParams: { id: response.id } });
+        }).catch(err => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: err.error.detail
+          });
+        });
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Hay errores en el formulario'
+      });
+    }
   }
 }

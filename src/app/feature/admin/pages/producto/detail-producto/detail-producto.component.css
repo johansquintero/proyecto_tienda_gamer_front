@@ -1,0 +1,10 @@
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Dos columnas de igual ancho */
+    grid-gap: 10px; /* Espacio entre elementos */
+  }
+  
+  .grid-item {
+    padding: 10px;
+  }

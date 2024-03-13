@@ -10,7 +10,7 @@ const { apiUrl } = environment
   providedIn: 'root'
 })
 export class MarcaService {
-  public sharedMarca: MarcaDto;
+  private sharedMarca: MarcaDto;
   constructor(private http: HttpClient) { }
 
 

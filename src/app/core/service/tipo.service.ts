@@ -11,7 +11,7 @@ const { apiUrl } = environment
 })
 export class TipoService {
 
-  public sharedTipo: TipoDto;
+  private sharedTipo: TipoDto;
   constructor(private http: HttpClient) { }
 
   public getAll(): Observable<TipoDto[]> {

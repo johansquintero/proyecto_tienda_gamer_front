@@ -1,0 +1,9 @@
+.clickeable {
+    /* Establecer el cursor en forma de mano */
+    cursor: pointer;
+}
+
+.clickeable:hover {
+    /* Cambiar el color de fondo cuando el cursor pasa sobre el elemento */
+    color: #1d88d9;  
+}

@@ -5,25 +5,24 @@ import { ProductoResponseDto } from 'src/app/core/dto/produto/productoResponseDt
 import { ProductoService } from 'src/app/core/service/producto.service';
 
 @Component({
-  selector: 'app-producto',
-  templateUrl: './producto.component.html',
-  styleUrls: ['./producto.component.css']
+  selector: 'app-catalogue',
+  templateUrl: './catalogue.component.html',
+  styleUrls: ['./catalogue.component.css']
 })
-export class ProductoComponent {
-  public productos: ProductoResponseDto[];
-
+export class CatalogueComponent {
+  productos: ProductoResponseDto[];
   constructor(private productoService: ProductoService, private router: Router) { }
 
   ngOnInit() {
     this.getProductos();
   }
-
   public async getProductos(): Promise<void> {
     await lastValueFrom(this.productoService.getProductos()).then(response => {
       this.productos = response;
-    });
+    })
   }
-  public goDetail(id: number): void {
-    this.router.navigate(['/admin/producto-detail'], { queryParams: { id: id } });
+
+  public goBuy(name: string) {
+    this.router.navigate(['/home/comprar'], { queryParams: { producto_name: name } })
   }
 }

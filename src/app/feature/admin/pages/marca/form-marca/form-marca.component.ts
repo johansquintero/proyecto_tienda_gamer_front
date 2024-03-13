@@ -33,8 +33,8 @@ export class FormMarcaComponent extends AppBaseComponent {
     let marca: MarcaRequestDto;
     if (this.formGroup.valid) {
       marca = this.formGroup.value;
-      await lastValueFrom(this.marcaService.register(marca).pipe(tap({
-        next: value => {
+      await lastValueFrom(this.marcaService.register(marca))
+        .then(value => {
           if (value.id) {
             Swal.fire({
               icon: 'success',
@@ -42,15 +42,16 @@ export class FormMarcaComponent extends AppBaseComponent {
               showConfirmButton: false,
               timer: 1500
             })
+            this.formGroup.reset();
           }
-        }, error: err => {
+        })
+        .catch(err => {
           Swal.fire({
             icon: 'error',
             title: 'Error',
             text: err.error.detail
           });
-        }
-      })));
+        });
     } else {
       Swal.fire({
         icon: 'error',
@@ -65,8 +66,8 @@ export class FormMarcaComponent extends AppBaseComponent {
     if (this.formGroup.valid) {
       marca = this.sharedMarca;
       marca.name = this.formGroup.get('name').value;
-      await lastValueFrom(this.marcaService.update(marca).pipe(tap({
-        next: value => {
+      await lastValueFrom(this.marcaService.update(marca))
+        .then(value => {
           if (value.id) {
             this.marcaService.setSharedMarca(null);
             Swal.fire({
@@ -74,17 +75,17 @@ export class FormMarcaComponent extends AppBaseComponent {
               title: `Marca ${value.name} actualizada correctamente`,
               showConfirmButton: false,
               timer: 1500
-            })
+            });
+            this.router.navigateByUrl('/home/marca')
           }
-        }, error: err => {
+        })
+        .catch(err => {
           Swal.fire({
             icon: 'error',
             title: 'Error',
             text: err.error.detail
           });
-        }
-      })));
-      this.router.navigateByUrl('/home/marca')
+        });
     } else {
       Swal.fire({
         icon: 'error',

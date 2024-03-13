@@ -5,14 +5,20 @@ import { HomeRoutingModule } from './home-routing.module';
 import { HeaderNavComponent } from './components/header-nav/header-nav.component';
 import { HomeComponent } from './home.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { LeftNavbarComponent } from './components/left-navbar/left-navbar.component';
+import { BuyWindowComponent } from './pages/buy-window/buy-window.component';
+import { CatalogueComponent } from './pages/catalogue/catalogue.component';
+import { CompraClienteComponent } from './pages/compra-cliente/compra-cliente.component';
+import { VerCompraComponent } from './pages/ver-compra/ver-compra.component';
 
 
 @NgModule({
   declarations: [
     HeaderNavComponent,
     HomeComponent,
-    LeftNavbarComponent,
+    BuyWindowComponent,
+    CatalogueComponent,
+    CompraClienteComponent,
+    VerCompraComponent,
   ],
   imports: [
     CommonModule,

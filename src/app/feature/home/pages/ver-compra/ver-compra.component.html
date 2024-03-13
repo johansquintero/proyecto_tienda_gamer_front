@@ -1,0 +1,59 @@
+<div class="container">
+    <div class="row mt-4">
+        <div class="col-6">
+            <h1>Factura</h1>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-6">
+            <h4>Información del Cliente</h4>
+            <address>
+                <strong>Nombre del Cliente: {{cliente.username}}</strong><br>
+                Dirección del Cliente: {{cliente.address}}<br>
+                Teléfono: {{cliente.telephone}}<br>
+                Correo Electrónico: {{cliente.email}}
+            </address>
+        </div>
+        <div class="col-6">
+            <h4>Información de la Factura</h4>
+            <address>
+                <strong>Número de Factura:</strong> {{compra.id}}<br>
+                <strong>Fecha de Emisión:</strong> {{compra.date}}<br>
+            </address>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Descripción</th>
+                        <th>Cantidad</th>
+                        <th>Precio Unitario</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let product of compra.compraProductos">
+                        <td>{{product.productName}}</td>
+                        <td>{{product.quantity}}</td>
+                        <td>{{(product.quantity>0?product.total/product.quantity:product.total) |currency : "USD" : "symbol" : "1.2-2"}}</td>
+                        <td>{{product.total|currency : "USD" : "symbol" : "1.2-2"}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-6">
+            <h4>Detalles del Pago</h4>
+            <p><strong>Subtotal:</strong>{{compra.total|currency : "USD" : "symbol" : "1.2-2"}}</p>
+            <p><strong>Impuestos:</strong> $0</p>
+            <p><strong>Total:</strong> {{compra.total|currency : "USD" : "symbol" : "1.2-2"}}</p>
+        </div>
+    </div>
+    <button (click)="volverPaginaAnterior()" class="btn btn-danger">Volver</button>
+</div>
