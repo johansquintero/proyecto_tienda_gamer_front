@@ -1,34 +1,36 @@
-
-<div *ngIf="productos?.length==0" class="text-center">
+<div class="container">
+  <div *ngIf="productos?.length==0" class="text-center">
     <span class="alert alert-danger fs-2">No hay elementos registrados</span>
+  </div>
+  <ul *ngFor="let producto of productos" class="list-group">
+    <li class="list-group-item m-1">
+      <div class="row">
+        <div class="col-12">
+          <span (click)="goBuy(producto.name)" class="fs-4 text-center fw-bolder clickeable">{{ producto.name |
+            uppercase
+            }}</span>
+        </div>
+        <div class="col-6">
+          <img class="img-fluid clickeable fixed-size-image " (click)="goBuy(producto.name)" *ngIf="producto?.imagePath"
+            src="http://localhost:8080/api/productos/uploads/img/{{producto.imagePath}}" alt="">
+          <img class="img-fluid clickeable fixed-size-image " (click)="goBuy(producto.name)"
+            *ngIf="!producto?.imagePath" src="http://localhost:8080/api/productos/uploads/img/no_product" alt="">
+        </div>
+        <div class="col-6">
+          <p class="fs-7">
+            <strong>Precio:</strong>{{ producto.price | currency : "USD" : "symbol" : "1.2-2" }}
+          </p>
+          <p class="fs-7"><strong>Tipo de producto:</strong> {{ producto.tipo }}</p>
+          <p class="fs-7"><strong>Marca:</strong> {{ producto.marca }}</p>
+          <p class="fs-7"><strong>Unidades disponible:</strong> {{ producto.quantity }}</p>
+        </div>
+      </div>
+    </li>
+  </ul>
 </div>
-<ul *ngFor="let producto of productos" class="list-group">
-  <li class="list-group-item m-1">
-    <div class="row">
-      <div class="col-9">
-        <span
-          (click)="goBuy(producto.name)"
-          class="fs-2 text-center fw-bolder clickeable"
-          >{{ producto.name | uppercase }}</span
-        >
-      </div>
-      <div class="col-4">
-        <img
-          class="img-fluid clickeable"
-          (click)="goBuy(producto.name)"
-          src="https://d34vmoxq6ylzee.cloudfront.net/magefan_blog/Guia_de_compra_para_GPU_Como_escoger_la_tarjeta_grafica_indicada_1.jpg"
-          alt=""
-        />
-      </div>
-      <div class="col-8">
-        <p class="fs-5">{{ producto.description }}</p>
-        <p class="fs-5">
-          Precio:{{ producto.price | currency : "USD" : "symbol" : "1.2-2" }}
-        </p>
-        <p class="fs-5">Tipo de producto:{{ producto.tipo }}</p>
-        <p class="fs-5">Marca:{{ producto.marca }}</p>
-        <p class="fs-5">Cantidad disponible:{{ producto.quantity }}</p>
-      </div>
-    </div>
-  </li>
-</ul>
+
+<div class="row justify-content-center mt-4 position-static"> <!-- Agrega márgenes arriba para separarlo visualmente -->
+  <div class="col-9">
+    <catalogue-paginator [paginator]="paginator" *ngIf="paginator"></catalogue-paginator>
+  </div>
+</div>

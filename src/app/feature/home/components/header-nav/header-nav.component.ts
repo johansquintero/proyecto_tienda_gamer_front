@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 import { AuthClientetDto } from 'src/app/core/dto/cliente/authClienteDto';
 import { AuthService } from 'src/app/core/service/auth.service';
@@ -12,7 +11,7 @@ import { TokenService } from 'src/app/core/service/token.service';
 })
 export class HeaderNavComponent {
   public cliente: AuthClientetDto;
-  constructor(private tokenService: TokenService, private authService: AuthService, private router: Router) {
+  constructor(private tokenService: TokenService, private authService: AuthService) {
     this.cliente = this.tokenService.getInfoToken();
   }
 

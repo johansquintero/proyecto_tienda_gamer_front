@@ -40,6 +40,9 @@ export class AppBaseComponent {
         case (formGroup.hasError("mismatch")):
           message = ErrorForm.MISMATCH_FIELDS;
           break;
+        case (formGroup.hasError("invalidImage")):
+          message = ErrorForm.INVALID_IMAGE;
+          break;
       }
     }
     return message;

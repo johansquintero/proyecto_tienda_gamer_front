@@ -7,8 +7,12 @@
             <div class="row">
                 <div class="col-lg-5 col-md-5 col-sm-6">
                     <div class="white-box text-center">
-                        <img src="https://d34vmoxq6ylzee.cloudfront.net/magefan_blog/Guia_de_compra_para_GPU_Como_escoger_la_tarjeta_grafica_indicada_1.jpg"
-                            class="img-fluid">
+                        <img class="img-fluid" *ngIf="producto?.imagePath"
+                            src="http://localhost:8080/api/productos/uploads/img/{{producto.imagePath}}"
+                            alt="{{producto.imagePath}}" style="height: 70%; width: 80%;">
+                        <img class="img-fluid" *ngIf="!producto?.imagePath"
+                            src="http://localhost:8080/api/productos/uploads/img/no_product.png"
+                            alt="{{producto.imagePath}}" style="height: 70%; width: 80%;">
                     </div>
                 </div>
                 <div class="col-lg-7 col-md-7 col-sm-6">
@@ -16,8 +20,9 @@
                     <p>{{producto.description}}</p>
 
                     <label for="quantity" class="form-label">Cantidad disponible {{producto.quantity}}</label>
-                    <select [formControl]="quantity" id="quantity" class="form-select form-select-sm select" name="" id="">
-                        <option *ngFor="let i of generateQuantities()" value="{{i}}" #quantity > {{i}}</option>
+                    <select [formControl]="quantity" id="quantity" class="form-select form-select-sm select" name=""
+                        id="">
+                        <option *ngFor="let i of generateQuantities()" value="{{i}}" #quantity> {{i}}</option>
                     </select>
 
                     <h2 class="mt-5">

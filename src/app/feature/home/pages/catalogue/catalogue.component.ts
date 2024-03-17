@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router, Params } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 import { ProductoResponseDto } from 'src/app/core/dto/produto/productoResponseDto';
 import { ProductoService } from 'src/app/core/service/producto.service';
@@ -11,15 +11,29 @@ import { ProductoService } from 'src/app/core/service/producto.service';
 })
 export class CatalogueComponent {
   productos: ProductoResponseDto[];
-  constructor(private productoService: ProductoService, private router: Router) { }
+  paginator: any;
+  constructor(private productoService: ProductoService, private router: Router, private activatedRoute:ActivatedRoute) { }
 
   ngOnInit() {
-    this.getProductos();
+    this.activatedRoute.queryParams.subscribe((params:Params)=>{
+      let page = params['page']
+      if (page && !isNaN(page)) {
+        this.getProductosByPage(page)
+      }else{
+        this.getProductosByPage(0)
+      }
+    })
   }
   public async getProductos(): Promise<void> {
     await lastValueFrom(this.productoService.getProductos()).then(response => {
       this.productos = response;
     })
+  }
+  public async getProductosByPage(page:number):Promise<void>{
+    await lastValueFrom(this.productoService.getProductosByPage(page)).then(response=>{
+      this.paginator = response
+      this.productos = response.content as ProductoResponseDto[]
+    });
   }
 
   public goBuy(name: string) {

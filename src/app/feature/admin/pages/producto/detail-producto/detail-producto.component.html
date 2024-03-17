@@ -1,11 +1,11 @@
-<div class="container container-fluid" *ngIf="producto">
+<div class="container container-fluid mb-3" *ngIf="producto">
     <div class="raw">
         <div class="col-md-10">
             <div class="card">
                 <div class="card-header">
                     <h1 class="text-center">DETALLE {{producto.name|uppercase}}</h1>
                 </div>
-                <div class="card-body">
+                <div class="card-body" *ngIf="producto">
                     <div class="grid-container ">
                         <div class="grid-item">
                             <ul class="list-group" *ngFor="let item of producto|keyvalue">
@@ -16,19 +16,33 @@
                             </ul>
                         </div>
                         <div class="grid-item ">
-                            <img class="img-fluid"
-                                src="https://hiraoka.com.pe/media/mageplaza/blog/post/c/o/como_saber_que_tarjeta_grafica_tengo_en_mi_laptop_o_pc.jpg"
-                                alt="">
-
-                            <div class="input-group mb-3 mt-3">                                
-                                <input type="file" class="form-control" id="file">
-                            </div>
+                            <img class="img-fluid" *ngIf="producto?.imagePath" 
+                                src="http://localhost:8080/api/productos/uploads/img/{{producto.imagePath}}"
+                                alt="{{producto.imagePath}}" style="height: 60%; width: 90%;">
+                            <img class="img-fluid" *ngIf="!producto?.imagePath"
+                                src="http://localhost:8080/api/productos/uploads/img/no_product.png"
+                                alt="{{producto.imagePath}}" style="height: 60%; width: 90%;">
+                            <form [formGroup]="formGroup">
+                                <div class="input-group mb-3 mt-3">
+                                    <input (change)="selectFile($event)" type="file" class="form-control" id="file"
+                                        formControlName="imagePath">
+                                    <button [disabled]="formGroup.invalid" (click)="upload()"
+                                        class="btn btn-primary">Subir</button>
+                                </div>
+                                <div *ngIf="uploadProgress > 0" class="progress" style="height:40px">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated"
+                                        role="progressbar" attr.aria-valuenow="{{uploadProgress}}" aria-valuemin="0"
+                                        aria-valuemax="100" [ngStyle]="{width:uploadProgress+'%'}">
+                                        {{uploadProgress}}%
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="d-grid gap-2">
-                <button class="btn btn-primary" role="button" (click)="goUpdate()" >Editar producto</button>
+                <button class="btn btn-primary mt-2" role="button" (click)="goUpdate()">Editar producto</button>
                 <a routerLink="/admin" class="btn btn-danger" type="button">Volver a lista de productos</a>
             </div>
         </div>

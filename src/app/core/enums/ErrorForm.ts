@@ -6,5 +6,6 @@ export enum ErrorForm {
     NUMBER_FIELD = 'El campo debe ser de formato numerico',
     LETTER_AND_NUMERIC_FIELD = 'El campo debe estar compuesto solo por letras y numeros',
     LETTER_FIELD = 'El campo debe ser de formato de letras',
-    MISMATCH_FIELDS = 'Las contraseñas no coinciden'
+    MISMATCH_FIELDS = 'Las contraseñas no coinciden',
+    INVALID_IMAGE = 'El archivo seleccionado no es de formato de imagen'
 }

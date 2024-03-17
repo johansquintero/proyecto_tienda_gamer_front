@@ -15,6 +15,7 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private tokenService: TokenService) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+
     let headers;
 
     let token = this.tokenService.getToken();
@@ -32,6 +33,7 @@ export class AuthInterceptor implements HttpInterceptor {
         ...headers//concatena los atributos headers con authRequest
       }
     });
+    //console.log("TokenInterceptor => " + 'Bearer ' + token)
     return next.handle(authRequest).pipe(
       catchError((err:HttpErrorResponse)=>{
         if (err.status==403) {

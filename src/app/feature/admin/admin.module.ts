@@ -12,6 +12,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ProductoComponent } from './pages/producto/producto.component';
 import { DetailProductoComponent } from './pages/producto/detail-producto/detail-producto.component';
 import { FormProductoComponent } from './pages/producto/form-producto/form-producto.component';
+import { ProductPaginatorComponent } from './pages/producto/product-paginator/product-paginator.component';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { FormProductoComponent } from './pages/producto/form-producto/form-produ
     MarcaComponent,
     ProductoComponent,
     DetailProductoComponent,
-    FormProductoComponent
+    FormProductoComponent,
+    ProductPaginatorComponent
   ],
   imports: [
     CommonModule,

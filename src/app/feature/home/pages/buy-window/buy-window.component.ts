@@ -72,7 +72,7 @@ export class BuyWindowComponent {
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: err.error.detail
+        text: "err.error.detail"
       });
     })
   }

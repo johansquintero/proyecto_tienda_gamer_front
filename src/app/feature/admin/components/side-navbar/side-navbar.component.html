@@ -50,4 +50,18 @@
             </div>
         </li>
     </ul>
+    <ul class="list-unstyled ps-0">
+        <li class="mb-1">
+            <button class="btn btn-toggle align-items-center rounded" data-bs-toggle="collapse"
+                data-bs-target="#user" aria-expanded="false">
+                <span class="fs-5 fw-semibold">Usuario</span>
+            </button>
+            <div class="collapse" id="user">
+                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                    <li><a routerLink="/home" class="link-dark rounded">Ir a home</a></li>
+                    <li><a class="link-dark rounded" (click)="signOut()" >Cerrar sesion</a></li>
+                </ul>
+            </div>
+        </li>
+    </ul>
 </div>

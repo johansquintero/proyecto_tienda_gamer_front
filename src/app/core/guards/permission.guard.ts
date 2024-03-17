@@ -1,7 +1,6 @@
-import { Inject, inject } from '@angular/core';
-import { CanActivateFn, Router } from '@angular/router';
+import { inject } from '@angular/core';
+import { CanActivateFn } from '@angular/router';
 import { TokenService } from '../service/token.service';
-import { AuthClientetDto } from '../dto/cliente/authClienteDto';
 import Swal from 'sweetalert2';
 
 export const permissionGuard: CanActivateFn = (route, state) => {
@@ -12,9 +11,9 @@ export const permissionGuard: CanActivateFn = (route, state) => {
       icon: 'error',
       title: 'Error',
       text: 'No tiene los privilegios necesarios para ingresar a este sitio.'
-    }).then((result)=>{
+    }).then((result) => {
       window.history.back();
-    });    
+    });
     return false;
   }
   return true;

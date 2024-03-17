@@ -7,7 +7,7 @@
                     src="https://www.accesoriosparacomputadores.co/blog/wp-content/uploads/2020/02/armar-un-pc-para-gamer.jpg"
                     alt="">
             </div>
-            <form [formGroup]="formGroup">
+            <form [formGroup]="formGroup"> 
                 <div class="mb-3">
                     <label for="nombre" class="form-label">Nombre del producto:</label>
                     <input [ngClass]="{'border border-danger':isDirtyField(formGroup,'name')}" formControlName="name"

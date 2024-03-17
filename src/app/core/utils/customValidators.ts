@@ -43,6 +43,23 @@ export class CustomValidators extends Validators {
             return { invalidLetterAndNumeric: true }; // Inválido(codigo para llamar en el hasError)
         }
     }
+    static validateImage(control: AbstractControl): ValidationErrors | null {
+        const file = control.value
+        if (file) {
+            const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+            const extension = file.split('.').pop()?.toLowerCase();
+            if (extension && allowedExtensions.includes(extension)) {
+                // Si la extensión del archivo está dentro de las extensiones permitidas, se considera válido
+                return null;
+            } else {
+                // Si la extensión del archivo no está permitida, se devuelve un error de validación
+                return { invalidImage: true };
+            }
+        } else {
+            return { invalidImage: true };
+        }
+
+    }
 
     static MatchValidator(source: string, target: string): ValidatorFn {
         return (control: AbstractControl): ValidationErrors | null => {
