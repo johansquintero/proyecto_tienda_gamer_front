@@ -19,6 +19,10 @@ export class MarcaService {
     return this.http.get<MarcaDto[]>(`${apiUrl}marcas`);
   }
 
+  public getAllByPage(page:number):Observable<any>{
+    return this.http.get(`${apiUrl}marcas/page/${page}`);
+  }
+
   public register(marcaRequestDto: MarcaRequestDto): Observable<MarcaResponseDto> {
     return this.http.post<MarcaResponseDto>(`${apiUrl}marcas`, marcaRequestDto);
   }

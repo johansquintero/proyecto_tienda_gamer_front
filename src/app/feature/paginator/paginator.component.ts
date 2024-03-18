@@ -1,18 +1,22 @@
-import { Router } from '@angular/router';
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { Component, SimpleChanges, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
-  selector: 'product-paginator',
-  templateUrl: './product-paginator.component.html',
-  styleUrls: ['./product-paginator.component.css']
+  selector: 'paginator',
+  templateUrl: './paginator.component.html',
+  styleUrls: ['./paginator.component.css'],
+  standalone: true,
+  imports: [CommonModule]
 })
-export class ProductPaginatorComponent {
+export class PaginatorComponent {
   @Input() paginator: any;
   paginas!: number[];
   desde!: number;
   hasta!: number;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.initPaginator();
@@ -33,9 +37,7 @@ export class ProductPaginatorComponent {
     }
   }
   public goPage(page: number): void {
-    if (isNaN(page)) {
-      page = 0
-    }
-    this.router.navigate(['admin'], { queryParams: { page: page } });
+    let actualPath = this.router.routerState.snapshot.url.split('?')[0];
+    this.router.navigate([actualPath], { queryParams: { page: page } });
   }
 }

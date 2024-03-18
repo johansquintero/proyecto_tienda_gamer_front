@@ -12,7 +12,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ProductoComponent } from './pages/producto/producto.component';
 import { DetailProductoComponent } from './pages/producto/detail-producto/detail-producto.component';
 import { FormProductoComponent } from './pages/producto/form-producto/form-producto.component';
-import { ProductPaginatorComponent } from './pages/producto/product-paginator/product-paginator.component';
+import { PaginatorComponent } from '../paginator/paginator.component';
 
 
 @NgModule({
@@ -25,13 +25,13 @@ import { ProductPaginatorComponent } from './pages/producto/product-paginator/pr
     MarcaComponent,
     ProductoComponent,
     DetailProductoComponent,
-    FormProductoComponent,
-    ProductPaginatorComponent
+    FormProductoComponent
   ],
   imports: [
     CommonModule,
     AdminRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    PaginatorComponent
   ]
 })
 export class AdminModule { }

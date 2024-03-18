@@ -12,6 +12,8 @@ import { FeatureComponent } from './feature.component';
   imports: [
     CommonModule,
     FeatureRoutingModule
+  ],
+  exports:[
   ]
 })
 export class FeatureModule { }

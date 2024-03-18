@@ -10,6 +10,7 @@ import { CatalogueComponent } from './pages/catalogue/catalogue.component';
 import { CompraClienteComponent } from './pages/compra-cliente/compra-cliente.component';
 import { VerCompraComponent } from './pages/ver-compra/ver-compra.component';
 import { CataloguePaginatorComponent } from './pages/catalogue/catalogue-paginator/catalogue-paginator.component';
+import { PaginatorComponent } from '../paginator/paginator.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { CataloguePaginatorComponent } from './pages/catalogue/catalogue-paginat
   imports: [
     CommonModule,
     HomeRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    PaginatorComponent
   ]
 })
 export class HomeModule { }
