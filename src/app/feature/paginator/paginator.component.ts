@@ -15,7 +15,7 @@ export class PaginatorComponent {
   paginas!: number[];
   desde!: number;
   hasta!: number;
-
+  actualPath:string;
   constructor(private router: Router, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -23,6 +23,7 @@ export class PaginatorComponent {
   }
   ngOnChanges(changes: SimpleChanges): void {
     let paginadorActualizado = changes['paginator'];
+    this.actualPath = this.router.routerState.snapshot.url.split('?')[0];
     if (paginadorActualizado.previousValue) {
       this.initPaginator();
     }
@@ -37,7 +38,7 @@ export class PaginatorComponent {
     }
   }
   public goPage(page: number): void {
-    let actualPath = this.router.routerState.snapshot.url.split('?')[0];
-    this.router.navigate([actualPath], { queryParams: { page: page } });
+    //console.log(this.actualPath);
+    this.router.navigate([this.actualPath], { queryParams: { page: page } });
   }
 }

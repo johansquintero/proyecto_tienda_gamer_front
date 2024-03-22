@@ -9,8 +9,8 @@ import { BuyWindowComponent } from './pages/buy-window/buy-window.component';
 import { CatalogueComponent } from './pages/catalogue/catalogue.component';
 import { CompraClienteComponent } from './pages/compra-cliente/compra-cliente.component';
 import { VerCompraComponent } from './pages/ver-compra/ver-compra.component';
-import { CataloguePaginatorComponent } from './pages/catalogue/catalogue-paginator/catalogue-paginator.component';
 import { PaginatorComponent } from '../paginator/paginator.component';
+import { SearchComponent } from '../search/search.component';
 
 
 @NgModule({
@@ -20,14 +20,14 @@ import { PaginatorComponent } from '../paginator/paginator.component';
     BuyWindowComponent,
     CatalogueComponent,
     CompraClienteComponent,
-    VerCompraComponent,
-    CataloguePaginatorComponent,
+    VerCompraComponent
   ],
   imports: [
     CommonModule,
     HomeRoutingModule,
     ReactiveFormsModule,
-    PaginatorComponent
+    PaginatorComponent,
+    SearchComponent
   ]
 })
 export class HomeModule { }

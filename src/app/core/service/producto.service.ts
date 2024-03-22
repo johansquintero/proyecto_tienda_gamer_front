@@ -34,9 +34,17 @@ export class ProductoService {
   public getProducto(id: Number): Observable<ProductoResponseDto> {
     return this.http.get<ProductoResponseDto>(`${apiUrl}productos/${id}`);
   }
-  public getProductoByName(name:string): Observable<ProductoResponseDto> {
+  public getProductoByName(name:String): Observable<ProductoResponseDto> {
     return this.http.get<ProductoResponseDto>(`${apiUrl}productos/name/${name}`);
   }
+
+  public getAllProductosByName(name:String): Observable<ProductoResponseDto[]> {
+    return this.http.get<ProductoResponseDto[]>(`${apiUrl}productos/all/name/${name}`);
+  }
+  public getAllProductosByNamePage(page:Number, name:String): Observable<any> {
+    return this.http.get(`${apiUrl}productos/page=${page}/name=${name}`);
+  }
+
   public uploadImage(image:File,productoId:any):Observable<any>{
     let formData = new FormData()
     formData.append("file", image);

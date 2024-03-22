@@ -18,6 +18,10 @@ export class TipoService {
     return this.http.get<TipoDto[]>(`${apiUrl}tipos`);
   }
 
+  public getAllByPage(page: Number): Observable<any> {
+    return this.http.get(`${apiUrl}tipos/page/${page}`);
+  }
+
   public save(tipoDto: TipoDto): Observable<TipoDto> {
     return this.http.post<TipoDto>(`${apiUrl}tipos`, tipoDto);
   }

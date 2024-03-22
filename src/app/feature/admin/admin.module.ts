@@ -13,6 +13,7 @@ import { ProductoComponent } from './pages/producto/producto.component';
 import { DetailProductoComponent } from './pages/producto/detail-producto/detail-producto.component';
 import { FormProductoComponent } from './pages/producto/form-producto/form-producto.component';
 import { PaginatorComponent } from '../paginator/paginator.component';
+import { SearchComponent } from '../search/search.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { PaginatorComponent } from '../paginator/paginator.component';
     CommonModule,
     AdminRoutingModule,
     ReactiveFormsModule,
-    PaginatorComponent
+    PaginatorComponent,
+    SearchComponent
   ]
 })
 export class AdminModule { }

@@ -33,6 +33,9 @@
                     </tr>
                 </tbody>
             </table>
+            @if (paginator) {
+                <paginator [paginator]="paginator"></paginator>
+            }
         </div>        
     </div>    
 </div>

@@ -1,7 +1,7 @@
 import { CompraRequestDto } from './../../../../core/dto/compra/compraRequestDto';
 import { Component } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 import { AuthClientetDto } from 'src/app/core/dto/cliente/authClienteDto';
 import { CompraProductoRequestDto } from 'src/app/core/dto/compraproducto/compraProductoRequestDto';
@@ -23,6 +23,7 @@ export class BuyWindowComponent {
   cliente: AuthClientetDto;
   constructor(private productoService: ProductoService,
     private activatedRoute: ActivatedRoute,
+    private router: Router,
     private tokenService: TokenService,
     private compraService: CompraService) {
     this.quantity = new FormControl(1, [CustomValidators.NumericValidator]);
@@ -40,6 +41,14 @@ export class BuyWindowComponent {
     });
     await lastValueFrom(this.productoService.getProductoByName(name)).then(response => {
       this.producto = response;
+    }).catch(err => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: err.error.detail
+      }).then(value => {
+        this.router.navigate(['home']);
+      });;
     });
   }
 
@@ -58,7 +67,7 @@ export class BuyWindowComponent {
       compraRequestDto.total += compraProductoRequestDto.total
     });
     console.log(compraRequestDto);
-    
+
     await lastValueFrom(this.compraService.save(compraRequestDto)).then(response => {
       if (response.id) {
         Swal.fire({
@@ -72,8 +81,8 @@ export class BuyWindowComponent {
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: "err.error.detail"
-      });
+        text: err.error.detail
+      })
     })
   }
 

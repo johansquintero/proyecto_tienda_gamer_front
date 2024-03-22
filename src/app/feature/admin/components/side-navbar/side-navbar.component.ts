@@ -18,5 +18,5 @@ export class SideNavbarComponent {
   public async signOut(): Promise<void> {
     await lastValueFrom(this.authService.signOut())
   }
-  
+
 }

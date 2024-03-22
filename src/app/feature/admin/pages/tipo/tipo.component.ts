@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { lastValueFrom, tap } from 'rxjs';
 import { TipoDto } from 'src/app/core/dto/tipo/tipoDto';
 import { TipoService } from 'src/app/core/service/tipo.service';
@@ -13,17 +13,31 @@ import Swal from 'sweetalert2';
 export class TipoComponent {
 
   public tipos: TipoDto[];
+  public paginator: any;
 
-  constructor(private tipoService: TipoService, private router: Router) { }
+  constructor(private tipoService: TipoService, private router: Router, private activatedRouter: ActivatedRoute) { }
 
   ngOnInit() {
-    this.getTipos();
+    this.activatedRouter.queryParams.subscribe((params:Params)=>{
+      let page = params['page'];
+      if (page||!isNaN(page)) {
+        this.getTiposByPage(page)
+      }else {
+        this.getTiposByPage(0)
+      }
+    });
   }
 
   public async getTipos(): Promise<void> {
     await lastValueFrom(this.tipoService.getAll()).then(response => {
       this.tipos = response;
     })
+  }
+  public async getTiposByPage(page:Number):Promise<void> {
+    await lastValueFrom(this.tipoService.getAllByPage(page)).then(response=>{
+      this.paginator = response;
+      this.tipos = response.content as TipoDto[];
+    });
   }
 
   public async deleteTipo(tipoDto: TipoDto): Promise<void> {
