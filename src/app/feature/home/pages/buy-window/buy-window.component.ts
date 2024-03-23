@@ -18,9 +18,12 @@ import Swal from 'sweetalert2';
   styleUrls: ['./buy-window.component.css']
 })
 export class BuyWindowComponent {
+
   producto: ProductoResponseDto;
   quantity: FormControl;
   cliente: AuthClientetDto;
+  listaCarrito: ProductoResponseDto[];
+
   constructor(private productoService: ProductoService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -32,6 +35,13 @@ export class BuyWindowComponent {
 
   ngOnInit() {
     this.getProducto();
+
+    if (localStorage.getItem('carrito')) {
+      this.listaCarrito = JSON.parse(localStorage.getItem('carrito')) as ProductoResponseDto[]
+    } else {
+      this.listaCarrito = []
+      localStorage.setItem('carrito', JSON.stringify(this.listaCarrito));
+    }
   }
 
   public async getProducto() {
@@ -86,6 +96,27 @@ export class BuyWindowComponent {
     })
   }
 
+  public addToCart() {
+    let p: ProductoResponseDto = this.isInCart();
+    if (!p) {
+      Swal.fire({
+        icon: 'success',
+        title: `Producto agregado al carrito`,
+        showConfirmButton: true
+      });
+      this.listaCarrito.push(this.producto);
+      localStorage.setItem('carrito', JSON.stringify(this.listaCarrito));
+    }
+  }
+  public deleteFromCart() {
+    this.listaCarrito = this.listaCarrito.filter((p: ProductoResponseDto) => p.id != this.producto.id);
+    localStorage.setItem('carrito', JSON.stringify(this.listaCarrito));    
+  }
+  public isInCart(){
+    return  this.listaCarrito.find((p: ProductoResponseDto) => p.id == this.producto.id);
+  }
+
+
   /**
    * Genera el el numero total de cantidades del producto para el select
    * @returns 
@@ -118,6 +149,8 @@ export class BuyWindowComponent {
     let fechaHoraFormateada = `${año}-${mes}-${dia}T${hora}:${minutos}:${segundos}.${milisegundos}`;
     return fechaHoraFormateada;
   }
+
+
 
   public volverPaginaAnterior() {
     window.history.back();

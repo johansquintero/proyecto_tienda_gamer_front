@@ -11,6 +11,7 @@ import { CompraClienteComponent } from './pages/compra-cliente/compra-cliente.co
 import { VerCompraComponent } from './pages/ver-compra/ver-compra.component';
 import { PaginatorComponent } from '../paginator/paginator.component';
 import { SearchComponent } from '../search/search.component';
+import { ShopingCartComponent } from './pages/shoping-cart/shoping-cart.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { SearchComponent } from '../search/search.component';
     HomeRoutingModule,
     ReactiveFormsModule,
     PaginatorComponent,
-    SearchComponent
+    SearchComponent,
+    ShopingCartComponent
   ]
 })
 export class HomeModule { }

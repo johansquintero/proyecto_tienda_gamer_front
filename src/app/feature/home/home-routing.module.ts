@@ -5,6 +5,7 @@ import { CatalogueComponent } from './pages/catalogue/catalogue.component';
 import { BuyWindowComponent } from './pages/buy-window/buy-window.component';
 import { CompraClienteComponent } from './pages/compra-cliente/compra-cliente.component';
 import { VerCompraComponent } from './pages/ver-compra/ver-compra.component';
+import { ShopingCartComponent } from './pages/shoping-cart/shoping-cart.component';
 
 const routes: Routes = [
   //componente home y sus hijos
@@ -21,6 +22,10 @@ const routes: Routes = [
       },
       {
         path:"ver-compra",component:VerCompraComponent
+      }
+      ,
+      {
+        path:"ver-carrito",component:ShopingCartComponent
       }
     ]
   },
