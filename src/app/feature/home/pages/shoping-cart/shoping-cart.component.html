@@ -2,21 +2,21 @@
     <p class="fs-1 text-center fw-bold">MI CARRITO</p>
     @if (listaCarrito?.length==0) {
     <div class="text-center">
-        <span class="alert alert-danger fs-2">No hay elementos registrados</span>
+        <span class="alert alert-danger fs-2">No hay elementos registrados en el carrito</span>
     </div>
     }@else{
     <ul *ngFor="let producto of listaCarrito" class="list-group">
         <li class="list-group-item m-1">
             <div class="row">
                 <div class="col-12">
-                    <span (click)="goBuy(producto.name)" class="fs-4 text-center fw-bolder clickeable">{{ producto.name|
+                    <span (click)="goBuy(producto.id)" class="fs-4 text-center fw-bolder clickeable">{{ producto.name|
                         uppercase}}</span>
                 </div>
                 <div class="col-6">
-                    <img class="img-fluid clickeable fixed-size-image " (click)="goBuy(producto.name)"
+                    <img class="img-fluid clickeable fixed-size-image " (click)="goBuy(producto.id)"
                         *ngIf="producto?.imagePath"
                         src="http://localhost:8080/api/productos/uploads/img/{{producto.imagePath}}" alt="">
-                    <img class="img-fluid clickeable fixed-size-image " (click)="goBuy(producto.name)"
+                    <img class="img-fluid clickeable fixed-size-image " (click)="goBuy(producto.id)"
                         *ngIf="!producto?.imagePath" src="http://localhost:8080/api/productos/uploads/img/no_product"
                         alt="">
                 </div>
@@ -31,7 +31,8 @@
                 <div class="col-3 col">
                     <label for="quantity" class="form-label"><strong>Seleccionar cantidad</strong></label>
                     <label for="quantity" class="form-label">Cantidad disponible {{producto.quantity}}</label>
-                    <select #quantity (change)="updateQuantity(quantity.value, producto.id)" id="quantity" class="form-select form-select-sm select" name="" id="">
+                    <select #quantity (change)="updateQuantity(quantity.value, producto.id)" id="quantity"
+                        class="form-select form-select-sm select" name="" id="">
                         <option *ngFor="let i of generateQuantities(producto.quantity)" value="{{i}}" #quantity> {{i}}
                         </option>
                     </select>
@@ -43,5 +44,13 @@
         </li>
     </ul>
     }
-    <button (click)="buyAll()">comprar todo</button>
+    <div class="row">
+        <div class="col-6 btn-group">
+            @if (this.listaCarrito?.length>0) {
+            <button class="btn btn-secondary" (click)="buyAll()">comprar todo</button>
+            }
+            <button (click)="volverPaginaAnterior()" class="btn btn-danger">Volver</button>
+        </div>
+    </div>
+
 </div>

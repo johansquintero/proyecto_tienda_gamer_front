@@ -15,7 +15,12 @@ export class CatalogueComponent {
   paginator: any;
   searchValue: String = '';
   searchState: Boolean = false;
-  constructor(private productoService: ProductoService, private router: Router, private activatedRoute: ActivatedRoute) { }
+  
+  constructor(
+    private productoService: ProductoService, 
+    private router: Router, 
+    private activatedRoute: ActivatedRoute
+    ) { }
 
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe((params: Params) => {
@@ -47,8 +52,8 @@ export class CatalogueComponent {
     });
   }
 
-  public goBuy(name: string) {
-    this.router.navigate(['/home/comprar'], { queryParams: { producto_name: name } })
+  public goBuy(id: number) {
+    this.router.navigate(['/home/comprar'], { queryParams: { producto_id: id } })
   }
 
   public async search(value: String): Promise<void> {

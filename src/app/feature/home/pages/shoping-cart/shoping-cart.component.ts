@@ -1,11 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
+import { CartRequestDto } from 'src/app/core/dto/cart/cartRequestDto';
+import { CartResponseDto } from 'src/app/core/dto/cart/cartResponseDto';
 import { AuthClientetDto } from 'src/app/core/dto/cliente/authClienteDto';
 import { CompraRequestDto } from 'src/app/core/dto/compra/compraRequestDto';
 import { CompraProductoRequestDto } from 'src/app/core/dto/compraproducto/compraProductoRequestDto';
+import { ProductoRequestDto } from 'src/app/core/dto/produto/productoRequestDto';
 import { ProductoResponseDto } from 'src/app/core/dto/produto/productoResponseDto';
+import { CartService } from 'src/app/core/service/cart.service';
 import { CompraService } from 'src/app/core/service/compra.service';
 import { TokenService } from 'src/app/core/service/token.service';
 import Swal from 'sweetalert2';
@@ -21,24 +25,27 @@ export class ShopingCartComponent {
 
   public listaCarrito: any[]
   public cliente: AuthClientetDto;
+  public carrito: CartResponseDto;
 
   constructor(private router: Router,
-    private activatedRoute: ActivatedRoute,
+    private cartService: CartService,
     private tokenService: TokenService,
     private compraService: CompraService) { }
 
   ngOnInit() {
     this.cliente = this.tokenService.getInfoToken()
-    if (localStorage.getItem('carrito')) {
-      let l: ProductoResponseDto[] = JSON.parse(localStorage.getItem('carrito')) as ProductoResponseDto[]
-      this.listaCarrito = l.map(p => {
-        let x = { ...p, selectedQuantity: 1 }
-        return x
-      });
-    } else {
-      this.listaCarrito = []
-      localStorage.setItem('carrito', JSON.stringify(this.listaCarrito));
+    if (this.cliente) {
+      this.GetCart(this.cliente.id);
     }
+  }
+
+  public async GetCart(customerId: number): Promise<void> {
+    await lastValueFrom(this.cartService.getByUserId(customerId)).then(response => {
+      this.carrito = response;
+      this.listaCarrito = this.carrito.productos.map(p => {
+        return { ...p, selectedQuantity: 1 }
+      });
+    })
   }
 
   public async buyAll(): Promise<void> {
@@ -67,7 +74,11 @@ export class ShopingCartComponent {
             showConfirmButton: true
           });
           this.listaCarrito = []
-          localStorage.setItem('carrito', JSON.stringify(this.listaCarrito));
+          var cartRequest: CartRequestDto = new CartRequestDto()
+          cartRequest.customerId = this.carrito.customerId
+          cartRequest.productos = []
+          cartRequest.id = this.carrito.id
+          this.updateCart(cartRequest);
         }
       }).catch(err => {
         Swal.fire({
@@ -77,6 +88,29 @@ export class ShopingCartComponent {
         })
       })
     }
+  }
+
+  public async updateCart(cart: CartRequestDto): Promise<void> {
+    await lastValueFrom(this.cartService.update(cart)).then(response => {
+      this.carrito = response
+    }).catch(err => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: err.error.detail
+      })
+    })
+  }
+  public deleteFromCart(producto: any) {
+    this.listaCarrito = this.listaCarrito.filter((p: ProductoResponseDto) => p.id != producto.id);
+    var cartRequest: CartRequestDto = new CartRequestDto()
+    cartRequest.customerId = this.carrito.customerId
+    cartRequest.productos = this.listaCarrito.map(p => {
+      delete p.selectedQuantity;
+      return p
+    });
+    cartRequest.id = this.carrito.id
+    this.updateCart(cartRequest);
   }
 
   public updateQuantity(quantity: string, productoId: number) {
@@ -98,13 +132,10 @@ export class ShopingCartComponent {
     return numbers;
   }
 
-  public deleteFromCart(producto: any) {
-    this.listaCarrito = this.listaCarrito.filter((p: ProductoResponseDto) => p.id != producto.id);
-    localStorage.setItem('carrito', JSON.stringify(this.listaCarrito));
-  }
 
-  public goBuy(name: string) {
-    this.router.navigate(['/home/comprar'], { queryParams: { producto_name: name } })
+
+  public goBuy(id: number) {
+    this.router.navigate(['/home/comprar'], { queryParams: { producto_id: id } })
   }
 
   /**
@@ -126,5 +157,8 @@ export class ShopingCartComponent {
     // Formatea la fecha y hora en el formato deseado
     let fechaHoraFormateada = `${año}-${mes}-${dia}T${hora}:${minutos}:${segundos}.${milisegundos}`;
     return fechaHoraFormateada;
+  }
+  public volverPaginaAnterior() {
+    window.history.back();
   }
 }

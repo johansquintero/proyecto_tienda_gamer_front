@@ -3,9 +3,12 @@ import { Component } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
+import { CartRequestDto } from 'src/app/core/dto/cart/cartRequestDto';
+import { CartResponseDto } from 'src/app/core/dto/cart/cartResponseDto';
 import { AuthClientetDto } from 'src/app/core/dto/cliente/authClienteDto';
 import { CompraProductoRequestDto } from 'src/app/core/dto/compraproducto/compraProductoRequestDto';
 import { ProductoResponseDto } from 'src/app/core/dto/produto/productoResponseDto';
+import { CartService } from 'src/app/core/service/cart.service';
 import { CompraService } from 'src/app/core/service/compra.service';
 import { ProductoService } from 'src/app/core/service/producto.service';
 import { TokenService } from 'src/app/core/service/token.service';
@@ -22,34 +25,39 @@ export class BuyWindowComponent {
   producto: ProductoResponseDto;
   quantity: FormControl;
   cliente: AuthClientetDto;
+  carrito: CartResponseDto;
   listaCarrito: ProductoResponseDto[];
 
   constructor(private productoService: ProductoService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private tokenService: TokenService,
-    private compraService: CompraService) {
+    private compraService: CompraService,
+    private cartService: CartService) {
     this.quantity = new FormControl(1, [CustomValidators.NumericValidator]);
-    this.cliente = this.tokenService.getInfoToken()
   }
 
   ngOnInit() {
     this.getProducto();
-
-    if (localStorage.getItem('carrito')) {
-      this.listaCarrito = JSON.parse(localStorage.getItem('carrito')) as ProductoResponseDto[]
-    } else {
-      this.listaCarrito = []
-      localStorage.setItem('carrito', JSON.stringify(this.listaCarrito));
+    this.cliente = this.tokenService.getInfoToken()
+    if (this.cliente) {
+      this.GetCart(this.cliente.id)
     }
   }
 
+  public async GetCart(customerId: number): Promise<void> {
+    await lastValueFrom(this.cartService.getByUserId(customerId)).then(response => {
+      this.carrito = response;
+      this.listaCarrito = response.productos;
+    })
+  }
+
   public async getProducto() {
-    let name = '';
+    let name = 1;
     this.activatedRoute.queryParams.subscribe((params: Params) => {
-      name = params['producto_name'] ? params['producto_name'] : '';
+      name = params['producto_id'] ? params['producto_id'] : 1;
     });
-    await lastValueFrom(this.productoService.getProductoByName(name)).then(response => {
+    await lastValueFrom(this.productoService.getProducto(name)).then(response => {
       this.producto = response;
     }).catch(err => {
       Swal.fire({
@@ -95,25 +103,39 @@ export class BuyWindowComponent {
       })
     })
   }
+  
+  public async updateCart(cart: CartRequestDto): Promise<void> {
+    await lastValueFrom(this.cartService.update(cart)).then(response => {
+      this.carrito = response
+      this.listaCarrito = response.productos      
+    }).catch(err => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: err.error.detail
+      })
+    })
+  }
 
   public addToCart() {
-    let p: ProductoResponseDto = this.isInCart();
-    if (!p) {
-      Swal.fire({
-        icon: 'success',
-        title: `Producto agregado al carrito`,
-        showConfirmButton: true
-      });
-      this.listaCarrito.push(this.producto);
-      localStorage.setItem('carrito', JSON.stringify(this.listaCarrito));
-    }
+    this.listaCarrito.push(this.producto);
+    var cartRequest: CartRequestDto = new CartRequestDto()
+    cartRequest.customerId = this.carrito.customerId
+    cartRequest.productos = this.listaCarrito;
+    cartRequest.id = this.carrito.id
+    this.updateCart(cartRequest);
   }
+
   public deleteFromCart() {
     this.listaCarrito = this.listaCarrito.filter((p: ProductoResponseDto) => p.id != this.producto.id);
-    localStorage.setItem('carrito', JSON.stringify(this.listaCarrito));    
+    var cartRequest: CartRequestDto = new CartRequestDto()
+    cartRequest.customerId = this.carrito.customerId
+    cartRequest.productos = this.listaCarrito;
+    cartRequest.id = this.carrito.id
+    this.updateCart(cartRequest);
   }
-  public isInCart(){
-    return  this.listaCarrito.find((p: ProductoResponseDto) => p.id == this.producto.id);
+  public isInCart() {
+    return this.listaCarrito.find((p: ProductoResponseDto) => p.id == this.producto.id);
   }
 
 
