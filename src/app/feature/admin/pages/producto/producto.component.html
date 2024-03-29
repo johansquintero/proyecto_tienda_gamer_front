@@ -27,10 +27,39 @@
 </ul>
 
 
-@if (paginator) {
+@if (!searchState) {
 <div class="row">
     <div class="col-9 col-md-auto">
-        <paginator [paginator]="paginator"></paginator>
+        <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"
+            (pageChange)="getProductosByPage()" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"
+            size="lg">
+            <ng-template ngbPaginationFirst>First</ng-template>
+            <ng-template ngbPaginationLast>Last</ng-template>
+            <ng-template ngbPaginationPrevious>Prev</ng-template>
+            <ng-template ngbPaginationNext>Next</ng-template>
+            <ng-template ngbPaginationEllipsis>...</ng-template>
+            <ng-template ngbPaginationNumber let-page>{{ page }}</ng-template>
+        </ngb-pagination>
+    </div>
+</div>
+} @else{
+<div class="row">
+    <div class="col-9 col-md-auto">
+        <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"
+            (pageChange)="searchPage(searchValue)" [maxSize]="5" [rotate]="true" [ellipses]="false"
+            [boundaryLinks]="true" size="lg">
+            <ng-template ngbPaginationFirst>First</ng-template>
+            <ng-template ngbPaginationLast>Last</ng-template>
+            <ng-template ngbPaginationPrevious>Prev</ng-template>
+            <ng-template ngbPaginationNext>Next</ng-template>
+            <ng-template ngbPaginationEllipsis>...</ng-template>
+            <ng-template ngbPaginationNumber let-page>{{ page }}</ng-template>
+        </ngb-pagination>
     </div>
 </div>
 }
+<hr />
+
+<pre>Current page: {{ page }}</pre>
+<pre>collectionSize: {{ collectionSize }}</pre>
+<pre>pageSize: {{ pageSize }}</pre>

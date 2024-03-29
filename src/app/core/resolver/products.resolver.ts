@@ -4,7 +4,7 @@ import { ProductoResponseDto } from '../dto/produto/productoResponseDto';
 import { inject } from '@angular/core';
 import { ProductoService } from '../service/producto.service';
 
-export const productsResolver: ResolveFn<Observable<ProductoResponseDto[]>> = (route: ActivatedRouteSnapshot, state) => {
+export const productsResolver: ResolveFn<Observable<any>> = (route: ActivatedRouteSnapshot, state) => {
   const productoService = inject(ProductoService)
-  return productoService.getProductos();
+  return productoService.getProductosByPage(0);
 };

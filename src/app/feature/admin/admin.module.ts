@@ -15,6 +15,7 @@ import { FormProductoComponent } from './pages/producto/form-producto/form-produ
 import { PaginatorComponent } from '../paginator/paginator.component';
 import { SearchComponent } from '../search/search.component';
 import { MarcaService } from 'src/app/core/service/marca.service';
+import { NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -34,8 +35,10 @@ import { MarcaService } from 'src/app/core/service/marca.service';
     AdminRoutingModule,
     ReactiveFormsModule,
     PaginatorComponent,
-    SearchComponent
-  ],providers:[
+    SearchComponent, 
+    NgbPaginationModule, 
+    NgbTypeaheadModule
+  ], providers: [
     MarcaService
   ]
 })

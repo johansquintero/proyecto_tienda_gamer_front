@@ -13,31 +13,22 @@ import Swal from 'sweetalert2';
 export class ProductoComponent {
   productos: ProductoResponseDto[];
   paginator: any;
+  page: number = 1;
+  pageSize: number;
+  collectionSize: number;
+
   searchValue: String = '';
   searchState: Boolean = false;
   constructor(private productoService: ProductoService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    let page = 0
-    this.activatedRoute.queryParams.subscribe((params: Params) => {
-      page = params['page']
-      if (!this.searchState) {
-        if (page && !isNaN(page)) {
-          this.getProductosByPage(page)
-        } else {
-          this.getProductosByPage(0)
-        }
-      } else {
-        if (page && !isNaN(page)) {
-          this.searchPage(page, this.searchValue)
-        } else {
-          this.searchPage(0, this.searchValue)
-        }
-      }
-    });
-
     //carga de datos por resolve
-    //console.log(this.activatedRoute.snapshot.data['products'])
+    this.paginator = this.activatedRoute.snapshot.data['paginator'];
+    this.collectionSize = parseInt(this.paginator.totalElements);
+    this.pageSize = parseInt(this.paginator.numberOfElements);
+    this.page = parseInt(this.paginator.number) + 1;
+    this.productos = this.paginator.content as ProductoResponseDto[];
+
   }
 
   public async getProductos(): Promise<void> {
@@ -45,25 +36,34 @@ export class ProductoComponent {
       this.productos = response;
     });
   }
-  public async getProductosByPage(page: number): Promise<void> {
-    await lastValueFrom(this.productoService.getProductosByPage(page)).then(response => {
+  public async getProductosByPage(): Promise<void> {
+    await lastValueFrom(this.productoService.getProductosByPage(this.page - 1)).then(response => {
       this.paginator = response
+      this.collectionSize = parseInt(this.paginator.totalElements)
+      this.page = parseInt(this.paginator.number) + 1
       this.productos = response.content as ProductoResponseDto[];
     });
   }
+
   public goDetail(id: number): void {
     this.router.navigate(['/admin/producto-detail'], { queryParams: { id: id } });
   }
-
+  /**
+   * funcion para realizar la busqueda a partir del valor del evento compartido desde el componente hijo Search
+   * @param value 
+   */
   public async search(value: String): Promise<void> {
     this.searchValue = value
-    if (this.searchValue == "") {
+    if (this.searchValue == "") {//si el valor es vacio se vuelve a la paginacion normal
       this.searchState = false;
-      this.router.navigate(['/admin'])
+      this.ngOnInit()
     } else {
+      this.searchState = true;
       await lastValueFrom(this.productoService.getAllProductosByNamePage(0, this.searchValue)).then(response => {
-        this.searchState = true;
         this.paginator = response;
+        this.collectionSize = parseInt(this.paginator.totalElements)
+        this.pageSize = parseInt(this.paginator.numberOfElements)
+        this.page = parseInt(this.paginator.number) + 1
         this.productos = response.content as ProductoResponseDto[];
       }).catch(err => {
         Swal.fire({
@@ -71,14 +71,21 @@ export class ProductoComponent {
           title: 'Error',
           text: err.error.detail
         }).then(r => {
-          this.router.navigate(['/admin'])
+          this.ngOnInit()
         });
       });
     }
   }
-  public async searchPage(page: Number, value: String): Promise<void> {
-    await lastValueFrom(this.productoService.getAllProductosByNamePage(page, value)).then(response => {
+  /**
+   * esta funcion permite realizar la busqueda por paginacion a partir del valor ya establecido
+   * @param value 
+   */
+  public async searchPage(value: String): Promise<void> {
+    await lastValueFrom(this.productoService.getAllProductosByNamePage(this.page - 1, value)).then(response => {
       this.paginator = response;
+      console.log(this.paginator);
+      this.collectionSize = parseInt(this.paginator.totalElements)
+      this.page = parseInt(this.paginator.number) + 1
       this.productos = response.content as ProductoResponseDto[];
     }).catch(err => {
       Swal.fire({
@@ -86,7 +93,7 @@ export class ProductoComponent {
         title: 'Error',
         text: err.error.detail
       }).then(r => {
-        this.router.navigate(['/admin'])
+        this.ngOnInit()
       });
     });
   }

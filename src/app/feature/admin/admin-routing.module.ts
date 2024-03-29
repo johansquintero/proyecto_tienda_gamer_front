@@ -14,7 +14,7 @@ const routes: Routes = [
   {
     path: "", component: AdminComponent, children: [
       {
-        path: "", component: ProductoComponent,resolve:{products:productsResolver},title:"Admin"
+        path: "", component: ProductoComponent,resolve:{paginator:productsResolver},title:"Admin"
       },
       {
         path: "producto-form", component: FormProductoComponent,title:"Formulario de producto"
