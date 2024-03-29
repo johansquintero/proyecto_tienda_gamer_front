@@ -5,10 +5,10 @@ import { RegisterComponent } from './pages/register/register.component';
 
 const routes: Routes = [
   {
-    path:"inicio-sesion",component:LoginComponent
+    path:"inicio-sesion",component:LoginComponent,title:"Iniciar sesion"
   },
   {
-    path:"registro",component:RegisterComponent
+    path:"registro",component:RegisterComponent,title:"Registrarse"
   }
 ];
 

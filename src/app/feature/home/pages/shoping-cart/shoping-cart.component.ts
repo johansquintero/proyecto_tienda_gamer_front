@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 import { CartRequestDto } from 'src/app/core/dto/cart/cartRequestDto';
@@ -26,11 +26,13 @@ export class ShopingCartComponent {
   public listaCarrito: any[]
   public cliente: AuthClientetDto;
   public carrito: CartResponseDto;
+  public compra: CompraRequestDto;
 
-  constructor(private router: Router,
-    private cartService: CartService,
-    private tokenService: TokenService,
-    private compraService: CompraService) { }
+  //injeccion de dependencias por readonly e inject
+  private readonly router:Router = inject (Router);
+  private readonly cartService:CartService = inject(CartService);
+  private readonly tokenService:TokenService = inject(TokenService);
+  private readonly compraService:CompraService = inject(CompraService);
 
   ngOnInit() {
     this.cliente = this.tokenService.getInfoToken()
@@ -43,30 +45,14 @@ export class ShopingCartComponent {
     await lastValueFrom(this.cartService.getByUserId(customerId)).then(response => {
       this.carrito = response;
       this.listaCarrito = this.carrito.productos.map(p => {
-        return { ...p, selectedQuantity: 1 }
+        return { ...p, selectedQuantity: 1 }//se le asigna el atributo de la cantidad seleccionada
       });
     })
   }
 
   public async buyAll(): Promise<void> {
-    if (this.listaCarrito.length > 1) {
-      let detail: CompraProductoRequestDto[] = this.listaCarrito.map(p => {
-        let compraProductoRequestDto: CompraProductoRequestDto = new CompraProductoRequestDto();
-        compraProductoRequestDto.quantity = p.selectedQuantity;
-        compraProductoRequestDto.productId = p.id;
-        compraProductoRequestDto.total = p.price * p.selectedQuantity;
-        return compraProductoRequestDto
-      });
-
-      let compraRequestDto: CompraRequestDto = new CompraRequestDto();
-      compraRequestDto.date = this.getActualDateFormatted();
-      compraRequestDto.customerId = this.cliente.id
-      compraRequestDto.paymentMethod = "debito";
-      compraRequestDto.compraProductos = detail;
-      compraRequestDto.compraProductos.forEach(compraProductoRequestDto => {
-        compraRequestDto.total += compraProductoRequestDto.total
-      });
-      await lastValueFrom(this.compraService.save(compraRequestDto)).then(response => {
+    if (this.compra) {
+      await lastValueFrom(this.compraService.save(this.compra)).then(response => {
         if (response.id) {
           Swal.fire({
             icon: 'success',
@@ -90,9 +76,34 @@ export class ShopingCartComponent {
     }
   }
 
+  public generateDetail() {
+    if (this.listaCarrito.length > 0) {
+      let detail = this.listaCarrito.map(p => {
+        let compraProductoRequestDto: CompraProductoRequestDto = new CompraProductoRequestDto();
+        compraProductoRequestDto.quantity = p.selectedQuantity;
+        compraProductoRequestDto.productId = p.id;
+        compraProductoRequestDto.total = p.price * p.selectedQuantity;
+        return { ...compraProductoRequestDto, productName: p.name }//se anade el product name para mostrarlo en el modal de detalle
+      });
+
+      let compraRequestDto: CompraRequestDto = new CompraRequestDto();
+      compraRequestDto.date = this.getActualDateFormatted();
+      compraRequestDto.customerId = this.cliente.id
+      compraRequestDto.paymentMethod = "debito";
+      compraRequestDto.compraProductos = detail;
+      compraRequestDto.compraProductos.forEach(compraProductoRequestDto => {
+        compraRequestDto.total += compraProductoRequestDto.total
+      });
+      this.compra = compraRequestDto;
+    }
+  }
+
   public async updateCart(cart: CartRequestDto): Promise<void> {
     await lastValueFrom(this.cartService.update(cart)).then(response => {
       this.carrito = response
+      this.listaCarrito = this.carrito.productos.map(p => {
+        return { ...p, selectedQuantity: 1 }//se le anade de nuevo el atributo dado que se actualiza de nuevo la lista 
+      });
     }).catch(err => {
       Swal.fire({
         icon: 'error',

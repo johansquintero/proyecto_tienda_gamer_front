@@ -14,6 +14,7 @@ import { DetailProductoComponent } from './pages/producto/detail-producto/detail
 import { FormProductoComponent } from './pages/producto/form-producto/form-producto.component';
 import { PaginatorComponent } from '../paginator/paginator.component';
 import { SearchComponent } from '../search/search.component';
+import { MarcaService } from 'src/app/core/service/marca.service';
 
 
 @NgModule({
@@ -34,6 +35,8 @@ import { SearchComponent } from '../search/search.component';
     ReactiveFormsModule,
     PaginatorComponent,
     SearchComponent
+  ],providers:[
+    MarcaService
   ]
 })
 export class AdminModule { }

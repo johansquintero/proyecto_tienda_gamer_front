@@ -11,7 +11,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./producto.component.css']
 })
 export class ProductoComponent {
-  public productos: ProductoResponseDto[];
+  productos: ProductoResponseDto[];
   paginator: any;
   searchValue: String = '';
   searchState: Boolean = false;
@@ -35,6 +35,9 @@ export class ProductoComponent {
         }
       }
     });
+
+    //carga de datos por resolve
+    //console.log(this.activatedRoute.snapshot.data['products'])
   }
 
   public async getProductos(): Promise<void> {

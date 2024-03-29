@@ -33,8 +33,13 @@
                     <label for="quantity" class="form-label">Cantidad disponible {{producto.quantity}}</label>
                     <select #quantity (change)="updateQuantity(quantity.value, producto.id)" id="quantity"
                         class="form-select form-select-sm select" name="" id="">
-                        <option *ngFor="let i of generateQuantities(producto.quantity)" value="{{i}}" #quantity> {{i}}
+                        @for(i of generateQuantities(producto.quantity);track i){
+                        <option value="{{i}}" #quantity> {{i}}
                         </option>
+                        }@empty {
+                            <p>no hay unidades disponibles</p>
+                        }
+
                     </select>
                     <button class="btn btn-dark btn-rounded mr-1 mt-3" data-toggle="tooltip" title=""
                         (click)="deleteFromCart(producto)" data-original-title="Add to cart"> Eliminar del carrito
@@ -44,12 +49,95 @@
         </li>
     </ul>
     }
-    <div class="row">
+    <div class="row mt-5">
         <div class="col-6 btn-group">
             @if (this.listaCarrito?.length>0) {
-            <button class="btn btn-secondary" (click)="buyAll()">comprar todo</button>
+            <!-- Button trigger modal -->
+            <button type="button" (click)="generateDetail()" class="btn btn-primary" data-bs-toggle="modal"
+                data-bs-target="#exampleModal">
+                Generrar detalle
+            </button>
             }
             <button (click)="volverPaginaAnterior()" class="btn btn-danger">Volver</button>
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-body">
+                    @if (compra) {
+                    <div class="container">
+                        <div class="row mt-4">
+                            <div class="col-6">
+                                <h1>Detalle de compra</h1>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <h4>Información del Cliente</h4>
+                                <address>
+                                    <strong>Nombre del Cliente: {{cliente.username}}</strong><br>
+                                    Dirección del Cliente: {{cliente.address}}<br>
+                                    Teléfono: {{cliente.telephone}}<br>
+                                    Correo Electrónico: {{cliente.email}}
+                                </address>
+                            </div>
+                            <div class="col-6">
+                                <h4>Información de la compra</h4>
+                                <address>
+                                    <!-- @if (compra.id) {
+                                    <strong>Número de Factura:</strong> {{compra.id}}<br>
+                                    }-->
+                                    <strong>Fecha de Emisión:</strong> {{compra.date}}<br>
+                                </address>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Descripción</th>
+                                            <th>Cantidad</th>
+                                            <th>Precio Unitario</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let product of compra.compraProductos">
+                                            <td>{{product.productName}}</td>
+                                            <td>{{product.quantity}}</td>
+                                            <td>{{(product.quantity>0?product.total/product.quantity:product.total)
+                                                |currency : "USD" : "symbol" : "1.2-2"}}</td>
+                                            <td>{{product.total|currency : "USD" : "symbol" : "1.2-2"}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <h4>Detalles del Pago</h4>
+                                <p><strong>Subtotal:</strong>{{compra.total|currency : "USD" : "symbol" : "1.2-2"}}</p>
+                                <p><strong>Impuestos:</strong> $0</p>
+                                <p><strong>Total:</strong> {{compra.total|currency : "USD" : "symbol" : "1.2-2"}}</p>
+                            </div>
+                        </div>
+
+                    </div>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" (click)="buyAll()">comprar</button>
+                </div>
+            </div>
         </div>
     </div>
 

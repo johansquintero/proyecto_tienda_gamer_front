@@ -6,9 +6,7 @@ import { MarcaResponseDto } from '../dto/marca/marcaResponse';
 import { MarcaRequestDto } from '../dto/marca/marcaRequestDto';
 import { MarcaDto } from '../dto/marca/marcaDto';
 const { apiUrl } = environment
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class MarcaService {
   private sharedMarca: MarcaDto;
   constructor(private http: HttpClient) { }

@@ -8,31 +8,32 @@ import { AdminComponent } from './admin.component';
 import { ProductoComponent } from './pages/producto/producto.component';
 import { FormProductoComponent } from './pages/producto/form-producto/form-producto.component';
 import { DetailProductoComponent } from './pages/producto/detail-producto/detail-producto.component';
+import { productsResolver } from 'src/app/core/resolver/products.resolver';
 
 const routes: Routes = [
   {
     path: "", component: AdminComponent, children: [
       {
-        path: "", component: ProductoComponent
+        path: "", component: ProductoComponent,resolve:{products:productsResolver},title:"Admin"
       },
       {
-        path: "producto-form", component: FormProductoComponent
+        path: "producto-form", component: FormProductoComponent,title:"Formulario de producto"
       },
       {
-        path: "producto-detail", component: DetailProductoComponent
+        path: "producto-detail", component: DetailProductoComponent, title:"Detall de del producto"
       },
 
       {
-        path: "tipo-form", component: FormTipoComponent
+        path: "tipo-form", component: FormTipoComponent,title:"Formulario de tipo"
       },
       {
-        path: "tipo", component: TipoComponent
+        path: "tipo", component: TipoComponent,title:"Ver tipos"
       },
       {
-        path: "marca", component: MarcaComponent
+        path: "marca", component: MarcaComponent,title:"Ver marcas"
       },
       {
-        path: "marca-form", component: FormMarcaComponent
+        path: "marca-form", component: FormMarcaComponent,title:"Formulario de marca"
       }
     ]
   }

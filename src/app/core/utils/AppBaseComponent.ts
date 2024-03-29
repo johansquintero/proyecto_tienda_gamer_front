@@ -1,16 +1,43 @@
 import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { ErrorForm } from '../enums/ErrorForm';
 /**
- * Componente padre con validaciones generales
+ * Esta clase TypeScript es un componente padre que proporciona funcionalidades de 
+ * validación genéricas para formularios en una aplicación.
  */
 export class AppBaseComponent {
+  /**
+   * Este método comprueba si un campo específico de un formulario ha sido tocado 
+   * (es decir, el usuario ha interactuado con él) y si es inválido. Retorna true 
+   * si el campo ha sido tocado y es inválido, de lo contrario, retorna false.
+   * @param form grupo de formulario a comprobrar
+   * @param field campo del grupo del formulario
+   * @returns booleano de comprobacion
+   */
   public isTouchedField = (form: FormGroup, field: string): boolean => {
     return form?.get(field).touched == true && form?.get(field).invalid;
   }
 
+  /**
+   * Similar a isTouchedField, este método verifica si un campo específico del formulario 
+   * ha sido modificado (es decir, tiene un estado "dirty") y si es inválido. Retorna true 
+   * si el campo ha sido modificado y es inválido, de lo contrario, retorna false.
+   * @param form grupo de formulario a comprobrar
+   * @param field campo del grupo del formulario
+   * @returns booleano de comprobacion
+   */
+
   public isDirtyField = (form: FormGroup, field: string): boolean => {
     return form?.get(field).dirty == true && form?.get(field).invalid;
   }
+
+  /**
+   * Este método devuelve un mensaje de error para un campo específico del formulario. 
+   * Verifica si el campo ha sido modificado y es inválido, y luego determina el tipo de error 
+   * que tiene el campo para devolver un mensaje adecuado.
+   * @param formGroup grupo de formulario a evaluar
+   * @param field campo a evaluar
+   * @returns string del mensaje de error correspondiente al error dado
+   */
 
   public getErrorField(formGroup: FormGroup, field: string): string {
     let message: string;
@@ -48,6 +75,15 @@ export class AppBaseComponent {
     return message;
   }
 
+  /**
+   * Este método recorre recursivamente los controles del formulario y devuelve un objeto que 
+   * contiene los errores de validación para cada control. Si el control es un FormControl, 
+   * simplemente devuelve sus errores. Si el control es un FormGroup, itera sobre sus controles hijos y 
+   * llama recursivamente a getFormErrors para cada uno, construyendo un objeto que contiene los errores 
+   * de todos los controles hijos.
+   * @param control 
+   * @returns 
+   */
   public getFormErrors(control: AbstractControl): { [key: string]: any } | null {
     if (control instanceof FormControl) {
       return control.errors;

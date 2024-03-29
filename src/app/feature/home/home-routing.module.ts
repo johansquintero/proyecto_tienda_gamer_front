@@ -6,27 +6,31 @@ import { BuyWindowComponent } from './pages/buy-window/buy-window.component';
 import { CompraClienteComponent } from './pages/compra-cliente/compra-cliente.component';
 import { VerCompraComponent } from './pages/ver-compra/ver-compra.component';
 import { ShopingCartComponent } from './pages/shoping-cart/shoping-cart.component';
+import { cartResolver } from 'src/app/core/resolver/cart.resolver';
 
 const routes: Routes = [
   //componente home y sus hijos
   {
     path: "", component: HomeComponent, children: [
       {
-        path: "", component: CatalogueComponent
+        path: "", component: CatalogueComponent,title:"Catalogo de productos"
       },
       {
-        path: "comprar", component: BuyWindowComponent
+        path: "comprar", component: BuyWindowComponent,resolve:{cart:cartResolver},title:"Comprar producto"
       },
       {
-        path:"mis-compras",component:CompraClienteComponent
+        path:"mis-compras",component:CompraClienteComponent,title:"Mis compras"
       },
       {
-        path:"ver-compra",component:VerCompraComponent
+        path:"ver-compra",component:VerCompraComponent,title:"Factura"
       }
       ,
       {
-        path:"ver-carrito",component:ShopingCartComponent
-      }
+        path:"ver-carrito",component:ShopingCartComponent,title:"Carrito"
+      },/*
+      { carga perezosa a componentes stanalone
+        path:"ruta",loadComponent:()=> import("ruta del componente").then(m=>m.component)
+      }*/
     ]
   },
 

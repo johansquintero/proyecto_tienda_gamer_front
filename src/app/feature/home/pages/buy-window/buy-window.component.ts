@@ -40,8 +40,10 @@ export class BuyWindowComponent {
   ngOnInit() {
     this.getProducto();
     this.cliente = this.tokenService.getInfoToken()
-    if (this.cliente) {
-      this.GetCart(this.cliente.id)
+    if (this.activatedRoute.snapshot.data['cart']) {
+      this.carrito = this.activatedRoute.snapshot.data['cart']
+      this.listaCarrito = this.carrito.productos
+      console.log(this.carrito = this.activatedRoute.snapshot.data['cart'])
     }
   }
 
@@ -103,11 +105,11 @@ export class BuyWindowComponent {
       })
     })
   }
-  
+
   public async updateCart(cart: CartRequestDto): Promise<void> {
     await lastValueFrom(this.cartService.update(cart)).then(response => {
       this.carrito = response
-      this.listaCarrito = response.productos      
+      this.listaCarrito = response.productos
     }).catch(err => {
       Swal.fire({
         icon: 'error',
