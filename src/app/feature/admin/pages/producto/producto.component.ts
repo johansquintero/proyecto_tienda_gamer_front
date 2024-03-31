@@ -50,21 +50,25 @@ export class ProductoComponent {
   }
   /**
    * funcion para realizar la busqueda a partir del valor del evento compartido desde el componente hijo Search
+   * con la posibilidad de ir paginando las respuestas
    * @param value 
    */
-  public async search(value: String): Promise<void> {
+  public async search(page: number, value: String): Promise<void> {
     this.searchValue = value
     if (this.searchValue == "") {//si el valor es vacio se vuelve a la paginacion normal
       this.searchState = false;
       this.ngOnInit()
     } else {
-      this.searchState = true;
-      await lastValueFrom(this.productoService.getAllProductosByNamePage(0, this.searchValue)).then(response => {
+      await lastValueFrom(this.productoService.getAllProductosByNamePage(page - 1, this.searchValue)).then(response => {
         this.paginator = response;
-        this.collectionSize = parseInt(this.paginator.totalElements)
-        this.pageSize = parseInt(this.paginator.numberOfElements)
-        this.page = parseInt(this.paginator.number) + 1
+
+        //solo se cambia el valor del tamano de cada pagina y el tamano de colleccion en la primera busqueda
+        this.collectionSize = !this.searchState ? parseInt(this.paginator.totalElements) : this.collectionSize;
+        this.pageSize = !this.searchState ? parseInt(this.paginator.numberOfElements) : this.pageSize;
+
+        this.page = parseInt(this.paginator.number) + 1;
         this.productos = response.content as ProductoResponseDto[];
+        this.searchState = true;
       }).catch(err => {
         Swal.fire({
           icon: 'error',
@@ -76,26 +80,4 @@ export class ProductoComponent {
       });
     }
   }
-  /**
-   * esta funcion permite realizar la busqueda por paginacion a partir del valor ya establecido
-   * @param value 
-   */
-  public async searchPage(value: String): Promise<void> {
-    await lastValueFrom(this.productoService.getAllProductosByNamePage(this.page - 1, value)).then(response => {
-      this.paginator = response;
-      console.log(this.paginator);
-      this.collectionSize = parseInt(this.paginator.totalElements)
-      this.page = parseInt(this.paginator.number) + 1
-      this.productos = response.content as ProductoResponseDto[];
-    }).catch(err => {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: err.error.detail
-      }).then(r => {
-        this.ngOnInit()
-      });
-    });
-  }
 }
-

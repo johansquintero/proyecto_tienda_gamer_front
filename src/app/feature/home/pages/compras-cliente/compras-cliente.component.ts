@@ -8,40 +8,43 @@ import Swal from 'sweetalert2';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-compra-cliente',
-  templateUrl: './compra-cliente.component.html',
-  styleUrls: ['./compra-cliente.component.css']
+  selector: 'app-compras-cliente',
+  templateUrl: './compras-cliente.component.html',
+  styleUrls: ['./compras-cliente.component.css']
 })
 export class CompraClienteComponent {
 
   public compras: CompraResponseDto[];
   public paginator: any;
-  
+  page: number = 1;
+  pageSize: number;
+  collectionSize: number;
+  cliente: AuthClientetDto;
+
   constructor(
     private compraService: CompraService,
     private tokenService: TokenService,
     private router: Router,
-    private activatedRouter:ActivatedRoute
+    private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit() {
-    this.activatedRouter.queryParams.subscribe((params:Params)=>{
-      let page = params['page'];
-      if (page && !isNaN(page)) {
-        this.getComprasUsuarioPage(page);
-      }else{
-        this.getComprasUsuarioPage(0);
-      }
-    });
+    //carga de datos por resolve
+    this.paginator = this.activatedRoute.snapshot.data['paginator'];
+    this.collectionSize = parseInt(this.paginator.totalElements);
+    this.pageSize = parseInt(this.paginator.numberOfElements);
+    this.page = parseInt(this.paginator.number) + 1;
+    this.compras = this.paginator.content as CompraResponseDto[];
+    this.cliente = this.tokenService.getInfoToken();
   }
 
-  public async getComprasUsuarioPage(page: number): Promise<void> {
-    let cliente: AuthClientetDto = this.tokenService.getInfoToken();
-    await lastValueFrom(this.compraService.getCompraByClientePage(cliente.id, page)).then(response => {
+  public async getComprasUsuarioPage(): Promise<void> {
+    await lastValueFrom(this.compraService.getCompraByClientePage(this.cliente.id, this.page-1)).then(response => {
       let c = response.content as CompraResponseDto[];
-      if (c.length > 0 && c[0].customerId == cliente.id) {
+      if (c.length > 0 && c[0].customerId == this.cliente.id) {
         this.compras = c;
         this.paginator = response;
+        this.page = parseInt(this.paginator.number) + 1;
       }
     }).catch(err => {
       Swal.fire({

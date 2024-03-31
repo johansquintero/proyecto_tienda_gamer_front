@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { lastValueFrom, tap } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { lastValueFrom } from 'rxjs';
 import { MarcaDto } from 'src/app/core/dto/marca/marcaDto';
 import { MarcaService } from 'src/app/core/service/marca.service';
 import Swal from 'sweetalert2';
@@ -13,18 +13,18 @@ import Swal from 'sweetalert2';
 export class MarcaComponent {
   public marcas: MarcaDto[];
   public paginator: any;
+  page: number = 1;
+  pageSize: number;
+  collectionSize: number;
 
   constructor(private marcaService: MarcaService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    this.activatedRoute.queryParams.subscribe((params: Params) => {
-      let page = params['page']
-      if (page && !isNaN(page)) {
-        this.getMarcasByPage(page);
-      } else {
-        this.getMarcasByPage(0);
-      }
-    })
+    this.paginator = this.activatedRoute.snapshot.data['paginator']
+    this.collectionSize = parseInt(this.paginator.totalElements);
+    this.pageSize = parseInt(this.paginator.numberOfElements);
+    this.page = parseInt(this.paginator.number) + 1;
+    this.marcas = this.paginator.content as MarcaDto[];
   }
 
   public async getMarcas(): Promise<void> {
@@ -33,10 +33,11 @@ export class MarcaComponent {
     });
   }
 
-  public async getMarcasByPage(page: number): Promise<void> {
-    await lastValueFrom(this.marcaService.getAllByPage(page)).then(response => {
+  public async getMarcasByPage(): Promise<void> {
+    await lastValueFrom(this.marcaService.getAllByPage(this.page-1)).then(response => {
       this.marcas = response.content as MarcaDto[];
       this.paginator = response;
+      this.page = parseInt(this.paginator.number) + 1;
     });
   }
 

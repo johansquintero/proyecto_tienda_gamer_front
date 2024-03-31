@@ -13,42 +13,38 @@ import Swal from 'sweetalert2';
 export class CatalogueComponent {
   productos: ProductoResponseDto[];
   paginator: any;
+  page: number = 1;
+  pageSize: number;
+  collectionSize: number;
+
   searchValue: String = '';
   searchState: Boolean = false;
-  
+
   constructor(
-    private productoService: ProductoService, 
-    private router: Router, 
+    private productoService: ProductoService,
+    private router: Router,
     private activatedRoute: ActivatedRoute
-    ) { }
+  ) { }
 
   ngOnInit() {
-    this.activatedRoute.queryParams.subscribe((params: Params) => {
-      let page = params['page']
-      if (!this.searchState) {
-        if (page && !isNaN(page)) {
-          this.getProductosByPage(page)
-        } else {
-          this.getProductosByPage(0)
-        }
-      } else {
-        if (page && !isNaN(page)) {
-          this.searchPage(page)
-        } else {
-          this.searchPage(0)
-        }
-      }
-    })
+    //carga de datos por resolve
+    this.paginator = this.activatedRoute.snapshot.data['paginator'];
+    this.collectionSize = parseInt(this.paginator.totalElements);
+    this.pageSize = parseInt(this.paginator.numberOfElements);
+    this.page = parseInt(this.paginator.number) + 1;
+    this.productos = this.paginator.content as ProductoResponseDto[];
   }
   public async getProductos(): Promise<void> {
     await lastValueFrom(this.productoService.getProductos()).then(response => {
       this.productos = response;
     })
   }
-  public async getProductosByPage(page: number): Promise<void> {
-    await lastValueFrom(this.productoService.getProductosByPage(page)).then(response => {
+  public async getProductosByPage(): Promise<void> {
+    await lastValueFrom(this.productoService.getProductosByPage(this.page - 1)).then(response => {
       this.paginator = response
-      this.productos = response.content as ProductoResponseDto[]
+      this.collectionSize = parseInt(this.paginator.totalElements)
+      this.page = parseInt(this.paginator.number) + 1
+      this.productos = response.content as ProductoResponseDto[];
     });
   }
 
@@ -56,40 +52,35 @@ export class CatalogueComponent {
     this.router.navigate(['/home/comprar'], { queryParams: { producto_id: id } })
   }
 
-  public async search(value: String): Promise<void> {
+  /**
+   * funcion para realizar la busqueda a partir del valor del evento compartido desde el componente hijo Search
+   * @param value 
+   */
+  public async search(page: number, value: String): Promise<void> {
     this.searchValue = value
-    if (this.searchValue == '') {
-      this.searchState = false
-      this.router.navigate(['/home'])
+    if (this.searchValue == "") {//si el valor es vacio se vuelve a la paginacion normal
+      this.searchState = false;
+      this.ngOnInit()
     } else {
-      await lastValueFrom(this.productoService.getAllProductosByNamePage(0, this.searchValue)).then(response => {
-        this.searchState = true
-        this.paginator = response
-        this.productos = response.content as ProductoResponseDto[]
+      await lastValueFrom(this.productoService.getAllProductosByNamePage(page - 1, this.searchValue)).then(response => {
+        this.paginator = response;
+
+        //solo se cambia el valor del tamano de cada pagina y el tamano de colleccion en la primera busqueda
+        this.collectionSize = !this.searchState ? parseInt(this.paginator.totalElements) : this.collectionSize;
+        this.pageSize = !this.searchState ? parseInt(this.paginator.numberOfElements) : this.pageSize;
+
+        this.page = parseInt(this.paginator.number) + 1;
+        this.productos = response.content as ProductoResponseDto[];
+        this.searchState = true;
       }).catch(err => {
         Swal.fire({
           icon: 'error',
           title: 'Error',
           text: err.error.detail
         }).then(r => {
-          this.router.navigate(['/home'])
+          this.ngOnInit()
         });
       });
     }
   }
-  public async searchPage(page: Number): Promise<void> {
-    await lastValueFrom(this.productoService.getAllProductosByNamePage(page, this.searchValue)).then(response => {
-      this.paginator = response
-      this.productos = response.content as ProductoResponseDto[]
-    }).catch(err => {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: err.error.detail
-      }).then(r => {
-        this.router.navigate(['/home'])
-      });
-    });
-  }
-
 }

@@ -12,7 +12,8 @@
                     <span (click)="goBuy(producto.id)" class="fs-4 text-center fw-bolder clickeable">{{ producto.name|
                         uppercase}}</span>
                 </div>
-                <div class="col-6">
+
+                <div class="col-5">
                     <img class="img-fluid clickeable fixed-size-image " (click)="goBuy(producto.id)"
                         *ngIf="producto?.imagePath"
                         src="http://localhost:8080/api/productos/uploads/img/{{producto.imagePath}}" alt="">
@@ -20,7 +21,7 @@
                         *ngIf="!producto?.imagePath" src="http://localhost:8080/api/productos/uploads/img/no_product"
                         alt="">
                 </div>
-                <div class="col-3">
+                <div class="col-4">
                     <p class="fs-7">
                         <strong>Precio:</strong>{{ producto.price | currency : "USD" : "symbol" : "1.2-2" }}
                     </p>
@@ -29,6 +30,13 @@
                     <p class="fs-7"><strong>Unidades disponible:</strong> {{ producto.quantity }}</p>
                 </div>
                 <div class="col-3 col">
+                    <div class="form-check">
+                        <label class="form-check-label fw-bold" for="flexCheckDefault">
+                            Seleccionar producto
+                        </label>
+                        <input class="form-check-input" type="checkbox" [checked]="producto.checked"
+                            (change)="updateChecked($event,producto.id)">
+                    </div>
                     <label for="quantity" class="form-label"><strong>Seleccionar cantidad</strong></label>
                     <label for="quantity" class="form-label">Cantidad disponible {{producto.quantity}}</label>
                     <select #quantity (change)="updateQuantity(quantity.value, producto.id)" id="quantity"
@@ -37,7 +45,7 @@
                         <option value="{{i}}" #quantity> {{i}}
                         </option>
                         }@empty {
-                            <p>no hay unidades disponibles</p>
+                        <p>no hay unidades disponibles</p>
                         }
 
                     </select>

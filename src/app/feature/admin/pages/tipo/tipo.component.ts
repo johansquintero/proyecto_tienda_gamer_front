@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { lastValueFrom, tap } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { lastValueFrom } from 'rxjs';
 import { TipoDto } from 'src/app/core/dto/tipo/tipoDto';
 import { TipoService } from 'src/app/core/service/tipo.service';
 import Swal from 'sweetalert2';
@@ -14,18 +14,18 @@ export class TipoComponent {
 
   public tipos: TipoDto[];
   public paginator: any;
+  page: number = 1;
+  pageSize: number;
+  collectionSize: number;
 
-  constructor(private tipoService: TipoService, private router: Router, private activatedRouter: ActivatedRoute) { }
+  constructor(private tipoService: TipoService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    this.activatedRouter.queryParams.subscribe((params:Params)=>{
-      let page = params['page'];
-      if (page||!isNaN(page)) {
-        this.getTiposByPage(page)
-      }else {
-        this.getTiposByPage(0)
-      }
-    });
+    this.paginator = this.activatedRoute.snapshot.data['paginator']
+    this.collectionSize = parseInt(this.paginator.totalElements);
+    this.pageSize = parseInt(this.paginator.numberOfElements);
+    this.page = parseInt(this.paginator.number) + 1;
+    this.tipos = this.paginator.content as TipoDto[];
   }
 
   public async getTipos(): Promise<void> {
@@ -33,10 +33,11 @@ export class TipoComponent {
       this.tipos = response;
     })
   }
-  public async getTiposByPage(page:Number):Promise<void> {
-    await lastValueFrom(this.tipoService.getAllByPage(page)).then(response=>{
+  public async getTiposByPage():Promise<void> {
+    await lastValueFrom(this.tipoService.getAllByPage(this.page-1)).then(response=>{
       this.paginator = response;
       this.tipos = response.content as TipoDto[];
+      this.page = this.page = parseInt(this.paginator.number) + 1;
     });
   }
 

@@ -3,23 +3,24 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home.component';
 import { CatalogueComponent } from './pages/catalogue/catalogue.component';
 import { BuyWindowComponent } from './pages/buy-window/buy-window.component';
-import { CompraClienteComponent } from './pages/compra-cliente/compra-cliente.component';
+import { CompraClienteComponent } from './pages/compras-cliente/compras-cliente.component';
 import { VerCompraComponent } from './pages/ver-compra/ver-compra.component';
 import { ShopingCartComponent } from './pages/shoping-cart/shoping-cart.component';
 import { cartResolver } from 'src/app/core/resolver/cart.resolver';
+import { buyResolver, productsResolver } from 'src/app/core/resolver/allresolvers.resolver';
 
 const routes: Routes = [
   //componente home y sus hijos
   {
     path: "", component: HomeComponent, children: [
       {
-        path: "", component: CatalogueComponent,title:"Catalogo de productos"
+        path: "", component: CatalogueComponent,title:"Catalogo de productos",resolve:{paginator:productsResolver}
       },
       {
         path: "comprar", component: BuyWindowComponent,resolve:{cart:cartResolver},title:"Comprar producto"
       },
       {
-        path:"mis-compras",component:CompraClienteComponent,title:"Mis compras"
+        path:"mis-compras",component:CompraClienteComponent,title:"Mis compras",resolve:{paginator:buyResolver}
       },
       {
         path:"ver-compra",component:VerCompraComponent,title:"Factura"

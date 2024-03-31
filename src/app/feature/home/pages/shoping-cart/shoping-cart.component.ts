@@ -29,10 +29,10 @@ export class ShopingCartComponent {
   public compra: CompraRequestDto;
 
   //injeccion de dependencias por readonly e inject
-  private readonly router:Router = inject (Router);
-  private readonly cartService:CartService = inject(CartService);
-  private readonly tokenService:TokenService = inject(TokenService);
-  private readonly compraService:CompraService = inject(CompraService);
+  private readonly router: Router = inject(Router);
+  private readonly cartService: CartService = inject(CartService);
+  private readonly tokenService: TokenService = inject(TokenService);
+  private readonly compraService: CompraService = inject(CompraService);
 
   ngOnInit() {
     this.cliente = this.tokenService.getInfoToken()
@@ -45,7 +45,7 @@ export class ShopingCartComponent {
     await lastValueFrom(this.cartService.getByUserId(customerId)).then(response => {
       this.carrito = response;
       this.listaCarrito = this.carrito.productos.map(p => {
-        return { ...p, selectedQuantity: 1 }//se le asigna el atributo de la cantidad seleccionada
+        return { ...p, selectedQuantity: 1, checked: true }//se le asigna el atributo de la cantidad seleccionada
       });
     })
   }
@@ -59,10 +59,13 @@ export class ShopingCartComponent {
             title: `Compra con id de factura ${response.id} realizada correctamente`,
             showConfirmButton: true
           });
-          this.listaCarrito = []
           var cartRequest: CartRequestDto = new CartRequestDto()
           cartRequest.customerId = this.carrito.customerId
-          cartRequest.productos = []
+          cartRequest.productos = this.listaCarrito.filter(p => !p.checked).map(p => {
+            delete p.selectedQuantity;
+            delete p.checked;
+            return p
+          })
           cartRequest.id = this.carrito.id
           this.updateCart(cartRequest);
         }
@@ -78,7 +81,8 @@ export class ShopingCartComponent {
 
   public generateDetail() {
     if (this.listaCarrito.length > 0) {
-      let detail = this.listaCarrito.map(p => {
+      let selectedProducts = this.listaCarrito.filter(p => p.checked);
+      let detail = selectedProducts.map(p => {
         let compraProductoRequestDto: CompraProductoRequestDto = new CompraProductoRequestDto();
         compraProductoRequestDto.quantity = p.selectedQuantity;
         compraProductoRequestDto.productId = p.id;
@@ -102,7 +106,8 @@ export class ShopingCartComponent {
     await lastValueFrom(this.cartService.update(cart)).then(response => {
       this.carrito = response
       this.listaCarrito = this.carrito.productos.map(p => {
-        return { ...p, selectedQuantity: 1 }//se le anade de nuevo el atributo dado que se actualiza de nuevo la lista 
+        //se le anade de nuevo el atributo dado que se actualiza de nuevo la lista 
+        return { ...p, selectedQuantity: 1, checked: true }
       });
     }).catch(err => {
       Swal.fire({
@@ -118,6 +123,7 @@ export class ShopingCartComponent {
     cartRequest.customerId = this.carrito.customerId
     cartRequest.productos = this.listaCarrito.map(p => {
       delete p.selectedQuantity;
+      delete p.checked;
       return p
     });
     cartRequest.id = this.carrito.id
@@ -131,14 +137,34 @@ export class ShopingCartComponent {
       }
     })
   }
+
+  /**
+   * funcion que captura el evento de seleccion del check box de un producto
+   * @param event 
+   * @param productoId 
+   */
+  public updateChecked(event: any, productoId: number) {
+    this.listaCarrito.forEach(p => {
+      if (p.id == productoId) {
+        p.checked = event.target.checked;
+        console.log(p)
+      }
+    })
+  }
   /**
   * Genera el el numero total de cantidades del producto para el select
   * @returns 
   */
   generateQuantities(n: number): number[] {
     let numbers: number[] = []
-    for (let index = 1; index <= n; index++) {
-      numbers.push(index)
+    if (n > 50) {
+      for (let index = 1; index <= 50; index++) {
+        numbers.push(index)
+      }
+    } else {
+      for (let index = 1; index <= n; index++) {
+        numbers.push(index)
+      }
     }
     return numbers;
   }

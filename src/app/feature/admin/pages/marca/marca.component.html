@@ -28,7 +28,20 @@
                 </tbody>
             </table>
             <div>
-                <paginator [paginator]="paginator" *ngIf="paginator"></paginator>
+                <div class="row">
+                    <div class="col-9 col-md-auto">
+                        <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"
+                            (pageChange)="getMarcasByPage()" [maxSize]="5" [rotate]="true" [ellipses]="false"
+                            [boundaryLinks]="true">
+                            <ng-template ngbPaginationFirst>First</ng-template>
+                            <ng-template ngbPaginationLast>Last</ng-template>
+                            <ng-template ngbPaginationPrevious>Prev</ng-template>
+                            <ng-template ngbPaginationNext>Next</ng-template>
+                            <ng-template ngbPaginationEllipsis>...</ng-template>
+                            <ng-template ngbPaginationNumber let-page>{{ page }}</ng-template>
+                        </ngb-pagination>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

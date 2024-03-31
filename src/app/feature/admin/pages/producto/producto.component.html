@@ -1,4 +1,4 @@
-<search (searchValueEvent)="search($event)"></search>
+<search (searchValueEvent)="search(1,$event)"></search>
 <ul class="list-group">
     @for (producto of productos; track producto.id) {
     <li class="list-group-item m-1">
@@ -46,7 +46,7 @@
 <div class="row">
     <div class="col-9 col-md-auto">
         <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"
-            (pageChange)="searchPage(searchValue)" [maxSize]="5" [rotate]="true" [ellipses]="false"
+            (pageChange)="search(page,searchValue)" [maxSize]="5" [rotate]="true" [ellipses]="false"
             [boundaryLinks]="true" size="lg">
             <ng-template ngbPaginationFirst>First</ng-template>
             <ng-template ngbPaginationLast>Last</ng-template>

@@ -2,7 +2,7 @@
   <div *ngIf="productos?.length==0" class="text-center">
     <span class="alert alert-danger fs-2">No hay elementos registrados</span>
   </div>
-  <search (searchValueEvent)="search($event)"></search>
+  <search (searchValueEvent)="search(1,$event)"></search>
   <ul *ngFor="let producto of productos" class="list-group">
     <li class="list-group-item m-1">
       <div class="row">
@@ -14,8 +14,8 @@
         <div class="col-6">
           <img class="img-fluid clickeable fixed-size-image " (click)="goBuy(producto.id)" *ngIf="producto?.imagePath"
             src="http://localhost:8080/api/productos/uploads/img/{{producto.imagePath}}" alt="">
-          <img class="img-fluid clickeable fixed-size-image " (click)="goBuy(producto.id)"
-            *ngIf="!producto?.imagePath" src="http://localhost:8080/api/productos/uploads/img/no_product" alt="">
+          <img class="img-fluid clickeable fixed-size-image " (click)="goBuy(producto.id)" *ngIf="!producto?.imagePath"
+            src="http://localhost:8080/api/productos/uploads/img/no_product" alt="">
         </div>
         <div class="col-6">
           <p class="fs-7">
@@ -30,8 +30,32 @@
   </ul>
 </div>
 
-<div class="row justify-content-center mt-4 position-static"> <!-- Agrega márgenes arriba para separarlo visualmente -->
-  <div class="col-9">
-    <paginator [paginator]="paginator" *ngIf="paginator"></paginator>
+@if (!searchState) {
+<div class="row">
+  <div class="col-9 col-md-auto">
+    <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"
+      (pageChange)="getProductosByPage()" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true">
+      <ng-template ngbPaginationFirst>First</ng-template>
+      <ng-template ngbPaginationLast>Last</ng-template>
+      <ng-template ngbPaginationPrevious>Prev</ng-template>
+      <ng-template ngbPaginationNext>Next</ng-template>
+      <ng-template ngbPaginationEllipsis>...</ng-template>
+      <ng-template ngbPaginationNumber let-page>{{ page }}</ng-template>
+    </ngb-pagination>
   </div>
 </div>
+} @else{
+<div class="row">
+  <div class="col-9 col-md-auto">
+    <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"
+      (pageChange)="search(page,searchValue)" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true">
+      <ng-template ngbPaginationFirst>First</ng-template>
+      <ng-template ngbPaginationLast>Last</ng-template>
+      <ng-template ngbPaginationPrevious>Prev</ng-template>
+      <ng-template ngbPaginationNext>Next</ng-template>
+      <ng-template ngbPaginationEllipsis>...</ng-template>
+      <ng-template ngbPaginationNumber let-page>{{ page }}</ng-template>
+    </ngb-pagination>
+  </div>
+</div>
+}

@@ -7,11 +7,12 @@ import { HomeComponent } from './home.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BuyWindowComponent } from './pages/buy-window/buy-window.component';
 import { CatalogueComponent } from './pages/catalogue/catalogue.component';
-import { CompraClienteComponent } from './pages/compra-cliente/compra-cliente.component';
+import { CompraClienteComponent } from './pages/compras-cliente/compras-cliente.component';
 import { VerCompraComponent } from './pages/ver-compra/ver-compra.component';
-import { PaginatorComponent } from '../paginator/paginator.component';
-import { SearchComponent } from '../search/search.component';
+import { PaginatorComponent } from '../components/paginator/paginator.component';
+import { SearchComponent } from '../components/search/search.component';
 import { ShopingCartComponent } from './pages/shoping-cart/shoping-cart.component';
+import { NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { ShopingCartComponent } from './pages/shoping-cart/shoping-cart.componen
     ReactiveFormsModule,
     PaginatorComponent,
     SearchComponent,
-    ShopingCartComponent
+    ShopingCartComponent,NgbPaginationModule, 
+    NgbTypeaheadModule
   ]
 })
 export class HomeModule { }

@@ -8,7 +8,7 @@ import { AdminComponent } from './admin.component';
 import { ProductoComponent } from './pages/producto/producto.component';
 import { FormProductoComponent } from './pages/producto/form-producto/form-producto.component';
 import { DetailProductoComponent } from './pages/producto/detail-producto/detail-producto.component';
-import { productsResolver } from 'src/app/core/resolver/products.resolver';
+import { branchResolver, productsResolver, typeResolver } from 'src/app/core/resolver/allresolvers.resolver';
 
 const routes: Routes = [
   {
@@ -20,17 +20,17 @@ const routes: Routes = [
         path: "producto-form", component: FormProductoComponent,title:"Formulario de producto"
       },
       {
-        path: "producto-detail", component: DetailProductoComponent, title:"Detall de del producto"
+        path: "producto-detail", component: DetailProductoComponent, title:"Detalle de del producto"
       },
 
       {
         path: "tipo-form", component: FormTipoComponent,title:"Formulario de tipo"
       },
       {
-        path: "tipo", component: TipoComponent,title:"Ver tipos"
+        path: "tipo", component: TipoComponent,title:"Ver tipos",resolve:{paginator:typeResolver}
       },
       {
-        path: "marca", component: MarcaComponent,title:"Ver marcas"
+        path: "marca", component: MarcaComponent,title:"Ver marcas",resolve:{paginator:branchResolver}
       },
       {
         path: "marca-form", component: FormMarcaComponent,title:"Formulario de marca"

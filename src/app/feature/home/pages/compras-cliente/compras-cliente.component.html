@@ -21,7 +21,15 @@
                     </tr>
                 </tbody>
             </table>
-            <paginator [paginator]="paginator" *ngIf="paginator"></paginator>
+            <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"
+                (pageChange)="getComprasUsuarioPage()" [maxSize]="3">
+                <ng-template ngbPaginationFirst>First</ng-template>
+                <ng-template ngbPaginationLast>Last</ng-template>
+                <ng-template ngbPaginationPrevious>Prev</ng-template>
+                <ng-template ngbPaginationNext>Next</ng-template>
+                <ng-template ngbPaginationEllipsis>...</ng-template>
+                <ng-template ngbPaginationNumber let-page>{{ page }}</ng-template>
+            </ngb-pagination>
         </div>
         <div class="btn-group">
             <button (click)="volverPaginaAnterior()" class="btn btn-danger">Volver</button>

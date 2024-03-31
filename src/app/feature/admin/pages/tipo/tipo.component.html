@@ -2,10 +2,10 @@
     <div class="card">
         <div class="btn-group">
             <a routerLink="/home" class="btn btn-danger">Ir a la pagina principal</a>
-            <a routerLink="/home/tipo-form" class="btn btn-primary">REGISTRAR UN NUEVO TIPO</a>                
+            <a routerLink="/home/tipo-form" class="btn btn-primary">REGISTRAR UN NUEVO TIPO</a>
         </div>
-        <div class="card-header">            
-            <h5 class="card-title text-center">TIPOS</h5>            
+        <div class="card-header">
+            <h5 class="card-title text-center">TIPOS</h5>
         </div>
         <div class="card-body">
             <table class="table">
@@ -33,9 +33,16 @@
                     </tr>
                 </tbody>
             </table>
-            @if (paginator) {
-                <paginator [paginator]="paginator"></paginator>
-            }
-        </div>        
-    </div>    
+            <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"
+                (pageChange)="getTiposByPage()" [maxSize]="5" [rotate]="true" [ellipses]="false"
+                [boundaryLinks]="true">
+                <ng-template ngbPaginationFirst>First</ng-template>
+                <ng-template ngbPaginationLast>Last</ng-template>
+                <ng-template ngbPaginationPrevious>Prev</ng-template>
+                <ng-template ngbPaginationNext>Next</ng-template>
+                <ng-template ngbPaginationEllipsis>...</ng-template>
+                <ng-template ngbPaginationNumber let-page>{{ page }}</ng-template>
+            </ngb-pagination>
+        </div>
+    </div>
 </div>

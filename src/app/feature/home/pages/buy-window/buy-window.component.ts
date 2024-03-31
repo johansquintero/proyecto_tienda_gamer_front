@@ -147,8 +147,14 @@ export class BuyWindowComponent {
    */
   generateQuantities(): number[] {
     let numbers: number[] = []
-    for (let index = 1; index <= this.producto.quantity; index++) {
-      numbers.push(index)
+    if (this.producto.quantity > 50) {
+      for (let index = 1; index <= 50; index++) {
+        numbers.push(index)
+      }
+    } else {
+      for (let index = 1; index <= this.producto.quantity; index++) {
+        numbers.push(index)
+      }
     }
     return numbers;
   }
