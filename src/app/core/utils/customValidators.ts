@@ -69,3 +69,11 @@ export class CustomValidators extends Validators {
         }
     }
 }
+
+//validaciones cruzadas dada por una funcion
+export const crossPasswordValidator: ValidatorFn = (formGroupControl: AbstractControl<{ password: string, confirmPassword: string }>): ValidationErrors | null => {
+    const sourceControl = formGroupControl.value.password
+    const targetControl = formGroupControl.value.confirmPassword;
+    return sourceControl && targetControl && sourceControl != targetControl ? { mismatch: true } : null;
+
+}

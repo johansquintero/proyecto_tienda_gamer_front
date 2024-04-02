@@ -80,7 +80,7 @@ export class AppBaseComponent {
    * contiene los errores de validación para cada control. Si el control es un FormControl, 
    * simplemente devuelve sus errores. Si el control es un FormGroup, itera sobre sus controles hijos y 
    * llama recursivamente a getFormErrors para cada uno, construyendo un objeto que contiene los errores 
-   * de todos los controles hijos.
+   * de todos los controles hijos. el fin de este metodo es para mostrar todos los errores del formgroup en consola
    * @param control 
    * @returns 
    */

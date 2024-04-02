@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 import { AuthRegisterRequestDto } from 'src/app/core/dto/cliente/authRegisterRequestDto';
@@ -34,7 +34,16 @@ export class RegisterComponent extends AppBaseComponent {
     },
       {
         validators: [CustomValidators.MatchValidator('password', 'repeatPassword')]
-      })
+      });
+    /*Opcion de creacion del form control sin el FormBuilder
+    this.formGroup = new FormGroup({
+      username: new FormControl('', { validators: [Validators.required, Validators.minLength(5), CustomValidators.LetterAndNumericValidator] })
+      ,password: new FormControl('', { validators: [Validators.required, Validators.minLength(5)] }),
+      repeatPassword: new FormControl('', [Validators.required, Validators.minLength(5)]),
+      email: new FormControl('', [Validators.required, CustomValidators.EmailValidator]),
+      telephone: new  FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(10), CustomValidators.NumericValidator]),
+      address: new FormControl ('', [Validators.required, Validators.minLength(4)])
+    },{validators: [CustomValidators.MatchValidator('password', 'repeatPassword')]});*/
   }
 
   public async register(): Promise<void> {

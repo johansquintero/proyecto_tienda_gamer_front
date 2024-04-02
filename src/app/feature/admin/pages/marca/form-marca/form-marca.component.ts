@@ -21,7 +21,7 @@ export class FormMarcaComponent extends AppBaseComponent {
   constructor(private fb: FormBuilder, private marcaService: MarcaService, private router: Router) {
     super();
     this.sharedMarca = this.marcaService.getSharedMarca();//obtiene la marca compartida por si se va a actualizar una marca 
-    this.formGroup = this.fb.group({
+    this.formGroup = this.fb.nonNullable.group({
       name: [this.sharedMarca != null ? `${this.sharedMarca.name}` : '', [Validators.required, Validators.minLength(1), CustomValidators.LetterValidator]]
     });
   }
