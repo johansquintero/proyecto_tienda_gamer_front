@@ -18,7 +18,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-buy-window',
   templateUrl: './buy-window.component.html',
-  styleUrls: ['./buy-window.component.css']
+  styleUrls: ['./buy-window.component.scss']
 })
 export class BuyWindowComponent {
 

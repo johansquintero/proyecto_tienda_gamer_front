@@ -14,7 +14,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-form-producto',
   templateUrl: './form-producto.component.html',
-  styleUrls: ['./form-producto.component.css']
+  styleUrls: ['./form-producto.component.scss']
 })
 export class FormProductoComponent extends AppBaseComponent {
   public tipos: TipoDto[];//tipos de la lista 

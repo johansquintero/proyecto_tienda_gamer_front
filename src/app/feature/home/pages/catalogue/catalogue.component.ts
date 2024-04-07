@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-catalogue',
   templateUrl: './catalogue.component.html',
-  styleUrls: ['./catalogue.component.css']
+  styleUrls: ['./catalogue.component.scss']
 })
 export class CatalogueComponent {
   productos: ProductoResponseDto[];

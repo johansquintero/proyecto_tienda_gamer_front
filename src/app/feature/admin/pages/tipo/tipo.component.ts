@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-tipo',
   templateUrl: './tipo.component.html',
-  styleUrls: ['./tipo.component.css']
+  styleUrls: ['./tipo.component.scss']
 })
 export class TipoComponent {
 

@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 @NgModule({
   declarations: [
     AppComponent
@@ -19,7 +20,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
   providers: [
     {//se configura el interceptor en el modulo
       provide:HTTP_INTERCEPTORS,useClass:AuthInterceptor,multi:true
-    }
+    },
+    provideAnimationsAsync()
   ],
   bootstrap: [AppComponent]
 })

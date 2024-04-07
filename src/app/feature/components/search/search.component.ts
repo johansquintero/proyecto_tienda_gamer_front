@@ -6,7 +6,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './search.component.html',
-  styleUrl: './search.component.css'
+  styleUrl: './search.component.scss'
 })
 export class SearchComponent {
   @Output() searchValueEvent = new EventEmitter<String>();

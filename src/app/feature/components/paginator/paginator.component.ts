@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'paginator',
   templateUrl: './paginator.component.html',
-  styleUrls: ['./paginator.component.css'],
+  styleUrls: ['./paginator.component.scss'],
   standalone: true,
   imports: [CommonModule]
 })

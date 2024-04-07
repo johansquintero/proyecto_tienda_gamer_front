@@ -7,7 +7,7 @@ import { TokenService } from 'src/app/core/service/token.service';
 @Component({
   selector: 'app-header-nav',
   templateUrl: './header-nav.component.html',
-  styleUrls: ['./header-nav.component.css']
+  styleUrls: ['./header-nav.component.scss']
 })
 export class HeaderNavComponent {
   public cliente: AuthClientetDto;

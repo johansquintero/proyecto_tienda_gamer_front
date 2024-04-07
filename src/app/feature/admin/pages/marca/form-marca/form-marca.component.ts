@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-form-marca',
   templateUrl: './form-marca.component.html',
-  styleUrls: ['./form-marca.component.css']
+  styleUrls: ['./form-marca.component.scss']
 })
 export class FormMarcaComponent extends AppBaseComponent {
   public formGroup: FormGroup;

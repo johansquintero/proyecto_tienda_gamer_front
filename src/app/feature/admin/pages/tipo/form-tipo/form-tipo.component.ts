@@ -13,7 +13,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-form-tipo',
   templateUrl: './form-tipo.component.html',
-  styleUrls: ['./form-tipo.component.css']
+  styleUrls: ['./form-tipo.component.scss']
 })
 export class FormTipoComponent extends AppBaseComponent {
 

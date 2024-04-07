@@ -5,15 +5,19 @@ import { RegisterComponent } from './pages/register/register.component';
 
 const routes: Routes = [
   {
-    path:"inicio-sesion",component:LoginComponent,title:"Iniciar sesion"
+    path: 'inicio-sesion',
+    component: LoginComponent,
+    title: 'Iniciar sesion',
   },
   {
-    path:"registro",component:RegisterComponent,title:"Registrarse"
-  }
+    path: 'registro',
+    component: RegisterComponent,
+    title: 'Registrarse',
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AuthRoutingModule { }
+export class AuthRoutingModule {}

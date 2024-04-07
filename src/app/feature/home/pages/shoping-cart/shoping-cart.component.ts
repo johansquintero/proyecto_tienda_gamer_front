@@ -19,7 +19,7 @@ import Swal from 'sweetalert2';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './shoping-cart.component.html',
-  styleUrl: './shoping-cart.component.css'
+  styleUrl: './shoping-cart.component.scss'
 })
 export class ShopingCartComponent {
 

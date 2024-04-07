@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-ver-compra',
   templateUrl: './ver-compra.component.html',
-  styleUrls: ['./ver-compra.component.css']
+  styleUrls: ['./ver-compra.component.scss']
 })
 export class VerCompraComponent {
   compra:CompraResponseDto;

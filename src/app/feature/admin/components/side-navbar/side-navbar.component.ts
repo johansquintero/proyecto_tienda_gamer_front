@@ -7,7 +7,7 @@ import { TokenService } from 'src/app/core/service/token.service';
 @Component({
   selector: 'app-side-navbar',
   templateUrl: './side-navbar.component.html',
-  styleUrls: ['./side-navbar.component.css']
+  styleUrls: ['./side-navbar.component.scss']
 })
 export class SideNavbarComponent {
   public cliente: AuthClientetDto;

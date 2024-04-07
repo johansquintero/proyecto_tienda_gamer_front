@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-marca',
   templateUrl: './marca.component.html',
-  styleUrls: ['./marca.component.css']
+  styleUrls: ['./marca.component.scss']
 })
 export class MarcaComponent {
   public marcas: MarcaDto[];

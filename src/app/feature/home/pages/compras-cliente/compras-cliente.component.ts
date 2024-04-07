@@ -10,7 +10,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 @Component({
   selector: 'app-compras-cliente',
   templateUrl: './compras-cliente.component.html',
-  styleUrls: ['./compras-cliente.component.css']
+  styleUrls: ['./compras-cliente.component.scss']
 })
 export class CompraClienteComponent {
 

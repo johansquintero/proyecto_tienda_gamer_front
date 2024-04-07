@@ -11,7 +11,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-detail-producto',
   templateUrl: './detail-producto.component.html',
-  styleUrls: ['./detail-producto.component.css']
+  styleUrls: ['./detail-producto.component.scss']
 })
 export class DetailProductoComponent extends AppBaseComponent {
 
