@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AppBaseComponent } from 'src/app/core/utils/AppBaseComponent';
@@ -11,9 +11,9 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent extends AppBaseComponent {
+export class LoginComponent extends AppBaseComponent implements OnInit{
   public logForm: FormGroup;
   /**
    * constructor
@@ -26,16 +26,20 @@ export class LoginComponent extends AppBaseComponent {
     private router: Router,
     private fb: FormBuilder,
     private authService: AuthService,
-    private tokenService: TokenService) {
+    private tokenService: TokenService
+  ) {
     super();
-    this.initFormFields();
   }
 
+  ngOnInit(): void {
+    this.initFormFields();
+  }
+  
   public initFormFields() {
     this.logForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(5)]],
-      password: ['', [Validators.required, Validators.minLength(5)]]
-    })
+      password: ['', [Validators.required, Validators.minLength(5)]],
+    });
   }
 
   /**
@@ -44,7 +48,7 @@ export class LoginComponent extends AppBaseComponent {
    * hace la lectura de los campos del grupo del formularios
    * crea el objeto de loginDto con los datos
    * se envia el cuerpo al servicio de login
-   * se aplica el await para esperar la operacion del observable 
+   * se aplica el await para esperar la operacion del observable
    */
   public async logIn(): Promise<void> {
     let loginDto: AuthLoginDto;
@@ -52,25 +56,23 @@ export class LoginComponent extends AppBaseComponent {
       let username = this.logForm.get('username').value;
       let password = this.logForm.get('password').value;
       loginDto = { username, password };
-
-      await lastValueFrom(this.authService.login(loginDto)).catch(err => {
+      await lastValueFrom(this.authService.login(loginDto)).catch((err) => {
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: err.error.detail
+          text: err.error.detail,
         });
       });
       console.log(`token:${this.tokenService.getToken()}`);
-      await this.router.navigateByUrl("/home");
+      await this.router.navigateByUrl('/home');
     } else {
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: 'Hay errores en el formulario'
+        text: 'Hay errores en el formulario',
       });
     }
 
     //console.log('Errores:', JSON.stringify(this.getFormErrors(this.logForm), null, 2));
   }
-
 }

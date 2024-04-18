@@ -1,14 +1,45 @@
-.clickeable {
-    /* Establecer el cursor en forma de mano */
-    cursor: pointer;
-}
+.products {
+  display: grid;
+  gap: 3em;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
 
-.clickeable:hover {
-    /* Cambiar el color de fondo cuando el cursor pasa sobre el elemento */
-    color: #1d88d9;  
-}
-.fixed-size-image {
-    width: 200px; /* Establece el ancho deseado */
-    height: 150px; /* Establece la altura deseada */
-    object-fit: cover; /* Opcional: ajusta la imagen para llenar el contenedor sin distorsión */
+  .card {
+    max-width: 400px;
+    height: 620px;
+    &__image {
+      width: 100%;
+      height: auto;
+      max-height: 300px;
+      object-fit: cover;
+      cursor: pointer;
+    }
+
+    &__title {
+      max-width: 200px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      cursor: pointer;
+    }
+
+    &__title:hover {
+      color: #1d88d9;
+    }
+
+    &__content {
+      flex: 1;
+    }
+
+    &__description {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 6; /* Número de líneas a mostrar */
+      -webkit-box-orient: vertical;
+    }
+    &__price {
+      font-weight: bold;
+      font-size: x-large;
+    }
+  }
 }

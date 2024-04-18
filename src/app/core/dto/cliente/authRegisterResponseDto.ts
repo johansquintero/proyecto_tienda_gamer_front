@@ -1,3 +1,3 @@
 export interface AuthRegisterResponseDto{
-    password:string;
+    username:string;
 }

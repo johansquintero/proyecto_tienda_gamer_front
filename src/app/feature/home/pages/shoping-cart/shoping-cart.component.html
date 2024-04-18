@@ -1,152 +1,61 @@
 <div class="container">
-    <p class="fs-1 text-center fw-bold">MI CARRITO</p>
-    @if (listaCarrito?.length==0) {
-    <div class="text-center">
-        <span class="alert alert-danger fs-2">No hay elementos registrados en el carrito</span>
-    </div>
-    }@else{
-    <ul *ngFor="let producto of listaCarrito" class="list-group">
-        <li class="list-group-item m-1">
-            <div class="row">
-                <div class="col-12">
-                    <span (click)="goBuy(producto.id)" class="fs-4 text-center fw-bolder clickeable">{{ producto.name|
-                        uppercase}}</span>
-                </div>
+	<mat-card class="card">
+		<mat-card-header>
+			<mat-card-title class="card__title">Mi carrito</mat-card-title>
+			<mat-card-subtitle>Selecciona tus productos</mat-card-subtitle>
+		</mat-card-header>
+		<mat-card-content>
+			@if(listaCarrito?.length==0){
+			<span>No hay elementos registrados en el carrito</span>
+			}@else {
+			<mat-list role="list">
+				@for(producto of listaCarrito; track producto.id){
+				<mat-list-item role="listitem" class="list-item">
+					@if(producto?.imagePath){
+					<img
+						matListItemIcon
+						class="img-fluid clickeable"
+						(click)="goBuy(producto.id)"
+						src="http://localhost:8080/api/productos/uploads/img/{{ producto.imagePath }}"
+						alt=""
+					/>
+					}@else{
+					<img
+						matListItemIcon
+						class="img-fluid clickeable"
+						(click)="goBuy(producto.id)"
+						src="http://localhost:8080/api/productos/uploads/img/no_product"
+						alt=""
+					/>
+					}
+					<span (click)="goBuy(producto.id)" class="card-content__limit-text" matListItemTitle class="clickeable">{{
+						producto.name | uppercase
+					}}</span>
+					<span matListItemMeta><strong>Unidades disponible:</strong> {{ producto.quantity }}</span>
+					<span matListItemMeta>Cantidad:</span>
+					<select matListItemMeta #quantity (change)="updateQuantity(quantity.value, producto.id)" id="quantity" name="quantity">
+						@for(i of generateQuantities(producto.quantity);track i){
+						<option value="{{ i }}" #quantity>{{ i }}</option>
+						}@empty {
+						<p>no hay unidades disponibles</p>
+						}
+					</select>
 
-                <div class="col-5">
-                    <img class="img-fluid clickeable fixed-size-image " (click)="goBuy(producto.id)"
-                        *ngIf="producto?.imagePath"
-                        src="http://localhost:8080/api/productos/uploads/img/{{producto.imagePath}}" alt="">
-                    <img class="img-fluid clickeable fixed-size-image " (click)="goBuy(producto.id)"
-                        *ngIf="!producto?.imagePath" src="http://localhost:8080/api/productos/uploads/img/no_product"
-                        alt="">
-                </div>
-                <div class="col-4">
-                    <p class="fs-7">
-                        <strong>Precio:</strong>{{ producto.price | currency : "USD" : "symbol" : "1.2-2" }}
-                    </p>
-                    <p class="fs-7"><strong>Tipo de producto:</strong> {{ producto.tipo }}</p>
-                    <p class="fs-7"><strong>Marca:</strong> {{ producto.marca }}</p>
-                    <p class="fs-7"><strong>Unidades disponible:</strong> {{ producto.quantity }}</p>
-                </div>
-                <div class="col-3 col">
-                    <div class="form-check">
-                        <label class="form-check-label fw-bold" for="flexCheckDefault">
-                            Seleccionar producto
-                        </label>
-                        <input class="form-check-input" type="checkbox" [checked]="producto.checked"
-                            (change)="updateChecked($event,producto.id)">
-                    </div>
-                    <label for="quantity" class="form-label"><strong>Seleccionar cantidad</strong></label>
-                    <label for="quantity" class="form-label">Cantidad disponible {{producto.quantity}}</label>
-                    <select #quantity (change)="updateQuantity(quantity.value, producto.id)" id="quantity"
-                        class="form-select form-select-sm select" name="" id="">
-                        @for(i of generateQuantities(producto.quantity);track i){
-                        <option value="{{i}}" #quantity> {{i}}
-                        </option>
-                        }@empty {
-                        <p>no hay unidades disponibles</p>
-                        }
-
-                    </select>
-                    <button class="btn btn-dark btn-rounded mr-1 mt-3" data-toggle="tooltip" title=""
-                        (click)="deleteFromCart(producto)" data-original-title="Add to cart"> Eliminar del carrito
-                    </button>
-                </div>
-            </div>
-        </li>
-    </ul>
-    }
-    <div class="row mt-5">
-        <div class="col-6 btn-group">
-            @if (this.listaCarrito?.length>0) {
-            <!-- Button trigger modal -->
-            <button type="button" (click)="generateDetail()" class="btn btn-primary" data-bs-toggle="modal"
-                data-bs-target="#exampleModal">
-                Generrar detalle
-            </button>
-            }
-            <button (click)="volverPaginaAnterior()" class="btn btn-danger">Volver</button>
-        </div>
-    </div>
-
-
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-body">
-                    @if (compra) {
-                    <div class="container">
-                        <div class="row mt-4">
-                            <div class="col-6">
-                                <h1>Detalle de compra</h1>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-6">
-                                <h4>Información del Cliente</h4>
-                                <address>
-                                    <strong>Nombre del Cliente: {{cliente.username}}</strong><br>
-                                    Dirección del Cliente: {{cliente.address}}<br>
-                                    Teléfono: {{cliente.telephone}}<br>
-                                    Correo Electrónico: {{cliente.email}}
-                                </address>
-                            </div>
-                            <div class="col-6">
-                                <h4>Información de la compra</h4>
-                                <address>
-                                    <!-- @if (compra.id) {
-                                    <strong>Número de Factura:</strong> {{compra.id}}<br>
-                                    }-->
-                                    <strong>Fecha de Emisión:</strong> {{compra.date}}<br>
-                                </address>
-                            </div>
-                        </div>
-
-                        <div class="row mt-4">
-                            <div class="col-12">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Descripción</th>
-                                            <th>Cantidad</th>
-                                            <th>Precio Unitario</th>
-                                            <th>Total</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let product of compra.compraProductos">
-                                            <td>{{product.productName}}</td>
-                                            <td>{{product.quantity}}</td>
-                                            <td>{{(product.quantity>0?product.total/product.quantity:product.total)
-                                                |currency : "USD" : "symbol" : "1.2-2"}}</td>
-                                            <td>{{product.total|currency : "USD" : "symbol" : "1.2-2"}}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-6">
-                                <h4>Detalles del Pago</h4>
-                                <p><strong>Subtotal:</strong>{{compra.total|currency : "USD" : "symbol" : "1.2-2"}}</p>
-                                <p><strong>Impuestos:</strong> $0</p>
-                                <p><strong>Total:</strong> {{compra.total|currency : "USD" : "symbol" : "1.2-2"}}</p>
-                            </div>
-                        </div>
-
-                    </div>
-                    }
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button class="btn btn-primary" (click)="buyAll()">comprar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
+					<input
+						matListItemMeta
+						class="form-check-input"
+						type="checkbox"
+						[checked]="producto.checked"
+						(change)="updateChecked($event, producto.id)"
+					/>
+				</mat-list-item>
+				<hr />
+				}
+			</mat-list>
+			}
+		</mat-card-content>
+		<mat-card-actions>
+			<button (click)="generateDetail()" mat-button>GENERAR COMPRA</button>
+		</mat-card-actions>
+	</mat-card>
 </div>

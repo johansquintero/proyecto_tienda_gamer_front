@@ -1,10 +1,26 @@
-<header>
-    <app-header-nav></app-header-nav>
-</header>
+<div class="container">
+	<mat-toolbar color="primary" class="toolbar" mode="side">
+		<span class="clickeable" (click)="navigate('/')">Home</span>
+		<span class="toolbar__spacer"></span>
 
-
-<div class="row mx-auto mt-3">
-    <div class="col-md-8 mx-auto">
-        <router-outlet></router-outlet>
-    </div>
+		<button mat-icon-button class="favorite-icon" (click)="drawer.toggle()">
+			<mat-icon [matBadge]="0" matBadgeColor="accent" aria-hidden="false">shopping_cart</mat-icon>
+		</button>
+		<button mat-button [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon></button>
+		<mat-menu #menu="matMenu">
+			<button mat-menu-item (click)="navigate('/mis-compras')" >Mis compras</button>
+			@if (cliente.role=='ADMIN') {
+			<button mat-menu-item routerLink="/admin">Admin</button>
+			}
+			<button mat-menu-item (click)="closeSession()">Cerra sesion</button>
+		</mat-menu>
+	</mat-toolbar>
+	<mat-drawer-container class="drawer-container" [hasBackdrop]="true">
+		<mat-drawer #drawer mode="over" position="end">
+			<app-shoping-cart></app-shoping-cart>
+		</mat-drawer>
+		<mat-drawer-content class="drawer-container__content">
+			<router-outlet></router-outlet>
+		</mat-drawer-content>
+	</mat-drawer-container>
 </div>

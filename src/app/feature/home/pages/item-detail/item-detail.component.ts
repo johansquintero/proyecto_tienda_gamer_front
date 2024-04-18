@@ -1,6 +1,6 @@
-import { CompraRequestDto } from './../../../../core/dto/compra/compraRequestDto';
-import { Component } from '@angular/core';
-import { FormControl, FormBuilder, FormGroup } from '@angular/forms';
+import { CompraRequestDto } from '../../../../core/dto/compra/compraRequestDto';
+import { Component} from '@angular/core';
+import { FormControl} from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 import { CartRequestDto } from 'src/app/core/dto/cart/cartRequestDto';
@@ -16,42 +16,44 @@ import { CustomValidators } from 'src/app/core/utils/customValidators';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-buy-window',
-  templateUrl: './buy-window.component.html',
-  styleUrls: ['./buy-window.component.scss']
+  selector: 'app-purchase-window',
+  templateUrl: './item-detail.component.html',
+  styleUrls: ['./item-detail.component.scss'],
 })
-export class BuyWindowComponent {
-
+export class ItemDetailComponent {
   producto: ProductoResponseDto;
   quantity: FormControl;
   cliente: AuthClientetDto;
   carrito: CartResponseDto;
   listaCarrito: ProductoResponseDto[];
 
-  constructor(private productoService: ProductoService,
+  constructor(
+    private productoService: ProductoService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private tokenService: TokenService,
     private compraService: CompraService,
-    private cartService: CartService) {
-    this.quantity = new FormControl(1, [CustomValidators.NumericValidator]);
-  }
+    private cartService: CartService
+  ) {}
 
   ngOnInit() {
+    this.quantity = new FormControl(1, [CustomValidators.NumericValidator]);
     this.getProducto();
-    this.cliente = this.tokenService.getInfoToken()
+    this.cliente = this.tokenService.getInfoToken();
     if (this.activatedRoute.snapshot.data['cart']) {
-      this.carrito = this.activatedRoute.snapshot.data['cart']
-      this.listaCarrito = this.carrito.productos
-      console.log(this.carrito = this.activatedRoute.snapshot.data['cart'])
+      this.carrito = this.activatedRoute.snapshot.data['cart'];
+      this.listaCarrito = this.carrito.productos;
+      console.log((this.carrito = this.activatedRoute.snapshot.data['cart']));
     }
   }
 
   public async GetCart(customerId: number): Promise<void> {
-    await lastValueFrom(this.cartService.getByUserId(customerId)).then(response => {
-      this.carrito = response;
-      this.listaCarrito = response.productos;
-    })
+    await lastValueFrom(this.cartService.getByUserId(customerId)).then(
+      (response) => {
+        this.carrito = response;
+        this.listaCarrito = response.productos;
+      }
+    );
   }
 
   public async getProducto() {
@@ -59,101 +61,111 @@ export class BuyWindowComponent {
     this.activatedRoute.queryParams.subscribe((params: Params) => {
       name = params['producto_id'] ? params['producto_id'] : 1;
     });
-    await lastValueFrom(this.productoService.getProducto(name)).then(response => {
-      this.producto = response;
-    }).catch(err => {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: err.error.detail
-      }).then(value => {
-        this.router.navigate(['home']);
-      });;
-    });
+    await lastValueFrom(this.productoService.getProducto(name))
+      .then((response) => {
+        this.producto = response;
+      })
+      .catch((err) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: err.error.detail,
+        }).then((value) => {
+          this.router.navigate(['home']);
+        });
+      });
   }
 
   public async buy(): Promise<void> {
-    let compraProductoRequestDto: CompraProductoRequestDto = new CompraProductoRequestDto();
+    let compraProductoRequestDto: CompraProductoRequestDto =
+      new CompraProductoRequestDto();
     compraProductoRequestDto.quantity = this.quantity.value as number;
     compraProductoRequestDto.productId = this.producto.id;
     compraProductoRequestDto.total = this.producto.price * this.quantity.value;
 
     let compraRequestDto: CompraRequestDto = new CompraRequestDto();
     compraRequestDto.date = this.getActualDateFormatted();
-    compraRequestDto.customerId = this.cliente.id
-    compraRequestDto.paymentMethod = "debito";
+    compraRequestDto.customerId = this.cliente.id;
+    compraRequestDto.paymentMethod = 'debito';
     compraRequestDto.compraProductos.push(compraProductoRequestDto);
-    compraRequestDto.compraProductos.forEach(compraProductoRequestDto => {
-      compraRequestDto.total += compraProductoRequestDto.total
+    compraRequestDto.compraProductos.forEach((compraProductoRequestDto) => {
+      compraRequestDto.total += compraProductoRequestDto.total;
     });
     console.log(compraRequestDto);
 
-    await lastValueFrom(this.compraService.save(compraRequestDto)).then(response => {
-      if (response.id) {
-        Swal.fire({
-          icon: 'success',
-          title: `Compra con id de factura ${response.id} realizada correctamente`,
-          showConfirmButton: true
-        });
-        this.getProducto();
-      }
-    }).catch(err => {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: err.error.detail
+    await lastValueFrom(this.compraService.save(compraRequestDto))
+      .then((response) => {
+        if (response.id) {
+          Swal.fire({
+            icon: 'success',
+            title: `Compra con id de factura ${response.id} realizada correctamente`,
+            showConfirmButton: true,
+          });
+        }
       })
-    })
+      .catch((err) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: err.error.detail,
+        });
+      });
   }
 
   public async updateCart(cart: CartRequestDto): Promise<void> {
-    await lastValueFrom(this.cartService.update(cart)).then(response => {
-      this.carrito = response
-      this.listaCarrito = response.productos
-    }).catch(err => {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: err.error.detail
+    await lastValueFrom(this.cartService.update(cart))
+      .then((response) => {
+        this.carrito = response;
+        this.listaCarrito = response.productos;
+        this.cartService.actualizarCarrito(response);//notificar cambio del carrito
       })
-    })
+      .catch((err) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: err.error.detail,
+        });
+      });
   }
 
   public addToCart() {
     this.listaCarrito.push(this.producto);
-    var cartRequest: CartRequestDto = new CartRequestDto()
-    cartRequest.customerId = this.carrito.customerId
+    var cartRequest: CartRequestDto = new CartRequestDto();
+    cartRequest.customerId = this.carrito.customerId;
     cartRequest.productos = this.listaCarrito;
-    cartRequest.id = this.carrito.id
+    cartRequest.id = this.carrito.id;
     this.updateCart(cartRequest);
   }
 
   public deleteFromCart() {
-    this.listaCarrito = this.listaCarrito.filter((p: ProductoResponseDto) => p.id != this.producto.id);
-    var cartRequest: CartRequestDto = new CartRequestDto()
-    cartRequest.customerId = this.carrito.customerId
+    this.listaCarrito = this.listaCarrito.filter(
+      (p: ProductoResponseDto) => p.id != this.producto.id
+    );
+    var cartRequest: CartRequestDto = new CartRequestDto();
+    cartRequest.customerId = this.carrito.customerId;
     cartRequest.productos = this.listaCarrito;
-    cartRequest.id = this.carrito.id
+    cartRequest.id = this.carrito.id;
     this.updateCart(cartRequest);
   }
   public isInCart() {
-    return this.listaCarrito.find((p: ProductoResponseDto) => p.id == this.producto.id);
+    return this.listaCarrito.find(
+      (p: ProductoResponseDto) => p.id == this.producto.id
+    );
   }
-
 
   /**
    * Genera el el numero total de cantidades del producto para el select
-   * @returns 
+   * @returns
    */
   generateQuantities(): number[] {
-    let numbers: number[] = []
+    let numbers: number[] = [];
     if (this.producto.quantity > 50) {
       for (let index = 1; index <= 50; index++) {
-        numbers.push(index)
+        numbers.push(index);
       }
     } else {
       for (let index = 1; index <= this.producto.quantity; index++) {
-        numbers.push(index)
+        numbers.push(index);
       }
     }
     return numbers;
@@ -161,7 +173,7 @@ export class BuyWindowComponent {
 
   /**
    * Formatea la fecha actual y lo retorna en un string
-   * @returns 
+   * @returns
    */
   getActualDateFormatted(): string {
     // Obtén la fecha y hora actual
@@ -173,14 +185,15 @@ export class BuyWindowComponent {
     let hora = fechaHoraActual.getHours().toString().padStart(2, '0');
     let minutos = fechaHoraActual.getMinutes().toString().padStart(2, '0');
     let segundos = fechaHoraActual.getSeconds().toString().padStart(2, '0');
-    let milisegundos = fechaHoraActual.getMilliseconds().toString().padStart(3, '0');
+    let milisegundos = fechaHoraActual
+      .getMilliseconds()
+      .toString()
+      .padStart(3, '0');
 
     // Formatea la fecha y hora en el formato deseado
     let fechaHoraFormateada = `${año}-${mes}-${dia}T${hora}:${minutos}:${segundos}.${milisegundos}`;
     return fechaHoraFormateada;
   }
-
-
 
   public volverPaginaAnterior() {
     window.history.back();

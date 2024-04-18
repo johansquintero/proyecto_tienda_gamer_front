@@ -1,25 +1,31 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { HomeRoutingModule } from './home-routing.module';
-import { HeaderNavComponent } from './components/header-nav/header-nav.component';
 import { HomeComponent } from './home.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { BuyWindowComponent } from './pages/buy-window/buy-window.component';
+import { MatBadgeModule } from '@angular/material/badge';
+import { ItemDetailComponent} from './pages/item-detail/item-detail.component';
 import { CatalogueComponent } from './pages/catalogue/catalogue.component';
 import { CompraClienteComponent } from './pages/compras-cliente/compras-cliente.component';
 import { VerCompraComponent } from './pages/ver-compra/ver-compra.component';
-import { PaginatorComponent } from '../components/paginator/paginator.component';
 import { SearchComponent } from '../components/search/search.component';
 import { ShopingCartComponent } from './pages/shoping-cart/shoping-cart.component';
-import { NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
-
+import { MatToolbarModule } from '@angular/material/toolbar';
+import {
+  NgbPaginationModule,
+  NgbTypeaheadModule,
+} from '@ng-bootstrap/ng-bootstrap';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import {MatMenuModule} from '@angular/material/menu'
 
 @NgModule({
   declarations: [
-    HeaderNavComponent,
     HomeComponent,
-    BuyWindowComponent,
+    ItemDetailComponent,
     CatalogueComponent,
     CompraClienteComponent,
     VerCompraComponent
@@ -28,10 +34,18 @@ import { NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootst
     CommonModule,
     HomeRoutingModule,
     ReactiveFormsModule,
-    PaginatorComponent,
     SearchComponent,
-    ShopingCartComponent,NgbPaginationModule, 
-    NgbTypeaheadModule
-  ]
+    ShopingCartComponent,
+    NgbPaginationModule,
+    NgbTypeaheadModule,
+    MatToolbarModule,
+    MatIcon,
+    MatButtonModule,
+    MatBadgeModule,
+    MatSidenavModule,
+    MatCardModule,
+    MatPaginatorModule,
+    MatMenuModule
+  ],
 })
-export class HomeModule { }
+export class HomeModule {}

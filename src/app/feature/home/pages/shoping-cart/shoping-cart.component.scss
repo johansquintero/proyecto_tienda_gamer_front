@@ -1,14 +1,43 @@
 .clickeable {
-    /* Establecer el cursor en forma de mano */
-    cursor: pointer;
+	/* Establecer el cursor en forma de mano */
+	cursor: pointer;
 }
 
 .clickeable:hover {
-    /* Cambiar el color de fondo cuando el cursor pasa sobre el elemento */
-    color: #1d88d9;  
+	/* Cambiar el color de fondo cuando el cursor pasa sobre el elemento */
+	color: #1d88d9;
 }
-.fixed-size-image {
-    width: 200px; /* Establece el ancho deseado */
-    height: 150px; /* Establece la altura deseada */
-    object-fit: cover; /* Opcional: ajusta la imagen para llenar el contenedor sin distorsión */
+
+.limit-text {
+	width: 10px; /* Define el ancho máximo del contenedor */
+	overflow: hidden; /* Oculta cualquier contenido que sobrepase el ancho definido */
+	white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+	text-overflow: ellipsis; /* Agrega puntos suspensivos (...) al final del texto cuando se trunca */
+}
+
+.container {
+	height: 100%;
+	display: flex;
+
+	.card {
+		width: 700px;
+
+		&__title {
+			justify-content: center;
+		}
+
+		.card-content {
+			margin-top: 1.5em;
+			display: flex;
+			flex-direction: column;
+			text-align: center;
+
+			&__limit-text {
+				width: 10px; /* Define el ancho máximo del contenedor */
+				overflow: hidden; /* Oculta cualquier contenido que sobrepase el ancho definido */
+				white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+				text-overflow: ellipsis; /* Agrega puntos suspensivos (...) al final del texto cuando se trunca */
+			}
+		}
+	}
 }

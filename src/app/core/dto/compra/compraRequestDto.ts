@@ -1,3 +1,4 @@
+import { CompraProductoRequestDto } from "../compraproducto/compraProductoRequestDto";
 
 export class CompraRequestDto {
     constructor() {
@@ -27,6 +28,6 @@ export class CompraRequestDto {
     /**
      * detalle de la compra que se obtiene al relacionar las compras con los productos
      */
-    compraProductos: any[];
+    compraProductos: CompraProductoRequestDto[];
 
 }

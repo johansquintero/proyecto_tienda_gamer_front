@@ -65,6 +65,7 @@ export class AppBaseComponent {
           message = ErrorForm.MAX_LENGTH_FIELD;
           break;
         case (formGroup.hasError("mismatch")):
+          console.log("llego")
           message = ErrorForm.MISMATCH_FIELDS;
           break;
         case (formGroup.hasError("invalidImage")):
@@ -100,10 +101,8 @@ export class AppBaseComponent {
           errors[key] = childErrors;
         }
       });
-
       return Object.keys(errors).length ? errors : null;
     }
-
     return null;
   }
 }

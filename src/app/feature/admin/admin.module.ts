@@ -12,7 +12,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ProductoComponent } from './pages/producto/producto.component';
 import { DetailProductoComponent } from './pages/producto/detail-producto/detail-producto.component';
 import { FormProductoComponent } from './pages/producto/form-producto/form-producto.component';
-import { PaginatorComponent } from '../components/paginator/paginator.component';
 import { SearchComponent } from '../components/search/search.component';
 import { MarcaService } from 'src/app/core/service/marca.service';
 import { NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
@@ -34,7 +33,6 @@ import { NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootst
     CommonModule,
     AdminRoutingModule,
     ReactiveFormsModule,
-    PaginatorComponent,
     SearchComponent, 
     NgbPaginationModule, 
     NgbTypeaheadModule

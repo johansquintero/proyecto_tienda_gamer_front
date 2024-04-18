@@ -14,4 +14,10 @@ export class CompraProductoRequestDto {
      * total a pagar
      */
     total: number;
+
+    /**
+     * nombre del producto para mostra en el detalle, se asigna como opcional ya que no es necesario enviarlo al backend
+     */
+
+    productName?:string;
 }

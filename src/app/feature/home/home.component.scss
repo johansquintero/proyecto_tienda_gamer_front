@@ -1,0 +1,37 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  .toolbar {
+    position: fixed;
+    z-index: 2;
+    &__spacer {
+      flex: 1 1 auto;
+    }
+  }
+}
+
+.drawer-container {
+  flex: 1;
+  margin-top: 4.5em;
+
+  &__content {
+    padding: 12px;
+  }
+}
+
+
+.clickeable {
+	/* Establecer el cursor en forma de mano */
+	cursor: pointer;
+}
+
+.clickeable:hover {
+	/* Cambiar el color de fondo cuando el cursor pasa sobre el elemento */
+	color: #000000;
+}

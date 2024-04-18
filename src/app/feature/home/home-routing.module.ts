@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home.component';
 import { CatalogueComponent } from './pages/catalogue/catalogue.component';
-import { BuyWindowComponent } from './pages/buy-window/buy-window.component';
+import { ItemDetailComponent } from './pages/item-detail/item-detail.component';
 import { CompraClienteComponent } from './pages/compras-cliente/compras-cliente.component';
 import { VerCompraComponent } from './pages/ver-compra/ver-compra.component';
 import { ShopingCartComponent } from './pages/shoping-cart/shoping-cart.component';
@@ -17,7 +17,7 @@ const routes: Routes = [
         path: "", component: CatalogueComponent,title:"Catalogo de productos",resolve:{paginator:productsResolver}
       },
       {
-        path: "comprar", component: BuyWindowComponent,resolve:{cart:cartResolver},title:"Comprar producto"
+        path: "comprar", component: ItemDetailComponent,resolve:{cart:cartResolver},title:"Comprar producto"
       },
       {
         path:"mis-compras",component:CompraClienteComponent,title:"Mis compras",resolve:{paginator:buyResolver}

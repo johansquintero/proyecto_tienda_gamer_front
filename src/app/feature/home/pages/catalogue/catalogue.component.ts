@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute, Router, Params } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 import { ProductoResponseDto } from 'src/app/core/dto/produto/productoResponseDto';
 import { ProductoService } from 'src/app/core/service/producto.service';
@@ -10,10 +10,10 @@ import Swal from 'sweetalert2';
   templateUrl: './catalogue.component.html',
   styleUrls: ['./catalogue.component.scss']
 })
-export class CatalogueComponent {
+export class CatalogueComponent implements OnInit{
   productos: ProductoResponseDto[];
   paginator: any;
-  page: number = 1;
+  page: number = 0;
   pageSize: number;
   collectionSize: number;
 
@@ -26,12 +26,12 @@ export class CatalogueComponent {
     private activatedRoute: ActivatedRoute
   ) { }
 
-  ngOnInit() {
+  ngOnInit():void {
     //carga de datos por resolve
     this.paginator = this.activatedRoute.snapshot.data['paginator'];
     this.collectionSize = parseInt(this.paginator.totalElements);
     this.pageSize = parseInt(this.paginator.numberOfElements);
-    this.page = parseInt(this.paginator.number) + 1;
+    this.page = parseInt(this.paginator.number);
     this.productos = this.paginator.content as ProductoResponseDto[];
   }
   public async getProductos(): Promise<void> {
@@ -39,11 +39,10 @@ export class CatalogueComponent {
       this.productos = response;
     })
   }
-  public async getProductosByPage(): Promise<void> {
-    await lastValueFrom(this.productoService.getProductosByPage(this.page - 1)).then(response => {
-      this.paginator = response
-      this.collectionSize = parseInt(this.paginator.totalElements)
-      this.page = parseInt(this.paginator.number) + 1
+  public async getProductosByPage(p:number): Promise<void> {
+    this.page = p
+    await lastValueFrom(this.productoService.getProductosByPage(this.page)).then(response => {
+      this.paginator = response      
       this.productos = response.content as ProductoResponseDto[];
     });
   }
@@ -62,14 +61,14 @@ export class CatalogueComponent {
       this.searchState = false;
       this.ngOnInit()
     } else {
-      await lastValueFrom(this.productoService.getAllProductosByNamePage(page - 1, this.searchValue)).then(response => {
+      this.page = page;
+      await lastValueFrom(this.productoService.getAllProductosByNamePage(this.page, this.searchValue)).then(response => {
         this.paginator = response;
 
         //solo se cambia el valor del tamano de cada pagina y el tamano de colleccion en la primera busqueda
         this.collectionSize = !this.searchState ? parseInt(this.paginator.totalElements) : this.collectionSize;
         this.pageSize = !this.searchState ? parseInt(this.paginator.numberOfElements) : this.pageSize;
 
-        this.page = parseInt(this.paginator.number) + 1;
         this.productos = response.content as ProductoResponseDto[];
         this.searchState = true;
       }).catch(err => {

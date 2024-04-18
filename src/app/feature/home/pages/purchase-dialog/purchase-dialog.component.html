@@ -1,0 +1,53 @@
+<mat-card class="example-card">
+	<mat-card-header>
+		<mat-card-title-group>
+			<mat-card-title>DETALLE DE COMPRA</mat-card-title>
+			<mat-card-subtitle>
+				<p>Información del Cliente:</p>
+				<address>
+					<strong>Nombre del Cliente: {{ cliente.username }}</strong
+					><br />
+					Dirección del Cliente: {{ cliente.address }}<br />
+					Teléfono: {{ cliente.telephone }}<br />
+					Correo Electrónico: {{ cliente.email }}
+				</address>
+			</mat-card-subtitle>
+			<mat-card-subtitle>
+				<hr />
+				<p>Información de la Factura:</p>
+				<address><strong>Fecha de Emisión:</strong> {{ compra.date }}<br /></address>
+			</mat-card-subtitle>
+			<img mat-card-xl-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" >
+		</mat-card-title-group>
+	</mat-card-header>
+	<mat-card-content>
+		@if (compra) {
+		<table mat-table [dataSource]="compra.compraProductos" class="mat-elevation-z8">
+			<ng-container matColumnDef="Nombre">
+				<th mat-header-cell *matHeaderCellDef>Nombre</th>
+				<td mat-cell *matCellDef="let product">{{ product.productName }}</td>
+			</ng-container>
+
+			<ng-container matColumnDef="Cantidad">
+				<th mat-header-cell *matHeaderCellDef>Cantidad</th>
+				<td mat-cell *matCellDef="let product">{{ product.quantity }}</td>
+			</ng-container>
+
+			<ng-container matColumnDef="Precio Unitario">
+				<th mat-header-cell *matHeaderCellDef>Precio Unitario</th>
+				<td mat-cell *matCellDef="let product">{{ product.quantity > 0 ? product.total / product.quantity : product.total }}</td>
+			</ng-container>
+
+			<ng-container matColumnDef="Total">
+				<th mat-header-cell *matHeaderCellDef>Total</th>
+				<td mat-cell *matCellDef="let product">{{ product.total }}</td>
+			</ng-container>
+
+			<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+			<tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+		</table>
+		}
+	</mat-card-content>
+</mat-card>
+
+<button mat-button (click)="buyAll()">comprar</button>
