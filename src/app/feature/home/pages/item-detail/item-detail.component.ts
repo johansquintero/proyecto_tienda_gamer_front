@@ -1,3 +1,5 @@
+import { ProductoCartDto } from './../../../../core/dto/produto/poductoCartDto';
+import { PurchaseDialogService } from './../../../../core/service/purchase-dialog.service';
 import { CompraRequestDto } from '../../../../core/dto/compra/compraRequestDto';
 import { Component} from '@angular/core';
 import { FormControl} from '@angular/forms';
@@ -9,7 +11,6 @@ import { AuthClientetDto } from 'src/app/core/dto/cliente/authClienteDto';
 import { CompraProductoRequestDto } from 'src/app/core/dto/compraproducto/compraProductoRequestDto';
 import { ProductoResponseDto } from 'src/app/core/dto/produto/productoResponseDto';
 import { CartService } from 'src/app/core/service/cart.service';
-import { CompraService } from 'src/app/core/service/compra.service';
 import { ProductoService } from 'src/app/core/service/producto.service';
 import { TokenService } from 'src/app/core/service/token.service';
 import { CustomValidators } from 'src/app/core/utils/customValidators';
@@ -32,8 +33,8 @@ export class ItemDetailComponent {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private tokenService: TokenService,
-    private compraService: CompraService,
-    private cartService: CartService
+    private cartService: CartService,
+    private purchaseDialogService:PurchaseDialogService
   ) {}
 
   ngOnInit() {
@@ -76,7 +77,7 @@ export class ItemDetailComponent {
       });
   }
 
-  public async buy(): Promise<void> {
+  public async generatePurchase(): Promise<void> {
     let compraProductoRequestDto: CompraProductoRequestDto =
       new CompraProductoRequestDto();
     compraProductoRequestDto.quantity = this.quantity.value as number;
@@ -91,25 +92,17 @@ export class ItemDetailComponent {
     compraRequestDto.compraProductos.forEach((compraProductoRequestDto) => {
       compraRequestDto.total += compraProductoRequestDto.total;
     });
-    console.log(compraRequestDto);
+    //lista de carrito para enviar al dialog con los checked
+    let listaCarrito:ProductoCartDto[] = this.carrito.productos.map(p=> {
+      let x = p as ProductoCartDto
+      x.checked = false
+      if (x.id==this.producto.id) {
+        x.checked = true
+      }
+      return x
+    });
 
-    await lastValueFrom(this.compraService.save(compraRequestDto))
-      .then((response) => {
-        if (response.id) {
-          Swal.fire({
-            icon: 'success',
-            title: `Compra con id de factura ${response.id} realizada correctamente`,
-            showConfirmButton: true,
-          });
-        }
-      })
-      .catch((err) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: err.error.detail,
-        });
-      });
+    this.purchaseDialogService.openDialog(compraRequestDto,this.carrito,listaCarrito);
   }
 
   public async updateCart(cart: CartRequestDto): Promise<void> {

@@ -1,14 +1,16 @@
 <div class="container">
 	<mat-toolbar color="primary" class="toolbar" mode="side">
-		<span class="clickeable" (click)="navigate('/')">Home</span>
+		<span class="clickeable" (click)="navigate('/')">
+			<mat-icon>home</mat-icon>
+		</span>
 		<span class="toolbar__spacer"></span>
 
 		<button mat-icon-button class="favorite-icon" (click)="drawer.toggle()">
-			<mat-icon [matBadge]="0" matBadgeColor="accent" aria-hidden="false">shopping_cart</mat-icon>
+			<mat-icon [matBadge]="carrito?.productos.length" matBadgeColor="accent" aria-hidden="false">shopping_cart</mat-icon>
 		</button>
 		<button mat-button [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon></button>
 		<mat-menu #menu="matMenu">
-			<button mat-menu-item (click)="navigate('/mis-compras')" >Mis compras</button>
+			<button mat-menu-item (click)="navigate('/mis-compras')">Mis compras</button>
 			@if (cliente.role=='ADMIN') {
 			<button mat-menu-item routerLink="/admin">Admin</button>
 			}

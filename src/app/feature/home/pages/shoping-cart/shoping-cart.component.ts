@@ -9,7 +9,6 @@ import { CompraRequestDto } from 'src/app/core/dto/compra/compraRequestDto';
 import { CompraProductoRequestDto } from 'src/app/core/dto/compraproducto/compraProductoRequestDto';
 import { ProductoResponseDto } from 'src/app/core/dto/produto/productoResponseDto';
 import { CartService } from 'src/app/core/service/cart.service';
-import { CompraService } from 'src/app/core/service/compra.service';
 import { TokenService } from 'src/app/core/service/token.service';
 import Swal from 'sweetalert2';
 import { MatListModule } from '@angular/material/list';
@@ -35,7 +34,6 @@ export class ShopingCartComponent implements OnInit {
 	private readonly router: Router = inject(Router);
 	private readonly cartService: CartService = inject(CartService);
 	private readonly tokenService: TokenService = inject(TokenService);
-	private readonly compraService: CompraService = inject(CompraService);
 	private readonly pruchaseDialog: PurchaseDialogService = inject(PurchaseDialogService);
 
 	ngOnInit(): void {
@@ -43,6 +41,7 @@ export class ShopingCartComponent implements OnInit {
 		if (this.cliente) {
 			this.GetCart(this.cliente.id);
 		}
+		//observable del carrito cuando se actualice
 		this.cartService.getCarrito().subscribe({
 			next: (value) => {
 				if (value) {
@@ -60,7 +59,8 @@ export class ShopingCartComponent implements OnInit {
 			next: (value) => {
 				this.carrito = value;
 				this.listaCarrito = this.carrito.productos.map((p) => {
-					return { ...p, selectedQuantity: 1, checked: true } as ProductoCartDto; //se le asigna el atributo de la cantidad seleccionada
+					//se le asigna el atributo de la cantidad seleccionada
+					return { ...p, selectedQuantity: 1, checked: true } as ProductoCartDto; 
 				});
 			},
 			error: (error) => {
@@ -75,9 +75,10 @@ export class ShopingCartComponent implements OnInit {
       });
     })*/
 	}
-
+	//generacion del detalle de la compra paa finalmente abrir el modal o dialog de compra
 	public generateDetail() {
 		if (this.listaCarrito.length > 0) {
+			//se filtran los producto que esten checkeados
 			let selectedProducts = this.listaCarrito.filter((p) => p.checked);
 			let detail = selectedProducts.map((p) => {
 				let compraProductoRequestDto: CompraProductoRequestDto = new CompraProductoRequestDto();
@@ -85,7 +86,7 @@ export class ShopingCartComponent implements OnInit {
 				compraProductoRequestDto.productId = p.id;
 				compraProductoRequestDto.total = p.price * p.selectedQuantity;
 				compraProductoRequestDto.productName = p.name
-				return compraProductoRequestDto; //se anade el product name para mostrarlo en el modal de detalle
+				return compraProductoRequestDto;
 			});
 
 			let compraRequestDto: CompraRequestDto = new CompraRequestDto();
@@ -96,6 +97,7 @@ export class ShopingCartComponent implements OnInit {
 			compraRequestDto.compraProductos.forEach((compraProductoRequestDto) => {
 				compraRequestDto.total += compraProductoRequestDto.total;
 			});
+			//se abre el dialog enviado datos como el detalle, el carrito y la lista de carrito actualizada
 			this.pruchaseDialog.openDialog(compraRequestDto, this.carrito, this.listaCarrito);
 		}
 	}

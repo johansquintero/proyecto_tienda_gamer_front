@@ -28,7 +28,11 @@
 			</p>
 		</mat-card-content>
 		<mat-card-actions>
-			<button mat-raised-button color="primary">Agregar al carrito</button>
+			@if (!isInCart(producto)) {
+				<button mat-raised-button (click)="addToCart(producto)" color="primary">Agregar al carrito</button>
+			}@else {
+				<button mat-raised-button (click)="deleteFromCart(producto)" color="warn">Eliminar del carrito</button>
+			}
 		</mat-card-actions>
 	</mat-card>
 	}

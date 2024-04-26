@@ -14,7 +14,7 @@ const routes: Routes = [
   {
     path: "", component: HomeComponent, children: [
       {
-        path: "", component: CatalogueComponent,title:"Catalogo de productos",resolve:{paginator:productsResolver}
+        path: "", component: CatalogueComponent,title:"Catalogo de productos",resolve:{paginator:productsResolver,cart:cartResolver}
       },
       {
         path: "comprar", component: ItemDetailComponent,resolve:{cart:cartResolver},title:"Comprar producto"

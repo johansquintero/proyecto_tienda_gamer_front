@@ -1,5 +1,75 @@
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+@if (producto) {
+<div class="container">
+	<mat-card class="card">
+		<mat-card-header>
+			<mat-card-title-group>
+				<mat-card-title class="card__title">{{ producto.name }}</mat-card-title>
+				<mat-card-subtitle class="card__description">
+					<strong>Descripcion de producto:</strong>
+					<span>
+						{{ producto.description }}
+					</span>
+				</mat-card-subtitle>
 
+				@if (producto?.imagePath) {
+				<img
+					class="card__image"
+					mat-card-xl-image
+					src="http://localhost:8080/api/productos/uploads/img/{{ producto.imagePath }}"
+					alt="{{ producto.imagePath }}"
+				/>
+				}@else {
+				<img mat-card-xl-image src="http://localhost:8080/api/productos/uploads/img/no_product.png" alt="{{ producto.imagePath }}" />
+				}
+				<mat-card-subtitle class="card__description">
+					<strong>Detalles clave</strong>
+					<p>Maca:{{ producto.marca }}</p>
+					<p>Tipo:{{ producto.tipo }}</p>
+					<p>Nombre:{{ producto.name }}</p>
+				</mat-card-subtitle>
+			</mat-card-title-group>
+		</mat-card-header>
+		<mat-card-content class="card__content">
+			<hr />
+			<mat-list role="list">
+				<mat-list-item role="listitem">
+					<span matListItemMeta><strong>Unidades disponibles:</strong> {{ producto.quantity }}</span>
+				</mat-list-item>
+				<mat-list-item role="listitem">
+					<span matListItemMeta>Cantidad:</span>
+					<select matListItemMeta [formControl]="quantity" id="quantity" name="quantity">
+						@for(i of generateQuantities();track i){
+						<option value="{{ i }}" #quantity>{{ i }}</option>
+						}@empty {
+						<p>no hay unidades disponibles</p>
+						}
+					</select>
+				</mat-list-item>
+				<mat-list-item role="listitem">
+					<span class="card__price">Coste:{{ producto.price | currency : 'USD' : 'symbol' : '1.2-2' }}</span>
+				</mat-list-item>
+			</mat-list>
+		</mat-card-content>
+		<mat-card-actions>
+			<button mat-fab extended (click)="generatePurchase()" color="secondary">
+				<mat-icon class="material-icons">attach_money</mat-icon>
+				Comprar producto
+			</button>
+			@if (!isInCart()) {
+			<button mat-fab extended (click)="addToCart()" color="primary">
+				<mat-icon>shopping_cart</mat-icon>
+				Agregar al carrito
+			</button>
+			}@else {
+			<button mat-fab extended color="warn" (click)="deleteFromCart()" aria-label="Example icon button with a delete icon">
+				<mat-icon>delete</mat-icon> Eliminar de carrito
+			</button>
+			}
+		</mat-card-actions>
+	</mat-card>
+</div>
+}
+<!--
 <div class="container" *ngIf="producto">
 	<div class="card">
 		<div class="card-body">
@@ -81,3 +151,4 @@
 		</div>
 	</div>
 </div>
+-->
