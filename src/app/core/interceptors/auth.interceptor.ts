@@ -9,10 +9,11 @@ import {
 import { Observable, catchError, throwError } from 'rxjs';
 import { TokenService } from '../service/token.service';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  constructor(private tokenService: TokenService) { }
+  constructor(private tokenService: TokenService, private router:Router) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 
@@ -41,6 +42,9 @@ export class AuthInterceptor implements HttpInterceptor {
             icon: 'error',
             title: 'Error',
             text: 'No tienes permiso para acceder a esta pagina'
+          }).then(()=>{
+            this.tokenService.deleteToken();
+            this.router.navigate(['/autenticacion/inicio-sesion'])
           });
           console.log("Fallo e la autenticacion");
         }

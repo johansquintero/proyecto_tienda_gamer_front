@@ -10,11 +10,11 @@
 			}@else {
 			<mat-list role="list">
 				@for(producto of listaCarrito; track producto.id){
-				<mat-list-item role="listitem" class="list-item">
+				<mat-list-item role="listitem">
 					@if(producto?.imagePath){
 					<img
 						matListItemIcon
-						class="img-fluid clickeable"
+						class="clickeable"
 						(click)="goBuy(producto.id)"
 						src="http://localhost:8080/api/productos/uploads/img/{{ producto.imagePath }}"
 						alt=""
@@ -22,7 +22,7 @@
 					}@else{
 					<img
 						matListItemIcon
-						class="img-fluid clickeable"
+						class="clickeable"
 						(click)="goBuy(producto.id)"
 						src="http://localhost:8080/api/productos/uploads/img/no_product"
 						alt=""

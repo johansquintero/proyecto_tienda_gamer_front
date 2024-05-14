@@ -11,7 +11,7 @@ export const authGuard: CanActivateFn = (route, state) => {
       icon: 'error',
       title: 'Error',
       text: 'Para acceder al siguiente sitio debe estar autentificado.'
-    }).then((result) => {
+    }).then(() => {
       router.navigate(["/autenticacion/inicio-sesion"]); 
     });
     return false;

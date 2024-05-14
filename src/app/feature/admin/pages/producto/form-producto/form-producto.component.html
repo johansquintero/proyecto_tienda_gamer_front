@@ -1,72 +1,71 @@
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-10">
-            <div class="d-flex justify-content-center align-items-center">
-                @if (sharedProducto) {
-                <span class="fs-1 text-center fw-bolder">ACTUALIZAR {{sharedProducto.name.toUpperCase()}}</span>
-                }@else {
-                <span class="fs-1 text-center fw-bolder">REGISTRA UN NUEVO PRODUCTO</span>
-                }
-                <img class="img-fluid rounded figure-img "
-                    src="https://www.accesoriosparacomputadores.co/blog/wp-content/uploads/2020/02/armar-un-pc-para-gamer.jpg"
-                    alt="">
-            </div>
-            <form [formGroup]="formGroup">
-                <div class="mb-3">
-                    <label for="nombre" class="form-label">Nombre del producto:</label>
-                    <input [ngClass]="{'border border-danger':isDirtyField(formGroup,'name')}" formControlName="name"
-                        type="text" class="form-control" id="name">
-                    <span class="text-center text-danger">{{getErrorField(formGroup,'name')}}</span>
-                </div>
+<div class="container">
+	<mat-card class="card">
+		<mat-card-header class="title">
+			@if (sharedProducto) {
+			<mat-card-title class="title__text">ACTUALIZAR {{ sharedProducto.name.toUpperCase() }}</mat-card-title>
+			}@else {
+			<mat-card-title class="title__text">REGISTRA UN NUEVO PRODUCTO</mat-card-title>
+			}
+		</mat-card-header>
+		<img
+			mat-card-image
+			src="https://www.accesoriosparacomputadores.co/blog/wp-content/uploads/2020/02/armar-un-pc-para-gamer.jpg"
+			alt="Photo of a Shiba Inu"
+		/>
+		<mat-card-content>
+			<form class="form" [formGroup]="formGroup">
+				<mat-form-field appearance="outline">
+					<mat-label>Nombre del producto:</mat-label>
+					<input matInput type="text" formControlName="name" />
+					<mat-error> {{ getErrorField(formGroup, 'name') }} </mat-error>
+				</mat-form-field>
 
-                <div class="mb-3">
-                    <label for="description" class="form-label">Descripcion del producto:</label>
-                    <textarea [ngClass]="{'border border-danger':isDirtyField(formGroup,'description')}"
-                        formControlName="description" type="text-area" class="form-control" id="description"></textarea>
-                    <span class="text-center text-danger">{{this.getErrorField(formGroup,'description')}}</span>
-                </div>
+				<mat-form-field appearance="outline">
+					<mat-label>Descripcion del producto:</mat-label>
+					<input matInput type="text-area" formControlName="description" />
+					<mat-error>{{ getErrorField(formGroup, 'description') }}</mat-error>
+				</mat-form-field>
 
-                <div class="mb-3">
-                    <label for="price" class="form-label">Precio del producto:</label>
-                    <input [ngClass]="{'border border-danger':isDirtyField(formGroup,'price')}" formControlName="price"
-                        type="text" class="form-control" id="price">
-                    <span class="text-center text-danger">{{this.getErrorField(formGroup,'price')}}</span>
-                </div>
+				<mat-form-field appearance="outline">
+					<mat-label>Precio del producto:</mat-label>
+					<input matInput type="text-area" formControlName="price" />
+					<mat-error>{{ getErrorField(formGroup, 'price') }}</mat-error>
+				</mat-form-field>
 
-                <div class="mb-3">
-                    <label for="quantity" class="form-label">Cantidad unidades:</label>
-                    <input [ngClass]="{'border border-danger':isDirtyField(formGroup,'quantity')}"
-                        formControlName="quantity" type="text" class="form-control" id="quantity">
-                    <span class="text-center text-danger">{{this.getErrorField(formGroup,'quantity')}}</span>
-                </div>
+				<mat-form-field appearance="outline">
+					<mat-label>Cantidad de unidades:</mat-label>
+					<input matInput type="text-area" formControlName="quantity" />
+					<mat-error>{{ getErrorField(formGroup, 'quantity') }}</mat-error>
+				</mat-form-field>
 
-                <div class="mb-3 form-select">
-                    <label class="form-label">Tipo</label>
-                    <select class="form-control" formControlName="tipoId">
-                        <option *ngFor="let tipo of tipos" [value]="tipo.id">
-                            {{tipo.name}}
-                        </option>
-                    </select>
-                    <span class="text-center text-danger">{{this.getErrorField(formGroup,'tipoId')}}</span>
-                </div>
+				<mat-form-field>
+					<mat-label>Tipo</mat-label>
+					<mat-select formControlName="tipoId">
+						@for (tipo of tipos; track tipo.id) {
+						<mat-option [value]="tipo.id">{{ tipo.name }}</mat-option>
+						}
+					</mat-select>
+				</mat-form-field>
 
-                <div class="mb-3 form-select" *ngIf="tipoSelected">
-                    <label class="form-label">Marca</label>
-                    <select name="" id="" class="form-control" formControlName="marcaId">
-                        <option *ngFor="let marca of tipoSelected.marcas" [value]="marca.id">
-                            {{marca.name}}
-                        </option>
-                    </select>
-                    <span class="text-center text-danger">{{this.getErrorField(formGroup,'marcaId')}}</span>
-                </div>
+				@if (marcas) {
+				<mat-form-field>
+					<mat-label>Marca</mat-label>
+					<mat-select formControlName="marcaId">
+						@for (marca of tipoSelected.marcas; track marca.id) {
+						<mat-option [value]="marca.id">{{ marca.name }}</mat-option>
+						}
+					</mat-select>
+				</mat-form-field>
+				}
 
-                <button [hidden]="sharedProducto" [disabled]="formGroup.invalid" (click)="registerProducto()"
-                    type="submit" class="btn btn-primary m-1">Registrar</button>
-                <button [hidden]="!sharedProducto" [disabled]="formGroup.invalid" (click)="updateProducto()"
-                    type="submit" class="btn btn-primary m-1">Actualizar</button>
-
-                <a routerLink="/admin" class="btn btn-danger m-1">Regresar</a>
-            </form>
-        </div>
-    </div>
+				<button [hidden]="sharedProducto" [disabled]="formGroup.invalid" mat-raised-button color="primary" (click)="registerProducto()">
+					Registrarse
+				</button>
+				<button [hidden]="!sharedProducto" [disabled]="formGroup.invalid" mat-raised-button color="primary" (click)="updateProducto()">
+					Actualizar
+				</button>
+				<button mat-raised-button color="warn" (click)="back()">Volver</button>
+			</form>
+		</mat-card-content>
+	</mat-card>
 </div>

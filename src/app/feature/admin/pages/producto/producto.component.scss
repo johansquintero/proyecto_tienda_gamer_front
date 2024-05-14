@@ -1,18 +1,13 @@
 .clickeable {
-    /* Establecer el cursor en forma de mano */
-    cursor: pointer;
+	/* Establecer el cursor en forma de mano */
+	cursor: pointer;
 }
 
 .clickeable:hover {
-    /* Cambiar el color de fondo cuando el cursor pasa sobre el elemento */
-    color: #1d88d9;
+	/* Cambiar el color de fondo cuando el cursor pasa sobre el elemento */
+	color: #1d88d9;
 }
 
-.fixed-size-image {
-    width: 200px;
-    /* Establece el ancho deseado */
-    height: 150px;
-    /* Establece la altura deseada */
-    object-fit: cover;
-    /* Opcional: ajusta la imagen para llenar el contenedor sin distorsión */
+table {
+	width: 100%;
 }

@@ -1,50 +1,40 @@
-<div class="container container-fluid mb-3" *ngIf="producto">
-    <div class="raw">
-        <div class="col-md-10">
-            <div class="card">
-                <div class="card-header">
-                    <h1 class="text-center">{{producto.name|uppercase}}</h1>
-                </div>
-                <div class="card-body" *ngIf="producto">
-                    <div class="grid-container ">
-                        <div class="grid-item">
-                            <ul class="list-group" *ngFor="let item of producto|keyvalue">
-                                <li *ngIf="item.key!='imagePath' && item.key!='id'" class="list-group-item">
-                                    <span class="fw-bold fs-3">{{item.key|uppercase}}:</span>
-                                    <span class="fs-4">{{item.value}}</span>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="grid-item ">
-                            <img class="img-fluid" *ngIf="producto?.imagePath" 
-                                src="http://localhost:8080/api/productos/uploads/img/{{producto.imagePath}}"
-                                alt="{{producto.imagePath}}" style="height: 60%; width: 90%;">
-                            <img class="img-fluid" *ngIf="!producto?.imagePath"
-                                src="http://localhost:8080/api/productos/uploads/img/no_product.png"
-                                alt="{{producto.imagePath}}" style="height: 60%; width: 90%;">
-                            <form [formGroup]="formGroup">
-                                <div class="input-group mb-3 mt-3">
-                                    <input (change)="selectFile($event)" type="file" class="form-control" id="file"
-                                        formControlName="imagePath">
-                                    <button [disabled]="formGroup.invalid" (click)="upload()"
-                                        class="btn btn-primary">Subir</button>
-                                </div>
-                                <div *ngIf="uploadProgress > 0" class="progress" style="height:40px">
-                                    <div class="progress-bar progress-bar-striped progress-bar-animated"
-                                        role="progressbar" attr.aria-valuenow="{{uploadProgress}}" aria-valuemin="0"
-                                        aria-valuemax="100" [ngStyle]="{width:uploadProgress+'%'}">
-                                        {{uploadProgress}}%
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="d-grid gap-2">
-                <button class="btn btn-primary mt-2" role="button" (click)="goUpdate()">Editar producto</button>
-                <a routerLink="/admin" class="btn btn-danger" type="button">Volver a lista de productos</a>
-            </div>
-        </div>
-    </div>
+<div class="container">
+	@if (producto) {
+	<mat-card class="card">
+		<mat-card-header class="title">
+			<mat-card-title-group>
+				<mat-card-title class="title__text">{{ producto.name | uppercase }}</mat-card-title>
+				<mat-card-subtitle>Medium</mat-card-subtitle>
+				<div>
+					@if (producto?.imagePath) {
+					<img mat-card-xl-image src="http://localhost:8080/api/productos/uploads/img/{{ producto.imagePath }}" alt="{{ producto.imagePath }}" />
+					}@else {
+					<img mat-card-xl-image src="http://localhost:8080/api/productos/uploads/img/no_product.png" alt="{{ producto.imagePath }}" />
+					}
+					<form [formGroup]="formGroup">
+						<div class="input-group mb-3 mt-3">
+							<input (change)="selectFile($event)" type="file" class="form-control" id="file" formControlName="imagePath" />
+							<button mat-button [disabled]="formGroup.invalid" (click)="upload()" class="btn btn-primary">Subir</button>
+						</div>
+					</form>
+				</div>
+			</mat-card-title-group>
+		</mat-card-header>
+
+		<mat-card-content>
+			<mat-list role="list">
+				@for(item of producto | keyvalue; track item){
+				<mat-list-item role="listitem">
+					<span>{{ item.key | uppercase }}:</span>
+					<span>{{ item.value }}</span>
+				</mat-list-item>
+				}
+			</mat-list>
+		</mat-card-content>
+		<mat-card-actions>
+			<button mat-flat-button role="button" color="primary" (click)="goUpdate()">Editar producto</button>
+			<button mat-flat-button color="warn"  (click)="goBack()" type="button">Volver</button>
+		</mat-card-actions>
+	</mat-card>
+	}
 </div>

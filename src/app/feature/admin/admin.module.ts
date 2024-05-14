@@ -15,29 +15,53 @@ import { FormProductoComponent } from './pages/producto/form-producto/form-produ
 import { SearchComponent } from '../components/search/search.component';
 import { MarcaService } from 'src/app/core/service/marca.service';
 import { NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
-
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
+import { MatListModule } from '@angular/material/list';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatTreeModule } from '@angular/material/tree';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCardModule } from '@angular/material/card';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
-  declarations: [
-    SideNavbarComponent,
-    AdminComponent,
-    TipoComponent,
-    FormTipoComponent,
-    FormMarcaComponent,
-    MarcaComponent,
-    ProductoComponent,
-    DetailProductoComponent,
-    FormProductoComponent
-  ],
-  imports: [
-    CommonModule,
-    AdminRoutingModule,
-    ReactiveFormsModule,
-    SearchComponent, 
-    NgbPaginationModule, 
-    NgbTypeaheadModule
-  ], providers: [
-    MarcaService
-  ]
+	declarations: [
+		SideNavbarComponent,
+		AdminComponent,
+		TipoComponent,
+		FormTipoComponent,
+		FormMarcaComponent,
+		MarcaComponent,
+		ProductoComponent,
+		DetailProductoComponent,
+		FormProductoComponent
+	],
+	imports: [
+		CommonModule,
+		AdminRoutingModule,
+		ReactiveFormsModule,
+		SearchComponent,
+		NgbPaginationModule,
+		NgbTypeaheadModule,
+		MatSidenavModule,
+		MatPaginatorModule,
+		MatTableModule,
+		MatListModule,
+		MatMenuModule,
+		MatButtonModule,
+		MatDividerModule,
+		MatTreeModule,
+		MatIconModule,
+		MatFormFieldModule,
+		MatCardModule,
+		MatInputModule,
+		MatSelectModule
+	],
+	providers: [MarcaService]
 })
-export class AdminModule { }
+export class AdminModule {}

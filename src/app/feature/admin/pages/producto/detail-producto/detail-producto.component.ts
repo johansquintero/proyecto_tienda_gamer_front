@@ -69,16 +69,14 @@ export class DetailProductoComponent extends AppBaseComponent {
         Swal.fire({
           icon: 'success',
           title: response.mensaje,
-          showConfirmButton: true,
-          timer: 1500
+          showConfirmButton: true
         });
         this.producto.imagePath = response.newImage
       }).catch(err => {
         Swal.fire({
           icon: 'error',
           title: err.error,
-          showConfirmButton: true,
-          timer: 1500
+          showConfirmButton: true
         });
       })
     }
@@ -87,5 +85,9 @@ export class DetailProductoComponent extends AppBaseComponent {
   public goUpdate() {
     this.productoService.setSharedProducto(this.producto);
     this.router.navigateByUrl("admin/producto-form");
+  }
+
+  public goBack(){
+    history.back();
   }
 }

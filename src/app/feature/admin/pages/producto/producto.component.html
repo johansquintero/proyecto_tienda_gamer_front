@@ -1,3 +1,95 @@
+<search (searchValueEvent)="search(0, $event)"></search>
+<div class="mat-elevation-z8 table">
+	@if (productos) {
+	<table mat-table [dataSource]="productos">
+		<ng-container matColumnDef="Id">
+			<th mat-header-cell *matHeaderCellDef>Id</th>
+			<td mat-cell *matCellDef="let producto">{{ producto.id }}</td>
+		</ng-container>
+
+		<ng-container matColumnDef="Foto">
+			<th mat-header-cell *matHeaderCellDef>Foto</th>
+			<td mat-cell *matCellDef="let producto">
+				<mat-list role="list">
+					<mat-list-item role="listitem" class="list-item">
+						@if(producto?.imagePath){
+						<img
+							matListItemIcon
+							class="clickeable"
+							(click)="goDetail(producto.id)"
+							src="http://localhost:8080/api/productos/uploads/img/{{ producto.imagePath }}"
+							alt=""
+						/>
+						}@else{
+						<img
+							matListItemIcon
+							class="clickeable"
+							(click)="goDetail(producto.id)"
+							src="http://localhost:8080/api/productos/uploads/img/no_product"
+							alt=""
+						/>
+						}
+					</mat-list-item>
+				</mat-list>
+			</td>
+		</ng-container>
+
+		<ng-container matColumnDef="Nombre">
+			<th mat-header-cell *matHeaderCellDef>Nombre</th>
+			<td mat-cell *matCellDef="let producto">{{ producto.name }}</td>
+		</ng-container>
+
+		<ng-container matColumnDef="Descripcion">
+			<th mat-header-cell *matHeaderCellDef>Descripcion</th>
+			<td mat-cell *matCellDef="let producto">{{ producto.description }}</td>
+		</ng-container>
+
+		<ng-container matColumnDef="Precio Unitario">
+			<th mat-header-cell *matHeaderCellDef>Precio Unitario</th>
+			<td mat-cell *matCellDef="let producto">{{ producto.price }}</td>
+		</ng-container>
+
+		<ng-container matColumnDef="Tipo">
+			<th mat-header-cell *matHeaderCellDef>Tipo</th>
+			<td mat-cell *matCellDef="let producto">{{ producto.tipo }}</td>
+		</ng-container>
+
+		<ng-container matColumnDef="Marca">
+			<th mat-header-cell *matHeaderCellDef>Marca</th>
+			<td mat-cell *matCellDef="let producto">{{ producto.marca }}</td>
+		</ng-container>
+
+		<ng-container matColumnDef="Cantidad">
+			<th mat-header-cell *matHeaderCellDef>Cantidad</th>
+			<td mat-cell *matCellDef="let producto">{{ producto.quantity }}</td>
+		</ng-container>
+
+		<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+		<tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+	</table>
+	@if (!searchState) {
+	<mat-paginator
+		(page)="getProductosByPage($event.pageIndex)"
+		[length]="collectionSize"
+		[pageIndex]="page"
+		[pageSize]="pageSize"
+		[showFirstLastButtons]="true"
+		aria-label="Select page"
+	>
+	</mat-paginator>
+	}@else{
+	<mat-paginator
+		(page)="search($event.pageIndex, searchValue)"
+		[length]="collectionSize"
+		[pageIndex]="page"
+		[pageSize]="pageSize"
+		[showFirstLastButtons]="true"
+		aria-label="Select page"
+	>
+	</mat-paginator>
+	} }
+</div>
+<!--
 <search (searchValueEvent)="search(1,$event)"></search>
 <ul class="list-group">
     @for (producto of productos; track producto.id) {
@@ -63,3 +155,4 @@
 <pre>Current page: {{ page }}</pre>
 <pre>collectionSize: {{ collectionSize }}</pre>
 <pre>pageSize: {{ pageSize }}</pre>
+-->
