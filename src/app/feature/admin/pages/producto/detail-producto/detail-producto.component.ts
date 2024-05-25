@@ -4,7 +4,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { lastValueFrom, tap } from 'rxjs';
 import { ProductoResponseDto } from 'src/app/core/dto/produto/productoResponseDto';
 import { ProductoService } from 'src/app/core/service/producto.service';
-import { AppBaseComponent } from 'src/app/core/utils/AppBaseComponent';
+import { AppBaseComponent, goBack } from 'src/app/core/utils/AppBaseComponent';
 import { CustomValidators } from 'src/app/core/utils/customValidators';
 import Swal from 'sweetalert2';
 
@@ -19,6 +19,7 @@ export class DetailProductoComponent extends AppBaseComponent {
   public formGroup: FormGroup;
   public imageSelected!: File;
   public uploadProgress: number = 0;
+  goBack = goBack;
 
   constructor(
     private productoService: ProductoService,
@@ -85,9 +86,5 @@ export class DetailProductoComponent extends AppBaseComponent {
   public goUpdate() {
     this.productoService.setSharedProducto(this.producto);
     this.router.navigateByUrl("admin/producto-form");
-  }
-
-  public goBack(){
-    history.back();
   }
 }

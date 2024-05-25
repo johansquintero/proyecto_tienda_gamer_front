@@ -8,7 +8,7 @@ import { ProductoResponseDto } from 'src/app/core/dto/produto/productoResponseDt
 import { TipoDto } from 'src/app/core/dto/tipo/tipoDto';
 import { ProductoService } from 'src/app/core/service/producto.service';
 import { TipoService } from 'src/app/core/service/tipo.service';
-import { AppBaseComponent } from 'src/app/core/utils/AppBaseComponent';
+import { AppBaseComponent, goBack } from 'src/app/core/utils/AppBaseComponent';
 import { CustomValidators } from 'src/app/core/utils/customValidators';
 import Swal from 'sweetalert2';
 
@@ -23,6 +23,7 @@ export class FormProductoComponent extends AppBaseComponent {
 	public tipoSelected: TipoDto; //tipo seleccionado
 	public sharedProducto: ProductoResponseDto; // productos compartido a editar
 	public marcas: MarcaDto[];
+	goBack = goBack;
 
 	constructor(private tipoService: TipoService, private fb: FormBuilder, private productoService: ProductoService, private router: Router) {
 		super();
@@ -81,7 +82,7 @@ export class FormProductoComponent extends AppBaseComponent {
 						title: `Producto ${response.name} creado`,
 						showConfirmButton: true
 					}).then(() => {
-						this.back();
+						this.goBack();
 					});
 				})
 				.catch((err) => {
@@ -130,8 +131,4 @@ export class FormProductoComponent extends AppBaseComponent {
 			});
 		}
 	}
-
-  public back():void{
-    history.back();
-  }
 }

@@ -14,7 +14,6 @@ import { DetailProductoComponent } from './pages/producto/detail-producto/detail
 import { FormProductoComponent } from './pages/producto/form-producto/form-producto.component';
 import { SearchComponent } from '../components/search/search.component';
 import { MarcaService } from 'src/app/core/service/marca.service';
-import { NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
@@ -28,6 +27,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import {MatGridListModule} from '@angular/material/grid-list'
 
 @NgModule({
 	declarations: [
@@ -46,8 +46,6 @@ import { MatSelectModule } from '@angular/material/select';
 		AdminRoutingModule,
 		ReactiveFormsModule,
 		SearchComponent,
-		NgbPaginationModule,
-		NgbTypeaheadModule,
 		MatSidenavModule,
 		MatPaginatorModule,
 		MatTableModule,
@@ -60,7 +58,8 @@ import { MatSelectModule } from '@angular/material/select';
 		MatFormFieldModule,
 		MatCardModule,
 		MatInputModule,
-		MatSelectModule
+		MatSelectModule,
+		MatGridListModule
 	],
 	providers: [MarcaService]
 })

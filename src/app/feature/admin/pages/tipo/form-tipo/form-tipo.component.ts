@@ -6,7 +6,7 @@ import { MarcaDto } from 'src/app/core/dto/marca/marcaDto';
 import { TipoDto } from 'src/app/core/dto/tipo/tipoDto';
 import { MarcaService } from 'src/app/core/service/marca.service';
 import { TipoService } from 'src/app/core/service/tipo.service';
-import { AppBaseComponent } from 'src/app/core/utils/AppBaseComponent';
+import { AppBaseComponent, goBack } from 'src/app/core/utils/AppBaseComponent';
 import { CustomValidators } from 'src/app/core/utils/customValidators';
 import Swal from 'sweetalert2';
 
@@ -31,6 +31,7 @@ export class FormTipoComponent extends AppBaseComponent {
   */
   public sharedTipo: TipoDto;
 
+  goBack = goBack;
   constructor(
     private marcaService: MarcaService,
     private tipoService: TipoService,
@@ -124,6 +125,7 @@ export class FormTipoComponent extends AppBaseComponent {
       });
     }
   }
+
 
   /**
    * Para el caso de que sea update se asgignan a la izquieda los elementos del

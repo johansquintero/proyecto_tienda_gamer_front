@@ -1,44 +1,47 @@
-<div class="container container-fluid">
-    <div class="row">
-        <div class="col-md-10">
-            <div class="d-flex justify-content-center align-items-center">
-                <span class="fs-1 text-center fw-bolder">FORMULARIO TIPO DE PRODUCTO</span>
-                <img class="img-fluid "
-                    src="https://img.freepik.com/vector-gratis/ilustracion-moderna-concepto-computadora-escritorio_114360-16235.jpg"
-                    alt="">
-            </div>
-            <form [formGroup]="formGroup">
-                <div class="mb-3">
-                    <label for="name" class="form-label">Nombre del tipo:</label>
-                    <input [ngClass]="{'border border-danger':isDirtyField(formGroup,'name')}" formControlName="name"
-                        type="text" class="form-control" id="name">
-                    <span class="text-center text-danger">{{this.getErrorField(formGroup,'name')}}</span>
-                </div>
-                <div class="row mb-4">
-                    <div class="col">
-                        <select class="select-multiple " multiple size="{{marcas?.length}}">
-                            <option *ngFor="let marca of marcasLeft" (click)="moveRigth(marca)" [value]="marca.id">
-                                {{marca.name}}</option>
-                        </select>
-                    </div>
-                    <div class="col">
-                        <select class="select-multiple " multiple size="{{marcas?.length}}">
-                            <option *ngFor="let marca of marcasRigth" (click)="moveLeft(marca)">{{marca.name}}</option>
-                        </select>
-                    </div>
-                    <button (click)="resetSides()" type="submit" class="btn btn-primary m-1">Restablecer</button>
-
-                </div>
-
-                <div class="row">
-                    <button *ngIf="sharedTipo==null" (click)="register()" [disabled]="formGroup.invalid" type="submit"
-                        class="btn btn-primary m-1">Registrar</button>
-                    <button *ngIf="sharedTipo!=null" (click)="update()" [disabled]="formGroup.invalid" type="submit"
-                        class="btn btn-primary m-1">Actualizar</button>
-
-                    <a routerLink="/admin/tipo" class="btn btn-danger m-1">Regresar</a>
-                </div>
-            </form>
-        </div>
-    </div>
+<div class="container">
+	<mat-card class="card">
+		<mat-card-header class="title">
+			<mat-card-title-group>
+                
+				@if (sharedTipo) {
+				<mat-card-title class="title__text">ACTUALIZAR {{ sharedTipo.name.toUpperCase() }}</mat-card-title>
+				}@else {
+				<mat-card-title class="title__text">REGISTRA UN NUEVO TIPO DE PRODUCTO</mat-card-title>
+				}
+                <img mat-card-xl-image src="https://img.freepik.com/vector-gratis/ilustracion-moderna-concepto-computadora-escritorio_114360-16235.jpg" >
+			</mat-card-title-group>
+		</mat-card-header>
+		<mat-card-content>
+			<form class="form" [formGroup]="formGroup">
+				<mat-form-field appearance="outline">
+					<mat-label>Nombre del tipo:</mat-label>
+					<input matInput type="text" formControlName="name" />
+					<mat-error> {{ getErrorField(formGroup, 'name') }} </mat-error>
+				</mat-form-field>
+				<!--
+                    Grid list de agunlar para agrupar los elementos en forma de matriz
+                -->
+				<mat-grid-list cols="2" rowHeight="2:1">
+					<mat-grid-tile>
+						<select class="select-multiple" multiple size="{{ marcas?.length }}">
+							<option *ngFor="let marca of marcasLeft" (click)="moveRigth(marca)" [value]="marca.id">
+								{{ marca.name }}
+							</option>
+						</select>
+					</mat-grid-tile>
+					<mat-grid-tile>
+						<select class="select-multiple" multiple size="{{ marcas?.length }}">
+							<option *ngFor="let marca of marcasRigth" (click)="moveLeft(marca)">{{ marca.name }}</option>
+						</select>
+					</mat-grid-tile>
+					<mat-grid-tile [colspan]="2">
+						<button (click)="resetSides()" mat-flat-button color="primary">Restablecer</button>
+					</mat-grid-tile>
+				</mat-grid-list>
+				<button [hidden]="sharedTipo" [disabled]="formGroup.invalid" mat-raised-button color="primary" (click)="register()">Registrarse</button>
+				<button [hidden]="!sharedTipo" [disabled]="formGroup.invalid" mat-raised-button color="primary" (click)="update()">Actualizar</button>
+				<button mat-raised-button color="warn" (click)="goBack()">Volver</button>
+			</form>
+		</mat-card-content>
+	</mat-card>
 </div>

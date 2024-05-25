@@ -1,18 +1,53 @@
 /* styles.css o styles.scss */
 /* Estilos para el elemento select múltiple */
 .select-multiple {
-    width: 100%;
-    height: auto;
-    padding: 8px;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    background-color: white;
-    overflow: hidden;
-  }
-  
-  
-  /* Estilo cuando se enfoca el select */
-  .select-multiple:focus {
-    border-color: #80bdff;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-  }
+	width: 100%;
+	height: auto;
+	padding: 8px;
+	border: 1px solid #ced4da;
+	border-radius: 4px;
+	background-color: white;
+	overflow: hidden;
+}
+
+/* Estilo cuando se enfoca el select */
+.select-multiple:focus {
+	border-color: #80bdff;
+	box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.cascading-right {
+	margin-right: -50px;
+}
+
+@media (max-width: 991.98px) {
+	.cascading-right {
+		margin-right: 0;
+	}
+}
+
+.container {
+	background: linear-gradient(35deg, rgba(7, 1, 172, 1) 0%, rgba(235, 70, 252, 1) 100%);
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	.card {
+		width: 700px;
+
+		.title {
+			justify-content: center;
+			&__text {
+				font-size: xx-large;
+				font-weight: bold;
+			}
+		}
+
+		.form {
+			margin-top: 1.5em;
+			display: flex;
+			flex-direction: column;
+		}
+	}
+}

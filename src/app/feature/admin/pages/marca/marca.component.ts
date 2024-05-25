@@ -1,3 +1,4 @@
+import { goBack } from 'src/app/core/utils/AppBaseComponent';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
@@ -13,9 +14,13 @@ import Swal from 'sweetalert2';
 export class MarcaComponent {
   public marcas: MarcaDto[];
   public paginator: any;
-  page: number = 1;
+  page: number = 0;
   pageSize: number;
   collectionSize: number;
+  goBack = goBack;
+
+  //elementos tabla
+  displayedColumns:string[] = ['Id','Nombre','Delete','Update']
 
   constructor(private marcaService: MarcaService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
@@ -23,7 +28,7 @@ export class MarcaComponent {
     this.paginator = this.activatedRoute.snapshot.data['paginator']
     this.collectionSize = parseInt(this.paginator.totalElements);
     this.pageSize = parseInt(this.paginator.numberOfElements);
-    this.page = parseInt(this.paginator.number) + 1;
+    this.page = parseInt(this.paginator.number);
     this.marcas = this.paginator.content as MarcaDto[];
   }
 
@@ -33,11 +38,11 @@ export class MarcaComponent {
     });
   }
 
-  public async getMarcasByPage(): Promise<void> {
-    await lastValueFrom(this.marcaService.getAllByPage(this.page-1)).then(response => {
+  public async getMarcasByPage(page:number): Promise<void> {
+    await lastValueFrom(this.marcaService.getAllByPage(page)).then(response => {
       this.marcas = response.content as MarcaDto[];
       this.paginator = response;
-      this.page = parseInt(this.paginator.number) + 1;
+      this.page = parseInt(this.paginator.number);
     });
   }
 

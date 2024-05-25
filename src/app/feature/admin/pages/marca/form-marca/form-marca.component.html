@@ -1,26 +1,25 @@
-<div class="container container-fluid">
-    <div class="row">
-        <div class="col-md-10">
-            <div class="d-flex justify-content-center align-items-center">
-                <span class="fs-1 text-center fw-bolder">FORMULARIO DE MARCA</span>
-                <img class="img-fluid rounded "
-                    src="https://imagenes.expreso.ec/files/image_700_402/uploads/2020/07/12/5f0b96b1b03c4.jpeg" alt="">
-            </div>
-            <form [formGroup]="formGroup">
-                <div class="mb-3">
-                    <label for="nombre" class="form-label">Nombre de la marca</label>
-                    <input [ngClass]="{'border border-danger':isDirtyField(formGroup,'name')}" formControlName="name"
-                        type="text" class="form-control" id="name">
-                    <span class="text-center text-danger">{{this.getErrorField(formGroup,'name')}}</span>
-                </div>
+<div class="container">
+	<mat-card class="card">
+		<mat-card-header class="title">
+			@if (sharedMarca) {
+			<mat-card-title class="title__text">ACTUALIZAR {{ sharedMarca.name.toUpperCase() }}</mat-card-title>
+			}@else {
+			<mat-card-title class="title__text">REGISTRA UNA NUEVA MARCA</mat-card-title>
+			}
+		</mat-card-header>
+		<img mat-card-image src="https://imagenes.expreso.ec/files/image_700_402/uploads/2020/07/12/5f0b96b1b03c4.jpeg" alt="Photo of a Shiba Inu" />
+		<mat-card-content>
+			<form class="form" [formGroup]="formGroup">
+				<mat-form-field appearance="outline">
+					<mat-label>Nombre de la marca:</mat-label>
+					<input matInput type="text" formControlName="name" />
+					<mat-error> {{ getErrorField(formGroup, 'name') }} </mat-error>
+				</mat-form-field>
 
-                <button *ngIf="sharedMarca==null" (click)="register()" [disabled]="formGroup.invalid" type="submit"
-                    class="btn btn-primary m-1">Registrar</button>
-                <button *ngIf="sharedMarca!=null" (click)="update()" [disabled]="formGroup.invalid" type="submit"
-                    class="btn btn-primary m-1">Actualizar</button>
-
-                <a routerLink="/admin/marca" class="btn btn-danger m-1">Regresar</a>
-            </form>
-        </div>
-    </div>
+				<button [hidden]="sharedMarca" [disabled]="formGroup.invalid" mat-raised-button color="primary" (click)="register()">Registrarse</button>
+				<button [hidden]="!sharedMarca" [disabled]="formGroup.invalid" mat-raised-button color="primary" (click)="update()">Actualizar</button>
+				<button mat-raised-button color="warn" (click)="goBack()">Volver</button>
+			</form>
+		</mat-card-content>
+	</mat-card>
 </div>

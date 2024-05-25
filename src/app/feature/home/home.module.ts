@@ -19,6 +19,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatListModule } from '@angular/material/list';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
 	declarations: [HomeComponent, ItemDetailComponent, CatalogueComponent, CompraClienteComponent, VerCompraComponent],
@@ -38,7 +39,8 @@ import { MatListModule } from '@angular/material/list';
 		MatCardModule,
 		MatPaginatorModule,
 		MatMenuModule,
-    MatListModule
+		MatListModule,
+		MatTableModule
 	]
 })
 export class HomeModule {}
